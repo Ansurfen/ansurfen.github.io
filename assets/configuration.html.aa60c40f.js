@@ -1,0 +1,1 @@
+const e={key:"v-4f4ccb8f",path:"/guide/configuration.html",title:"Configuration",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"Config File",slug:"config-file",children:[]}],git:{updatedTime:1650704043e3,contributors:[{name:"meteorlxy",email:"meteor.lxy@foxmail.com",commits:7}]},filePathRelative:"guide/configuration.md"};export{e as data};
