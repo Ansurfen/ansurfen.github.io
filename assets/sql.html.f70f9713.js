@@ -1,0 +1,1 @@
+const e={key:"v-1a533ef8",path:"/zh/resource/sql.html",title:"SQL",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/resource/sql.md"};export{e as data};

@@ -1,0 +1,1 @@
+const e={key:"v-33abe720",path:"/zh/resource/dsa.html",title:"\u7B97\u6CD5\u4E0E\u6570\u636E\u7ED3\u6784",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u5B66\u4E60\u5E73\u53F0",slug:"\u5B66\u4E60\u5E73\u53F0",children:[]}],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/resource/dsa.md"};export{e as data};

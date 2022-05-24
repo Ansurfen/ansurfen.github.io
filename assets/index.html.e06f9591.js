@@ -1,0 +1,1 @@
+const t={key:"v-2baac3f0",path:"/zh/idea/",title:"What is Idea ?",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/idea/README.md"};export{t as data};

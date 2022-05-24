@@ -1,0 +1,1 @@
+const t={key:"v-1370dfd0",path:"/resource/utils.html",title:"Utils",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"resource/utils.md"};export{t as data};

@@ -1,0 +1,1 @@
+const t={key:"v-96b533b8",path:"/zh/resource/python.html",title:"Python",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/resource/python.md"};export{t as data};

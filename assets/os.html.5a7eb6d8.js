@@ -1,0 +1,1 @@
+const e={key:"v-23d2d99c",path:"/zh/resource/os.html",title:"\u64CD\u4F5C\u7CFB\u7EDF",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"shell",slug:"shell",children:[]}],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/resource/os.md"};export{e as data};

@@ -1,0 +1,1 @@
+const e={key:"v-1849c65e",path:"/zh/resource/java.html",title:"Java",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/resource/java.md"};export{e as data};

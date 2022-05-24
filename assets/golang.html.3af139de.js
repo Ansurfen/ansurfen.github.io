@@ -1,0 +1,1 @@
+import{_ as e,o as a,c as o,a as t,b as n}from"./app.c6bcd86a.js";const s={},c={id:"golang",tabindex:"-1"},_=t("a",{class:"header-anchor",href:"#golang","aria-hidden":"true"},"#",-1),r=n(" Golang"),d=[_,r];function l(h,i){return a(),o("h1",c,d)}var f=e(s,[["render",l],["__file","golang.html.vue"]]);export{f as default};

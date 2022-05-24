@@ -1,0 +1,1 @@
+const e={key:"v-067c9944",path:"/resource/c.html",title:"C/C++",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"resource/c.md"};export{e as data};

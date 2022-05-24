@@ -1,0 +1,1 @@
+const e={key:"v-c2ad6562",path:"/zh/resource/c.html",title:"C/C++",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u5D4C\u5165\u5F0F",slug:"\u5D4C\u5165\u5F0F",children:[]}],git:{updatedTime:null,contributors:[]},filePathRelative:"zh/resource/c.md"};export{e as data};
