@@ -11,17 +11,17 @@
   <meta charset="utf-8">
   
   
-  <title>利用yock代替bat和bash脚本 | Ansurfen</title>
+  <title>利用yock代替batch和shell脚本 | Ansurfen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="注意: 由于GNU命令过于庞杂，因此对于相关函数以代码和注释的形式穿插介绍。 原生执行调用终端直接执行，对于不同平台相同命令不同flag并不具备适配的能力。因此，如果你想获得更好的跨平台能力，最好仅使用原本就跨平台的命令。例如，支持跨平台的命令: go mod, npm; 不支持跨平台的命令: 操作系统原生命令（tasklist, ps）。 1234567891011121314151617--">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用yock代替bat和bash脚本">
+<meta property="og:title" content="利用yock代替batch和shell脚本">
 <meta property="og:url" content="http://example.com/2023/07/17/yock/gnu/index.html">
 <meta property="og:site_name" content="Ansurfen">
 <meta property="og:description" content="注意: 由于GNU命令过于庞杂，因此对于相关函数以代码和注释的形式穿插介绍。 原生执行调用终端直接执行，对于不同平台相同命令不同flag并不具备适配的能力。因此，如果你想获得更好的跨平台能力，最好仅使用原本就跨平台的命令。例如，支持跨平台的命令: go mod, npm; 不支持跨平台的命令: 操作系统原生命令（tasklist, ps）。 1234567891011121314151617--">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-07-17T09:46:33.367Z">
-<meta property="article:modified_time" content="2023-07-17T14:46:28.475Z">
+<meta property="article:modified_time" content="2023-07-17T16:21:05.613Z">
 <meta property="article:author" content="ansurfen">
 <meta property="article:tag" content="yock">
 <meta property="article:tag" content="build-tool">
@@ -81,11 +81,11 @@
       <span class="material-symbols-rounded dark-mode-icon">dark_mode</span>
     </a>
     
-      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
         <span class="material-symbols-rounded rss">rss_feed</span>
       </a>
     
-    <a id="nav-search-btn" class="nav-icon" title="搜索" style="display: none;">
+    <a id="nav-search-btn" class="nav-icon" title="Search" style="display: none;">
       <span class="material-symbols-rounded">search</span>
     </a>
     <div id="nav-menu-btn" class="nav-icon">
@@ -103,7 +103,7 @@
       <a class="nav-dropdown-link" href="/about">About</a>
     
     
-      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
      
     </div>
 </div>
@@ -165,11 +165,11 @@
 
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">分类</h3>
+      <h3 class="widget-title">Categories</h3>
       <div class="category-box">
             <a class="category-link" href="/categories/yock/">
                 yock
-                <div class="category-count">5</div>
+                <div class="category-count">7</div>
             </a>
         </div>
     </div>
@@ -180,7 +180,7 @@
       
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">标签</h3>
+      <h3 class="widget-title">Tags</h3>
       <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/build-tool/" rel="tag">build-tool</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/package-manager/" rel="tag">package-manager</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yock/" rel="tag">yock</a></li></ul>
     </div>
   </div>
@@ -190,12 +190,12 @@
       
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">归档</h3>
+      <h3 class="widget-title">Archives</h3>
       
       
         <a class="archive-link" href="/archives/2023/07 ">
           July 2023 
-          <div class="archive-count">5 </div>
+          <div class="archive-count">7 </div>
         </a>
       
     </div>
@@ -206,8 +206,16 @@
       
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">最新文章</h3>
+      <h3 class="widget-title">Recent Posts</h3>
       <ul>
+        
+          <li>
+            <a href="/2023/07/17/yock/sdk/">yock服务开发</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/module/">yock第三方模块开发</a>
+          </li>
         
           <li>
             <a href="/2023/07/17/yock/ypm/">yock包管理工具</a>
@@ -219,14 +227,6 @@
         
           <li>
             <a href="/2023/07/17/yock/pipeline/">利用yock搭建pipeline</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/17/yock/gnu/">利用yock代替bat和bash脚本</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/17/yock/introduce/">你的下一个构建工具，何必是构建工具</a>
           </li>
         
       </ul>
@@ -253,7 +253,7 @@
   
     
       <h1 class="p-name article-title" itemprop="headline name">
-        利用yock代替bat和bash脚本
+        利用yock代替batch和shell脚本
       </h1>
     
   
@@ -272,7 +272,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            932 词 
+            941 words 
           </div>
         </div>
         
@@ -285,7 +285,7 @@
 <h2 id="原生执行"><a href="#原生执行" class="headerlink" title="原生执行"></a>原生执行</h2><p>调用终端直接执行，对于不同平台相同命令不同flag并不具备适配的能力。因此，如果你想获得更好的跨平台能力，最好仅使用原本就跨平台的命令。例如，支持跨平台的命令: go mod, npm; 不支持跨平台的命令: 操作系统原生命令（tasklist, ps）。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 根据环境取别名，这个别名是存在于yock内存中的，而不是直接在终端执行</span></span><br><span class="line"><span class="keyword">local</span> env = <span class="string">&quot;dev&quot;</span></span><br><span class="line"><span class="keyword">if</span> env == <span class="string">&quot;dev&quot;</span> <span class="keyword">then</span></span><br><span class="line">    alias(<span class="string">&quot;CC&quot;</span>, <span class="string">&quot;go.exe&quot;</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    alias(<span class="string">&quot;CC&quot;</span>, <span class="string">&quot;go&quot;</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- unalias(&quot;CC&quot;) -- 删除映射</span></span><br><span class="line"><span class="comment">-- 调用子进程执行，在执行前会先映射别名</span></span><br><span class="line">sh(<span class="string">&quot;$CC version&quot;</span>)</span><br><span class="line"><span class="comment">-- 以下为sh命令不同重载形式</span></span><br><span class="line">sh(<span class="string">&quot;echo a&quot;</span>, <span class="string">&quot;echo b&quot;</span>)</span><br><span class="line"></span><br><span class="line">sh(<span class="string">[[</span></span><br><span class="line"><span class="string">echo a</span></span><br><span class="line"><span class="string">echo b</span></span><br><span class="line"><span class="string">]]</span>)</span><br></pre></td></tr></table></figure>
 
-<h2 id="文件相关"><a href="#文件相关" class="headerlink" title="文件相关"></a>文件相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">mkdir(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>) <span class="comment">-- 创建a, b目录</span></span><br><span class="line"><span class="comment">-- ls命令返回include目录下面子文件和子目录，以数组的形式</span></span><br><span class="line"><span class="comment">-- 在lua中数组和map都共用在table数据结构中</span></span><br><span class="line"><span class="keyword">local</span> res = ls(<span class="string">&quot;include&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">type</span>(res) == <span class="string">&quot;table&quot;</span> <span class="keyword">then</span> <span class="comment">-- 类型判断是否为数组</span></span><br><span class="line">    <span class="built_in">table</span>.<span class="built_in">dump</span>(res)</span><br><span class="line"><span class="keyword">elseif</span> <span class="built_in">type</span>(res) == <span class="string">&quot;string&quot;</span> <span class="keyword">then</span> <span class="comment">-- 判断是否为字符串，可以利用awk grep提取，而不是对象化操作数据</span></span><br><span class="line">    <span class="built_in">print</span>(res)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- 清屏</span></span><br><span class="line">clear()</span><br><span class="line"><span class="comment">-- 创建一个a.txt的空文件</span></span><br><span class="line">touch(<span class="string">&quot;a.txt&quot;</span>)</span><br><span class="line"><span class="comment">-- 输出到屏幕上</span></span><br><span class="line">echo(<span class="string">&quot;Hello&quot;</span>, <span class="string">&quot;World&quot;</span>)</span><br><span class="line"><span class="comment">-- fd 为 file descriptor 文件描述符的缩写, stdout 为屏幕</span></span><br><span class="line"><span class="comment">-- mode c (创建) | t (覆盖写) | rw(读写打开) 文件打开的模式</span></span><br><span class="line">echo(&#123; fd = &#123; <span class="string">&quot;stdout&quot;</span>, <span class="string">&quot;test.txt&quot;</span> &#125;, mode = <span class="string">&quot;c|t|rw&quot;</span> &#125;, <span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line"><span class="comment">-- mode a(追加写)</span></span><br><span class="line">echo(&#123; fd = &#123; <span class="string">&quot;stdout&quot;</span>, <span class="string">&quot;test.txt&quot;</span> &#125;, mode = <span class="string">&quot;c|a|rw&quot;</span> &#125;, <span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line"><span class="comment">-- 类比rmdir 只能删除没有文件的空目录</span></span><br><span class="line">rm(<span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">-- 不安全的删除，会递归删除a目录下所有文件和子目录</span></span><br><span class="line">rm(&#123; safe = <span class="literal">false</span> &#125;, <span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">-- 将a目录拷贝到b目录下</span></span><br><span class="line">cp(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- 递归将src拷贝到dst下面，map接受的参数为 源目录(src)-&gt;目标目录(dst)</span></span><br><span class="line">cp(&#123;recurse = <span class="literal">true</span>&#125;, &#123;</span><br><span class="line">    [<span class="string">&quot;a&quot;</span>] = <span class="string">&quot;b&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">-- 将a目标移动到b目录下面，这是递归的</span></span><br><span class="line">mv(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- </span></span><br></pre></td></tr></table></figure>
+<h2 id="文件相关"><a href="#文件相关" class="headerlink" title="文件相关"></a>文件相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">mkdir(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>) <span class="comment">-- 创建a, b目录</span></span><br><span class="line"><span class="comment">-- ls命令返回include目录下面子文件和子目录，以数组的形式</span></span><br><span class="line"><span class="comment">-- 在lua中数组和map都共用在table数据结构中</span></span><br><span class="line"><span class="keyword">local</span> res = ls(<span class="string">&quot;include&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">type</span>(res) == <span class="string">&quot;table&quot;</span> <span class="keyword">then</span> <span class="comment">-- 类型判断是否为数组</span></span><br><span class="line">    <span class="built_in">table</span>.<span class="built_in">dump</span>(res)</span><br><span class="line"><span class="keyword">elseif</span> <span class="built_in">type</span>(res) == <span class="string">&quot;string&quot;</span> <span class="keyword">then</span> <span class="comment">-- 判断是否为字符串，可以利用awk grep提取，而不是对象化操作数据</span></span><br><span class="line">    <span class="built_in">print</span>(res)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- 清屏</span></span><br><span class="line">clear()</span><br><span class="line"><span class="comment">-- 创建一个a.txt的空文件</span></span><br><span class="line">touch(<span class="string">&quot;a.txt&quot;</span>)</span><br><span class="line"><span class="comment">-- 输出到屏幕上</span></span><br><span class="line">echo(<span class="string">&quot;Hello&quot;</span>, <span class="string">&quot;World&quot;</span>)</span><br><span class="line"><span class="comment">-- fd 为 file descriptor 文件描述符的缩写, stdout 为屏幕</span></span><br><span class="line"><span class="comment">-- mode c (创建) | t (覆盖写) | rw(读写打开) 文件打开的模式</span></span><br><span class="line">echo(&#123; fd = &#123; <span class="string">&quot;stdout&quot;</span>, <span class="string">&quot;test.txt&quot;</span> &#125;, mode = <span class="string">&quot;c|t|rw&quot;</span> &#125;, <span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line"><span class="comment">-- mode a(追加写)</span></span><br><span class="line">echo(&#123; fd = &#123; <span class="string">&quot;stdout&quot;</span>, <span class="string">&quot;test.txt&quot;</span> &#125;, mode = <span class="string">&quot;c|a|rw&quot;</span> &#125;, <span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line"><span class="comment">-- 类比rmdir 只能删除没有文件的空目录</span></span><br><span class="line">rm(<span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">-- 不安全的删除，会递归删除a目录下所有文件和子目录</span></span><br><span class="line">rm(&#123; safe = <span class="literal">false</span> &#125;, <span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">-- 将a目录拷贝到b目录下</span></span><br><span class="line">cp(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- 递归将src拷贝到dst下面，map接受的参数为 源目录(src)-&gt;目标目录(dst)</span></span><br><span class="line">cp(&#123;recurse = <span class="literal">true</span>&#125;, &#123;</span><br><span class="line">    [<span class="string">&quot;a&quot;</span>] = <span class="string">&quot;b&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">-- 将a目标移动到b目录下面，这是递归的</span></span><br><span class="line">mv(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- 读取a.txt的内容</span></span><br><span class="line"><span class="built_in">print</span>(cat(<span class="string">&quot;a.txt&quot;</span>))</span><br></pre></td></tr></table></figure>
 
 <h2 id="工作区相关"><a href="#工作区相关" class="headerlink" title="工作区相关"></a>工作区相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd(<span class="string">&quot;..&quot;</span>)</span><br><span class="line"><span class="comment">--- 返回当前工作目录</span></span><br><span class="line"><span class="built_in">print</span>(pwd())</span><br><span class="line"><span class="comment">-- 获取yock可执行文件的绝对路径</span></span><br><span class="line"><span class="built_in">print</span>(whereis(<span class="string">&quot;yock&quot;</span>))</span><br><span class="line"><span class="comment">-- 向环境变量写入a = b, 注意这是永久性</span></span><br><span class="line">export(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- 向环境变量a追加写</span></span><br><span class="line">export(<span class="string">&quot;a:c&quot;</span>)</span><br><span class="line"><span class="comment">-- 删除环境变量a</span></span><br><span class="line">unset(<span class="string">&quot;a&quot;</span>)</span><br></pre></td></tr></table></figure>
 
