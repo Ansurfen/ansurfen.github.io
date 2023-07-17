@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="/fontawesome/css/fontawesome.css" rel="stylesheet">
+<link href="/fontawesome/css/brands.css" rel="stylesheet">
+<link href="/fontawesome/css/solid.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>利用yock代替bat和bash脚本 | Ansurfen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="注意: 由于GNU命令过于庞杂，因此对于相关函数以代码和注释的形式穿插介绍。 原生执行调用终端直接执行，对于不同平台相同命令不同flag并不具备适配的能力。因此，如果你想获得更好的跨平台能力，最好仅使用原本就跨平台的命令。例如，支持跨平台的命令: go mod, npm; 不支持跨平台的命令: 操作系统原生命令（tasklist, ps）。 1234567891011121314151617--">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用yock代替bat和bash脚本">
+<meta property="og:url" content="http://example.com/2023/07/17/yock/gnu/index.html">
+<meta property="og:site_name" content="Ansurfen">
+<meta property="og:description" content="注意: 由于GNU命令过于庞杂，因此对于相关函数以代码和注释的形式穿插介绍。 原生执行调用终端直接执行，对于不同平台相同命令不同flag并不具备适配的能力。因此，如果你想获得更好的跨平台能力，最好仅使用原本就跨平台的命令。例如，支持跨平台的命令: go mod, npm; 不支持跨平台的命令: 操作系统原生命令（tasklist, ps）。 1234567891011121314151617--">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-07-17T09:46:33.367Z">
+<meta property="article:modified_time" content="2023-07-17T14:46:28.475Z">
+<meta property="article:author" content="ansurfen">
+<meta property="article:tag" content="yock">
+<meta property="article:tag" content="build-tool">
+<meta property="article:tag" content="package-manager">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Ansurfen" type="application/atom+xml">
+  
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://camo.githubusercontent.com/e2fed45eeddf5c4e8af379d928f6c2da3617a343291af1763c6af7bab347e431/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f73756e3032323553554e2f73756e3032323553554e2f6173736574732f696d616765732f69636f6e2e706e67" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="shadow   ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Ansurfen </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="material-symbols-rounded light-mode-icon">wb_sunny</span>
+      <span class="material-symbols-rounded dark-mode-icon">dark_mode</span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <span class="material-symbols-rounded rss">rss_feed</span>
+      </a>
+    
+    <a id="nav-search-btn" class="nav-icon" title="搜索" style="display: none;">
+      <span class="material-symbols-rounded">search</span>
+    </a>
+    <div id="nav-menu-btn" class="nav-icon">
+      <span class="material-symbols-rounded">menu</span>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=https://avatars.githubusercontent.com/u/102144133?s=400&u=ab57254e3a25fba714e317b3d1f2b5c1066b851b&v=4></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">Ansurfen </div>
+      <div class="dot"></div>
+      <div class="subtitle">developer </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/ansurfen" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://www.reddit.com/user/Ansurfen" title="Reddit"><i class="fa-brands fa-reddit"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/Ansurfen" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://gitlab.com/Ansurfen" title="Gitlab"><i class="fa-brands fa-gitlab"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://stackoverflow.com/users/21945531/ansurfen" title="stack-overflow"><i class="fa-brands fa-stack-overflow"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://hub.docker.com/u/ansurfen" title="docker"><i class="fa-brands fa-docker"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://segmentfault.com/u/ansurfen" title="segmentfault"><i class="fa-brands"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://medium.com/@axf593161" title="medium"><i class="fa-brands fa-medium"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://news.ycombinator.com/user?id=ansurfen" title="hacker-news"><i class="fa-brands fa-hacker-news"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://dev.to/ansurfen" title="dev-to"><i class="fa-brands fa-dev"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">分类</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/yock/">
+                yock
+                <div class="category-count">5</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/build-tool/" rel="tag">build-tool</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/package-manager/" rel="tag">package-manager</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yock/" rel="tag">yock</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">归档</h3>
+      
+      
+        <a class="archive-link" href="/archives/2023/07 ">
+          July 2023 
+          <div class="archive-count">5 </div>
+        </a>
+      
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">最新文章</h3>
+      <ul>
+        
+          <li>
+            <a href="/2023/07/17/yock/ypm/">yock包管理工具</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/concurrency/">yock并发编程</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/pipeline/">利用yock搭建pipeline</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/gnu/">利用yock代替bat和bash脚本</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/introduce/">你的下一个构建工具，何必是构建工具</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+<article id="post-yock/gnu" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        利用yock代替bat和bash脚本
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-07-17T09:46:33.367Z" itemprop="datePublished">2023-07-17</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/yock/">yock</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            932 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/build-tool/" rel="tag">build-tool</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/package-manager/" rel="tag">package-manager</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yock/" rel="tag">yock</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p><code>注意</code>: 由于GNU命令过于庞杂，因此对于相关函数以代码和注释的形式穿插介绍。</p>
+<h2 id="原生执行"><a href="#原生执行" class="headerlink" title="原生执行"></a>原生执行</h2><p>调用终端直接执行，对于不同平台相同命令不同flag并不具备适配的能力。因此，如果你想获得更好的跨平台能力，最好仅使用原本就跨平台的命令。例如，支持跨平台的命令: go mod, npm; 不支持跨平台的命令: 操作系统原生命令（tasklist, ps）。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 根据环境取别名，这个别名是存在于yock内存中的，而不是直接在终端执行</span></span><br><span class="line"><span class="keyword">local</span> env = <span class="string">&quot;dev&quot;</span></span><br><span class="line"><span class="keyword">if</span> env == <span class="string">&quot;dev&quot;</span> <span class="keyword">then</span></span><br><span class="line">    alias(<span class="string">&quot;CC&quot;</span>, <span class="string">&quot;go.exe&quot;</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    alias(<span class="string">&quot;CC&quot;</span>, <span class="string">&quot;go&quot;</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- unalias(&quot;CC&quot;) -- 删除映射</span></span><br><span class="line"><span class="comment">-- 调用子进程执行，在执行前会先映射别名</span></span><br><span class="line">sh(<span class="string">&quot;$CC version&quot;</span>)</span><br><span class="line"><span class="comment">-- 以下为sh命令不同重载形式</span></span><br><span class="line">sh(<span class="string">&quot;echo a&quot;</span>, <span class="string">&quot;echo b&quot;</span>)</span><br><span class="line"></span><br><span class="line">sh(<span class="string">[[</span></span><br><span class="line"><span class="string">echo a</span></span><br><span class="line"><span class="string">echo b</span></span><br><span class="line"><span class="string">]]</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件相关"><a href="#文件相关" class="headerlink" title="文件相关"></a>文件相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">mkdir(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>) <span class="comment">-- 创建a, b目录</span></span><br><span class="line"><span class="comment">-- ls命令返回include目录下面子文件和子目录，以数组的形式</span></span><br><span class="line"><span class="comment">-- 在lua中数组和map都共用在table数据结构中</span></span><br><span class="line"><span class="keyword">local</span> res = ls(<span class="string">&quot;include&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">type</span>(res) == <span class="string">&quot;table&quot;</span> <span class="keyword">then</span> <span class="comment">-- 类型判断是否为数组</span></span><br><span class="line">    <span class="built_in">table</span>.<span class="built_in">dump</span>(res)</span><br><span class="line"><span class="keyword">elseif</span> <span class="built_in">type</span>(res) == <span class="string">&quot;string&quot;</span> <span class="keyword">then</span> <span class="comment">-- 判断是否为字符串，可以利用awk grep提取，而不是对象化操作数据</span></span><br><span class="line">    <span class="built_in">print</span>(res)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- 清屏</span></span><br><span class="line">clear()</span><br><span class="line"><span class="comment">-- 创建一个a.txt的空文件</span></span><br><span class="line">touch(<span class="string">&quot;a.txt&quot;</span>)</span><br><span class="line"><span class="comment">-- 输出到屏幕上</span></span><br><span class="line">echo(<span class="string">&quot;Hello&quot;</span>, <span class="string">&quot;World&quot;</span>)</span><br><span class="line"><span class="comment">-- fd 为 file descriptor 文件描述符的缩写, stdout 为屏幕</span></span><br><span class="line"><span class="comment">-- mode c (创建) | t (覆盖写) | rw(读写打开) 文件打开的模式</span></span><br><span class="line">echo(&#123; fd = &#123; <span class="string">&quot;stdout&quot;</span>, <span class="string">&quot;test.txt&quot;</span> &#125;, mode = <span class="string">&quot;c|t|rw&quot;</span> &#125;, <span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line"><span class="comment">-- mode a(追加写)</span></span><br><span class="line">echo(&#123; fd = &#123; <span class="string">&quot;stdout&quot;</span>, <span class="string">&quot;test.txt&quot;</span> &#125;, mode = <span class="string">&quot;c|a|rw&quot;</span> &#125;, <span class="string">&quot;Hello World!&quot;</span>)</span><br><span class="line"><span class="comment">-- 类比rmdir 只能删除没有文件的空目录</span></span><br><span class="line">rm(<span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">-- 不安全的删除，会递归删除a目录下所有文件和子目录</span></span><br><span class="line">rm(&#123; safe = <span class="literal">false</span> &#125;, <span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">-- 将a目录拷贝到b目录下</span></span><br><span class="line">cp(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- 递归将src拷贝到dst下面，map接受的参数为 源目录(src)-&gt;目标目录(dst)</span></span><br><span class="line">cp(&#123;recurse = <span class="literal">true</span>&#125;, &#123;</span><br><span class="line">    [<span class="string">&quot;a&quot;</span>] = <span class="string">&quot;b&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">-- 将a目标移动到b目录下面，这是递归的</span></span><br><span class="line">mv(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="工作区相关"><a href="#工作区相关" class="headerlink" title="工作区相关"></a>工作区相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd(<span class="string">&quot;..&quot;</span>)</span><br><span class="line"><span class="comment">--- 返回当前工作目录</span></span><br><span class="line"><span class="built_in">print</span>(pwd())</span><br><span class="line"><span class="comment">-- 获取yock可执行文件的绝对路径</span></span><br><span class="line"><span class="built_in">print</span>(whereis(<span class="string">&quot;yock&quot;</span>))</span><br><span class="line"><span class="comment">-- 向环境变量写入a = b, 注意这是永久性</span></span><br><span class="line">export(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="comment">-- 向环境变量a追加写</span></span><br><span class="line">export(<span class="string">&quot;a:c&quot;</span>)</span><br><span class="line"><span class="comment">-- 删除环境变量a</span></span><br><span class="line">unset(<span class="string">&quot;a&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="权限相关"><a href="#权限相关" class="headerlink" title="权限相关"></a>权限相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看当前用户</span></span><br><span class="line"><span class="built_in">print</span>(whoami())</span><br><span class="line"><span class="comment">-- 类比 chmod 777 yock.exe</span></span><br><span class="line">chmod(<span class="string">&quot;yock.exe&quot;</span>, <span class="number">777</span>)</span><br><span class="line"><span class="comment">-- chown(&quot;&quot;)</span></span><br><span class="line"><span class="comment">-- 以管理员权限打开</span></span><br><span class="line">sudo(<span class="string">&quot;yock&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="进程相关"><a href="#进程相关" class="headerlink" title="进程相关"></a>进程相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 启动后台进程</span></span><br><span class="line">nohup(<span class="string">&quot;yock&quot;</span>)</span><br><span class="line"><span class="comment">-- 打印出pid为20的进程列表</span></span><br><span class="line"><span class="built_in">table</span>.<span class="built_in">dump</span>(ps(<span class="number">20</span>))</span><br><span class="line"><span class="comment">-- 打印出启用命令为yock的进程列表</span></span><br><span class="line"><span class="built_in">table</span>.<span class="built_in">dump</span>(ps(<span class="string">&quot;yock&quot;</span>))</span><br><span class="line"><span class="comment">-- 不过滤进程列表</span></span><br><span class="line">ps(&#123;&#125;)</span><br><span class="line"><span class="comment">-- 显示进程的某些参数，如运行的用户，内存信息，CPU信息，启动时间</span></span><br><span class="line">ps(&#123; user = <span class="literal">true</span>, mem = <span class="literal">true</span>, cpu = <span class="literal">true</span>, <span class="built_in">time</span> = <span class="literal">true</span> &#125;)</span><br><span class="line"><span class="comment">-- 显示命令为test的进程列表</span></span><br><span class="line"><span class="keyword">local</span> procs = pgrep(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, #procs, <span class="number">1</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(procs[i].Pid, procs[i].Name)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- 杀死指定进程，有两种重载，一个模糊匹配命令，一个为PID</span></span><br><span class="line">kill(<span class="string">&quot;test&quot;</span>)</span><br><span class="line">kill(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">table</span>.<span class="built_in">dump</span>(ipconfig())</span><br><span class="line"><span class="comment">-- 根据端口号查找相应的信息</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;PID&quot;</span>, <span class="string">&quot;Proto&quot;</span>, <span class="string">&quot;State&quot;</span>,<span class="string">&quot;Local&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> _, info <span class="keyword">in</span> <span class="built_in">ipairs</span>(lsof(<span class="number">58838</span>)) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(info.Pid, info.Proto, info.State, info.Local)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串处理"><a href="#字符串处理" class="headerlink" title="字符串处理"></a>字符串处理</h2><p>为了实现字符串三剑客跨平台，yock内置第三方实现以代替它们。<br>原命令       替代<br>grep &#x3D;&gt; <a target="_blank" rel="noopener" href="https://github.com/BurntSushi/ripgrep">ripgrep</a><br>awk &#x3D;&gt; <a target="_blank" rel="noopener" href="https://github.com/benhoyt/goawk">goawk</a><br>sed &#x3D;&gt; <a target="_blank" rel="noopener" href="https://github.com/chmln/sd">sd</a></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">grep(&#123;</span><br><span class="line">    case = <span class="literal">true</span>,</span><br><span class="line">    color = <span class="string">&quot;never&quot;</span>,</span><br><span class="line">    pattern = <span class="string">&quot;get&quot;</span>,</span><br><span class="line">    file = &#123; <span class="string">&quot;awk_test.txt&quot;</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">awk(&#123;</span><br><span class="line">    prog = &#123;</span><br><span class="line">        <span class="string">&quot;../bin/test.awk&quot;</span>,</span><br><span class="line">        <span class="string">&quot;../bin/test2.awk&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    file = &#123;</span><br><span class="line">        <span class="string">&quot;awk_test.txt&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    var = &#123;</span><br><span class="line">        name = <span class="string">&quot;ansurfen&quot;</span>,</span><br><span class="line">        age = <span class="number">20</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> out, err = sed(&#123;</span><br><span class="line">    old = <span class="string">&quot;(.*)&quot;</span>,</span><br><span class="line">    new = <span class="string">&quot;//$1&quot;</span>,</span><br><span class="line">    file = &#123; <span class="string">&quot;t.txt&quot;</span> &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">print</span>(out, err)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实验性命令"><a href="#实验性命令" class="headerlink" title="实验性命令"></a>实验性命令</h2><blockquote>
+<p>以下命令对平台适配程度很高，因此在目前yock还不稳定的情况下最好不要用于生产环境。</p>
+</blockquote>
+<h4 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h4><h4 id="crontab"><a href="#crontab" class="headerlink" title="crontab"></a>crontab</h4><h4 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h4>
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/07/17/yock/pipeline/"
+      title="利用yock搭建pipeline"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        利用yock搭建pipeline
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/07/17/yock/introduce/"
+      title="你的下一个构建工具，何必是构建工具"
+     >
+
+    <p class="title-text">
+      
+        你的下一个构建工具，何必是构建工具
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+ 
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2023 Ansurfen<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn" onclick="topFunction()">
+        <span class="material-symbols-rounded">keyboard_arrow_up</span>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.style.opacity = 1;
+        } else {
+            btn.style.opacity = 0;
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

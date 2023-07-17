@@ -11,16 +11,21 @@
   <meta charset="utf-8">
   
   
-  <title>categories | Ansurfen</title>
+  <title>利用yock搭建pipeline | Ansurfen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+  <meta name="description" content="Yock没有直接提供Pipeline相关的规范，但是提供了能够搭建Pipeline的相关功能，这也使得yock在调度上更加灵活。 Job &amp; Task1234567---@param name string---@param callback fun(ctx: context)function job(name, callback) end---@param name string---@">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用yock搭建pipeline">
+<meta property="og:url" content="http://example.com/2023/07/17/yock/pipeline/index.html">
 <meta property="og:site_name" content="Ansurfen">
+<meta property="og:description" content="Yock没有直接提供Pipeline相关的规范，但是提供了能够搭建Pipeline的相关功能，这也使得yock在调度上更加灵活。 Job &amp; Task1234567---@param name string---@param callback fun(ctx: context)function job(name, callback) end---@param name string---@">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-05-30T04:58:44.000Z">
-<meta property="article:modified_time" content="2023-05-30T04:59:12.595Z">
+<meta property="article:published_time" content="2023-07-17T09:53:06.393Z">
+<meta property="article:modified_time" content="2023-07-17T11:52:24.498Z">
 <meta property="article:author" content="ansurfen">
+<meta property="article:tag" content="yock">
+<meta property="article:tag" content="build-tool">
+<meta property="article:tag" content="package-manager">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Ansurfen" type="application/atom+xml">
@@ -235,7 +240,9 @@
     <div id="content-body">
        
 
-<article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+<article id="post-yock/pipeline" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
    
   <div class="article-inner">
     <div class="article-main">
@@ -246,7 +253,7 @@
   
     
       <h1 class="p-name article-title" itemprop="headline name">
-        categories
+        利用yock搭建pipeline
       </h1>
     
   
@@ -254,29 +261,35 @@
 
         <div class='meta-info-bar'>
           <div class="meta-info">
-  <time class="dt-published" datetime="2023-05-30T04:58:44.000Z" itemprop="datePublished">2023-05-30</time>
+  <time class="dt-published" datetime="2023-07-17T09:53:06.393Z" itemprop="datePublished">2023-07-17</time>
 </div>
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分类 
+  <a class="meta-cate-link" href="/categories/yock/">yock</a>
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            18 词 
+            652 词 
           </div>
         </div>
         
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/build-tool/" rel="tag">build-tool</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/package-manager/" rel="tag">package-manager</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yock/" rel="tag">yock</a></li></ul>
+
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
-          
-<ul>
-
-</ul>
-
+          <p>Yock没有直接提供Pipeline相关的规范，但是提供了能够搭建Pipeline的相关功能，这也使得yock在调度上更加灵活。</p>
+<h2 id="Job-amp-Task"><a href="#Job-amp-Task" class="headerlink" title="Job &amp; Task"></a>Job &amp; Task</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">---@param name string</span></span><br><span class="line"><span class="comment">---@param callback fun(ctx: context)</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">job</span><span class="params">(name, callback)</span></span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---@param name string</span></span><br><span class="line"><span class="comment">---@vararg string</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jobs</span><span class="params">(name, ...)</span></span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>Job: Task的最小组成单元，一个Task可由一个或者多个job组成。从函数签名不难看出，每个job都是一个名称与回调函数相绑定的单元。如果用户在同一份文件中定义同名的job，那yock将会抛出错误，因此每个job名称必须唯一。<br>Jobs: 编排多个job组成一个Task，与job共享命名空间。这意味着，要是jobs和job出现同名的情况，yock也会直接抛出错误。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--- main.lua</span></span><br><span class="line">job(<span class="string">&quot;test&quot;</span>, <span class="function"><span class="keyword">function</span><span class="params">(ctx)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;start test...&quot;</span>)</span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">job(<span class="string">&quot;build&quot;</span>, <span class="function"><span class="keyword">function</span><span class="params">(ctx)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;start build...&quot;</span>)</span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">job(<span class="string">&quot;deploy&quot;</span>, <span class="function"><span class="keyword">function</span><span class="params">(ctx)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;start deploy...&quot;</span>)</span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">jobs(<span class="string">&quot;all&quot;</span>, <span class="string">&quot;test&quot;</span>, <span class="string">&quot;build&quot;</span>, <span class="string">&quot;deploy&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>鉴于上文的介绍，我们不难看出这份代码中存在的task(Task由一个或者多个job组成):</p>
+<p>Task|Jobs<br>-|:-:|-<br>test|test<br>build|build<br>depoly|depoly<br>all|test, build, depoly</p>
+<p>要分task调度他们相当容易，只需要在运行的文件后面加上指定的任务名即可。例如运行all任务，<code>yock run main.lua all</code>。同时运行多个任务也是支持的, <code>yock run main.lua all depoly</code>。每个task之间都是协程异步执行的，而task内的job则是按照顺序依次执行。</p>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>根据上文的介绍，除了对Job有一定了解外，相信你一定很好奇job回调函数中传递的context类型的参数是做什么的。顾名思义，他是一个上下文类型，操作着task流程的生命周期。</p>
+<p>想象一个这样的场景，在调度<code>all</code>任务期间，如果<code>test</code>计划失败，那是否要继续<code>build</code>的运行呢？这就会产生一个分支，而要控制这一切在用户层面除了引入全局变量外是没办法的。因为yock只是提供了一个回调函数，没有提供编排回调函数的能力。因此，ctx变量应运而生。如果你想要终止整个task那只在回调函数结尾处加上<code>ctx.exit(0)</code>，他将终止本次task的执行。注意task之间是协程异步调度的，因此不会影响整个程序的正常调度，如果你想要结束整个程序只需<code>os.exit()</code>。言归正传，如果你不想结束调度，那可以给exit传递1，他将会继续执行本次task的下一个job。</p>
 
         
       </div>
@@ -288,6 +301,34 @@
   </div>
   
     
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/07/17/yock/concurrency/"
+      title="yock并发编程"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        yock并发编程
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/07/17/yock/gnu/"
+      title="利用yock代替bat和bash脚本"
+     >
+
+    <p class="title-text">
+      
+        利用yock代替bat和bash脚本
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
 
   
 </article>

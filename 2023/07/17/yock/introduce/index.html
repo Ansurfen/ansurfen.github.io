@@ -13,16 +13,16 @@
   
   <title>你的下一个构建工具，何必是构建工具 | Ansurfen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Yock是一个为构建而生的框架，他有点类似于nodejs和bazel，底层基于一个解释器封装了一些功能。正如nodejs那样，yock也基于封装过的lua实现了自己的包管理工具——ypm，这意味着引入第三方库成为可能。 安装快速开始文档 安装注意: 无论是哪一种安装方式，下载完后都需要将yock挂载到本地环境中。在解压压缩包后，进入可执行文件的目录运行yock run install.lua完成这">
+  <meta name="description" content="Yock是一个为构建而生的框架，他有点类似于nodejs和bazel，底层基于一个解释器封装了一些功能。正如nodejs那样，yock也基于封装过的lua实现了自己的包管理工具——ypm，这意味着引入第三方库成为可能。 安装快速开始 安装注意: 无论是哪一种安装方式，下载完后都需要将yock挂载到本地环境中。在解压压缩包后，进入可执行文件的目录运行yock run install.lua完成这个过">
 <meta property="og:type" content="article">
 <meta property="og:title" content="你的下一个构建工具，何必是构建工具">
 <meta property="og:url" content="http://example.com/2023/07/17/yock/introduce/index.html">
 <meta property="og:site_name" content="Ansurfen">
-<meta property="og:description" content="Yock是一个为构建而生的框架，他有点类似于nodejs和bazel，底层基于一个解释器封装了一些功能。正如nodejs那样，yock也基于封装过的lua实现了自己的包管理工具——ypm，这意味着引入第三方库成为可能。 安装快速开始文档 安装注意: 无论是哪一种安装方式，下载完后都需要将yock挂载到本地环境中。在解压压缩包后，进入可执行文件的目录运行yock run install.lua完成这">
+<meta property="og:description" content="Yock是一个为构建而生的框架，他有点类似于nodejs和bazel，底层基于一个解释器封装了一些功能。正如nodejs那样，yock也基于封装过的lua实现了自己的包管理工具——ypm，这意味着引入第三方库成为可能。 安装快速开始 安装注意: 无论是哪一种安装方式，下载完后都需要将yock挂载到本地环境中。在解压压缩包后，进入可执行文件的目录运行yock run install.lua完成这个过">
 <meta property="og:locale">
 <meta property="og:image" content="https://github.com/Ansurfen/ansurfen.github.io/blob/main/images/yock/lua-tip.png?raw=true">
 <meta property="article:published_time" content="2023-07-17T09:05:19.850Z">
-<meta property="article:modified_time" content="2023-07-17T09:25:00.353Z">
+<meta property="article:modified_time" content="2023-07-17T10:00:50.166Z">
 <meta property="article:author" content="ansurfen">
 <meta property="article:tag" content="yock">
 <meta property="article:tag" content="build-tool">
@@ -171,7 +171,7 @@
       <div class="category-box">
             <a class="category-link" href="/categories/yock/">
                 yock
-                <div class="category-count">1</div>
+                <div class="category-count">5</div>
             </a>
         </div>
     </div>
@@ -197,7 +197,7 @@
       
         <a class="archive-link" href="/archives/2023/07 ">
           July 2023 
-          <div class="archive-count">1 </div>
+          <div class="archive-count">5 </div>
         </a>
       
     </div>
@@ -210,6 +210,22 @@
     <div class="widget">
       <h3 class="widget-title">最新文章</h3>
       <ul>
+        
+          <li>
+            <a href="/2023/07/17/yock/ypm/">yock包管理工具</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/concurrency/">yock并发编程</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/pipeline/">利用yock搭建pipeline</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/17/yock/gnu/">利用yock代替bat和bash脚本</a>
+          </li>
         
           <li>
             <a href="/2023/07/17/yock/introduce/">你的下一个构建工具，何必是构建工具</a>
@@ -258,7 +274,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            497 词 
+            495 词 
           </div>
         </div>
         
@@ -268,7 +284,7 @@
       <div class="e-content article-entry" itemprop="articleBody">
         
           <p><a target="_blank" rel="noopener" href="https://github.com/Ansurfen/yock">Yock</a>是一个为构建而生的框架，他有点类似于nodejs和bazel，底层基于一个解释器封装了一些功能。正如nodejs那样，yock也基于封装过的lua实现了自己的包管理工具——ypm，这意味着引入第三方库成为可能。</p>
-<p><a href="#%E5%AE%89%E8%A3%85">安装</a><br><a href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">快速开始</a><br><a href="#%E6%96%87%E6%A1%A3">文档</a></p>
+<p><a href="#%E5%AE%89%E8%A3%85">安装</a><br><a href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">快速开始</a></p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><code>注意</code>: 无论是哪一种安装方式，下载完后都需要将yock挂载到本地环境中。在解压压缩包后，进入可执行文件的目录运行<code>yock run install.lua</code>完成这个过程。</p>
 <h3 id="Git-Release-推荐，第一时间发布最新版本"><a href="#Git-Release-推荐，第一时间发布最新版本" class="headerlink" title="Git Release (推荐，第一时间发布最新版本)"></a>Git Release (推荐，第一时间发布最新版本)</h3><p><a target="_blank" rel="noopener" href="https://github.com/Ansurfen/yock/releases">github</a>: 选择合适的压缩包下载完解压运行install.lua即可。</p>
 <h3 id="包管理工具安装-版本更新存在滞后"><a href="#包管理工具安装-版本更新存在滞后" class="headerlink" title="包管理工具安装 (版本更新存在滞后)"></a>包管理工具安装 (版本更新存在滞后)</h3><p>包管理工具下载完后一般会自动解压，解压完后还是需要手动运行install.lua，因此强烈推荐用<code>Git Release</code>的形式。<br>npm: npm i @ansurfen&#x2F;yock -g<br>pip: pip install yock</p>
@@ -289,6 +305,29 @@
   </div>
   
     
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/07/17/yock/gnu/"
+      title="利用yock代替bat和bash脚本"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        利用yock代替bat和bash脚本
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right  disabled "
+     >
+
+    <p class="title-text">
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
 
   
 </article>
