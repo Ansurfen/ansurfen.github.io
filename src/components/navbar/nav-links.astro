@@ -1,0 +1,46 @@
+---
+import { getPath } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import type { Links } from "@/lib/constants/i18n";
+
+interface Props {
+  text: Links;
+}
+
+const { text } = Astro.props;
+
+const pathname = Astro.url.pathname;
+
+// Remove trailing slash from current pathname if exists
+const currentPath =
+  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+
+const isActive = (path: string) => { 
+  return currentPath === path || path === `${currentPath}/`;
+};
+---
+
+<div class="flex items-center justify-center gap-4">
+  {
+    text.map(link => (
+      <a
+        href={`${getPath(Astro.url)}${link.href}`}
+        class={cn(
+          "group relative flex flex-col items-center justify-center text-xs font-medium text-foreground/70 duration-150 hover:text-primary lg:text-sm"
+        )}
+      >
+        <span class={cn("mb", isActive(`${getPath(Astro.url)}${link.href}`) && "text-primary")}>
+          {link.label}
+        </span>
+
+        <span
+          class={cn(
+            "absolute -bottom-px h-[1px] rounded-full bg-primary transition-all duration-150",
+            isActive(`${getPath(Astro.url)}${link.href}`) ? "w-full" : "w-0",
+            "group-hover:w-full"
+          )}
+        />
+      </a>
+    ))
+  }
+</div>

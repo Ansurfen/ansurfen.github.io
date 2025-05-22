@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import ArticleItem from "@/components/article-item.astro";
+import PageLayout from "@/layouts/page-layout.astro";
+import Pattern from "@/components/ui/pattern.astro";
+import Box from "@/components/box/index.astro";
+import BoxTitle from "@/components/box/title.astro";
+import BoxHeader from "@/components/box/header.astro";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("zh_cn/blog");
+
+  return articles
+    .map(article => ({
+      params: { series: article.data.series || "" },
+    }))
+    .filter(({ params }) => params.series !== "");
+}
+
+const { series } = Astro.params;
+
+const articels = await getCollection("zh_cn/blog");
+const seiriesArticles = articels.filter(
+  article => article.data.series === series
+);
+
+// Page properties
+const title = series;
+const description = `深入探讨 ${series} 系列，从我的软件工程之旅中精选。`;
+---
+
+<PageLayout
+  backLink={`/zh_cn/articles`}
+  description={description}
+  title={title}
+>
+  <Pattern />
+
+  <Box>
+    <BoxHeader>
+      <BoxTitle>文章</BoxTitle>
+    </BoxHeader>
+    <div
+      class="flex w-full flex-col items-start justify-start divide-y divide-border"
+    >
+      {seiriesArticles.map(article => <ArticleItem article={article} />)}
+    </div>
+  </Box>
+</PageLayout>

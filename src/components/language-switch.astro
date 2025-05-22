@@ -1,0 +1,100 @@
+---
+import { ChevronDown, Languages } from "lucide-react";
+import { cn, buttonVariants } from "@/lib/utils";
+import { languages, type LanguageCode } from "@/lib/i18n";
+
+// 获取当前语言（从URL路径）
+const currentPath = Astro.url.pathname;
+const currentLang = (Object.keys(languages) as LanguageCode[]).find(key => 
+  currentPath.startsWith(`${languages[key].path}`)
+) || 'en_us';
+---
+
+<div class="group relative inline-block">
+  <button
+    id="language-toggle"
+    class={cn(
+      buttonVariants({ variant: "ghost" }),
+      "flex h-8 w-[55px] items-center gap-0.5 px-1 cursor-pointer"
+    )}
+    aria-label="Language selector"
+  >
+    <Languages className="h-[1.2rem] w-[1.2rem]" />
+    <ChevronDown
+      id="chevron-icon"
+      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:rotate-180"
+    />
+    <span class="sr-only">Select language</span>
+  </button>
+
+  <div
+    class="invisible absolute right-0 z-50 mt-1 w-24 rounded-md border bg-background opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100"
+  >
+    <ul class="py-1">
+      {Object.entries(languages).map(([langCode, langInfo]) => (
+        <li>
+          <button
+            class="flex w-full cursor-pointer items-center gap-2 px-2.5 py-1.5 text-left text-sm font-normal text-foreground/80 hover:bg-accent/30 data-[selected=true]:font-semibold data-[selected=true]:text-foreground"
+            onclick={`setLanguage('${langCode}', this)`}
+            data-selected={currentLang === langCode}
+          >
+            <span class="opacity-85">{langInfo.name}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<script is:inline>
+  // 语言配置
+  const langConfig = {
+    en_us: { path: '/en_us' },
+    zh_cn: { path: '/zh_cn' }
+  };
+
+  // 切换语言时移除所有语言前缀
+  const setLanguage = (langCode, clickedButton) => {
+    localStorage.setItem("language", langCode);
+    
+    // 获取当前路径并移除任何语言前缀
+    let currentPath = window.location.pathname;
+
+    
+    // 移除语言前缀
+    for (const { path } of Object.values(langConfig)) {
+      if (currentPath.startsWith(path)) {
+        currentPath = currentPath.slice(path.length);
+        break;
+      }
+    }
+    
+    // 英语(en_us)时直接跳转到无前缀路径，其他语言保持前缀
+    const newPath = langCode === 'en_us' 
+      ? `${currentPath || '/'}` 
+      : `/${langCode}${currentPath}`;
+    
+    window.location.href = newPath;
+  };
+
+  // 高亮当前语言
+  document.addEventListener("astro:page-load", () => {
+    const currentPath = window.location.pathname;
+    const buttons = document.querySelectorAll('[onclick^="setLanguage"]');
+    
+    buttons.forEach(button => {
+      const match = button.getAttribute("onclick")?.match(/'([^']+)'/);
+      if (!match) return;
+      
+      const langCode = match[1];
+      const langPath = langConfig[langCode]?.path;
+      
+      // 英语特殊处理：无前缀或/en_us都算选中
+      const isSelected = langCode === 'en_us'
+        ? !currentPath.startsWith('/zh_cn')
+        : currentPath.startsWith(`${langPath}`);
+      
+      button.setAttribute("data-selected", isSelected ? "true" : "false");
+    });
+  });
+</script>

@@ -1,0 +1,148 @@
+---
+import Avatar from "@/components/ui/avatar.astro";
+import Box from "@/components/box/index.astro";
+import BoxContent from "@/components/box/content.astro";
+
+import { account, type UserProfile } from "@/lib/constants/profile";
+import { Briefcase } from "lucide-react";
+
+import VerifiedIcon from "@/components/ui/icons/verified.astro";
+import XIcon from "@/components/ui/icons/x.astro";
+import GithubIcon from "@/components/ui/icons/github.astro";
+import LinkedinIcon from "@/components/ui/icons/linkedin.astro";
+import DiscordIcon from "@/components/ui/icons/discord.astro";
+import type { ProfileTexts } from "@/lib/constants/i18n";
+
+interface Props {
+  info: UserProfile;
+  text: ProfileTexts;
+}
+
+const { info, text } = Astro.props;
+---
+
+<div class="screen-line-after relative flex items-center p-4 md:border-x">
+  <div class="shrink-0">
+    <div class="relative z-1 mx-0.5 my-1">
+      <Avatar
+        className="size-20 rounded-full ring-1 ring-border ring-offset-2 ring-offset-background sm:size-28"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-1 flex-col">
+    <div class="flex grow items-end pb-1 pl-4">
+      <div class="line-clamp-1 font-mono text-xs text-muted-foreground">
+        {info.slogan}
+      </div>
+    </div>
+
+    <div class="">
+      <h1 class="flex items-center gap-x-2 pl-4 text-2xl font-black">
+        {info.displayName}
+        <VerifiedIcon class="size-4 text-blue-500" />
+      </h1>
+
+      <div class="py-1 pl-4">
+        <p class="text-sm !font-normal">
+          {info.role}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{
+  account.waitChance && (
+    <div class="screen-line-after inline-flex w-full items-center gap-2 border-x bg-yellow-100 px-3 py-2 text-sm font-semibold dark:bg-yellow-500/10">
+      <span class="animate-bounce text-base">👋</span> {text.contact?.key} —
+      <a href={`mailto:${account.email}`} class="underline underline-offset-4">
+        {text.contact?.value}
+      </a>
+    </div>
+  )
+}
+
+<Box>
+  <BoxContent className="space-y-3">
+    {
+      account.resume && (
+        <span class="flex items-center justify-start gap-2">
+          <Briefcase className="size-4" />
+          {text.resume?.key}
+          <a
+            href={account.resume}
+            target="_blank"
+            class="underline underline-offset-4"
+          >
+            {text.resume?.value}
+          </a>
+        </span>
+      )
+    }
+
+    {
+      account.twitter && (
+        <span class="flex items-center justify-start gap-2">
+          <XIcon className="size-4" />
+          {text.twitter?.key}
+          <a
+            href={account.twitter}
+            target="_blank"
+            class="underline underline-offset-4"
+          >
+            {text.twitter?.value}
+          </a>
+        </span>
+      )
+    }
+
+    {
+      account.linkedin && (
+        <span class="flex items-center justify-start gap-2">
+          <LinkedinIcon className="size-4" />
+          {text.linkedin?.key}
+          <a
+            href={account.linkedin}
+            class="underline underline-offset-4"
+            target="_blank"
+          >
+            {text.linkedin?.value}
+          </a>
+        </span>
+      )
+    }
+
+    {
+      account.github && (
+        <span class="flex items-center justify-start gap-2">
+          <GithubIcon className="size-4" />
+          {text.github?.key}
+          <a
+            href={account.github}
+            class="underline underline-offset-4"
+            target="_blank"
+          >
+            {text.github?.value}
+          </a>
+        </span>
+      )
+    }
+
+    {
+      account.discord && (
+        <span class="flex items-center justify-start gap-2">
+          <DiscordIcon className="size-4" />
+          {text.discord?.key}
+          <a
+            href={account.discord}
+            class="underline underline-offset-4"
+            target="_blank"
+          >
+            {text.discord?.value}
+          </a>
+        </span>
+      )
+    }
+  </BoxContent>
+</Box>

@@ -1,0 +1,27 @@
+---
+import MarkdownRenderer from "@/components/ui/markdown-renderer.astro";
+
+import Box from "@/components/box/index.astro";
+import BoxHeader from "@/components/box/header.astro";
+import BoxTitle from "@/components/box/title.astro";
+import BoxContent from "@/components/box/content.astro";
+
+interface Props {
+  title: string;
+  about: string;
+}
+
+const { title, about } = Astro.props;
+---
+
+<Box>
+  <BoxHeader>
+    <BoxTitle> {title} </BoxTitle>
+  </BoxHeader>
+  <BoxContent>
+    <MarkdownRenderer
+      className="text-sm leading-7 font-medium"
+      content={about}
+    />
+  </BoxContent>
+</Box>

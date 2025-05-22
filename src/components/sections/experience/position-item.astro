@@ -1,0 +1,123 @@
+---
+import { Code2, ChevronDown, ChevronUp } from "lucide-react";
+import type { ExperiencePosition } from "@/lib/types";
+import Badge from "@/components/ui/badge.astro";
+import { markdownToHtml } from "@/lib/markdown";
+import { buttonVariants } from "@/lib/utils";
+
+interface Props {
+  position: ExperiencePosition;
+  showMore: string;
+  showLess: string;
+}
+
+const { position, showMore, showLess } = Astro.props;
+---
+
+<div>
+  <div class="block w-full text-left">
+    <div class="relative z-1 mb-1 flex items-center space-x-3">
+      <Code2 className="size-4 bg-background" />
+      <h3 class="text-base font-black underline-offset-4">
+        {position.subtitle}
+      </h3>
+    </div>
+    <span
+      class="flex items-center gap-2 pl-7 font-mono text-sm text-foreground"
+    >
+      {position.year}
+    </span>
+  </div>
+
+  <div class="description-container my-4 overflow-hidden">
+    <div
+      class="description-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out"
+    >
+      <div
+        class=""
+        set:html={markdownToHtml(
+          position.description,
+          "ml-7 text-sm leading-7"
+        )}
+      />
+
+      {
+        Array.isArray(position.tags) && position.tags.length > 0 && (
+          <div class="mt-2 ml-7 flex max-w-full flex-wrap items-center justify-start gap-1.5 py-2">
+            {position.tags.map(tag => {
+              return <Badge>{tag}</Badge>;
+            })}
+          </div>
+        )
+      }
+    </div>
+
+    <button
+      class="toggle-btn mt-2 ml-7 flex cursor-pointer items-center gap-1 rounded-md border px-4 py-2 text-xs font-medium text-primary hover:underline focus:outline-none transition-colors duration-200"
+      data-show-more={showMore}
+      data-show-less={showLess}
+    >
+      <span class="toggle-text">{showMore}</span>
+      <div class="toggle-icon-wrapper">
+        <ChevronDown className="toggle-icon size-4 transition-transform duration-300" />
+      </div>
+    </button>
+  </div>
+</div>
+
+<style>
+  .description-content.expanded {
+    max-height: 2000px;
+  }
+
+  .toggle-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toggle-icon {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .description-content.expanded ~ .toggle-btn .toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .toggle-btn:hover {
+    background-color: hsl(var(--primary) / 0.1);
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const buttons = document.querySelectorAll(".toggle-btn");
+    
+    buttons.forEach((button, index) => {
+      const container = button.closest(".description-container");
+      const content = container?.querySelector(".description-content");
+      const text = button.querySelector(".toggle-text");
+      const showMoreText = button.getAttribute("data-show-more");
+      const showLessText = button.getAttribute("data-show-less");
+      
+      // 第一个默认展开
+      if (index === 0) {
+        content?.classList.add("expanded");
+        text.textContent = showLessText;
+      }
+      
+      button.onclick = () => {
+        const isExpanded = content?.classList.contains("expanded");
+        
+        if (isExpanded) {
+          content?.classList.remove("expanded");
+          text.textContent = showMoreText;
+        } else {
+          content?.classList.add("expanded");
+          text.textContent = showLessText;
+        }
+      };
+    });
+  });
+</script>

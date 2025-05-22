@@ -1,0 +1,28 @@
+---
+import Box from "@/components/box/index.astro";
+import BoxHeader from "@/components/box/header.astro";
+import BoxTitle from "@/components/box/title.astro";
+import BoxContent from "@/components/box/content.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Box>
+  <BoxHeader>
+    <BoxTitle>{title}</BoxTitle>
+  </BoxHeader>
+  <BoxContent>
+    <div class="flex flex-col items-center justify-center">
+      <img
+        src="https://ansurfen.github.io/ansurfen/metrics.svg"
+        alt="GitHub Metrics"
+        class="w-full"
+        loading="lazy"
+      />
+    </div>
+  </BoxContent>
+</Box>

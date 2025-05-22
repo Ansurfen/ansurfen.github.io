@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import ArticleItem from "@/components/article-item.astro";
+import PageLayout from "@/layouts/page-layout.astro";
+
+import Pattern from "@/components/ui/pattern.astro";
+
+import Box from "@/components/box/index.astro";
+import BoxTitle from "@/components/box/title.astro";
+import BoxHeader from "@/components/box/header.astro";
+
+export async function getStaticPaths() {
+  const articels = await getCollection("zh_cn/blog");
+  return articels.map(article => ({
+    params: { category: article.data.category },
+  }));
+}
+
+const { category } = Astro.params;
+
+const articels = await getCollection("zh_cn/blog");
+const categoryArticles = articels.filter(
+  article => article.data.category === category
+);
+
+// Page properties
+const title = category;
+const description = `探索 ${category} 的见解、教训和发现，从我的软件工程之旅中。`;
+---
+
+<PageLayout backLink={`/zh_cn/articles`} description={description} title={title}>
+  <Pattern />
+
+  <Box>
+    <BoxHeader>
+      <BoxTitle>文章</BoxTitle>
+    </BoxHeader>
+    <div
+      class="flex w-full flex-col items-start justify-start divide-y divide-border"
+    >
+      {categoryArticles.map(article => <ArticleItem article={article} />)}
+    </div>
+  </Box>
+</PageLayout>
