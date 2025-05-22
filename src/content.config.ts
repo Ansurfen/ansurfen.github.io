@@ -1,72 +1,42 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
-const blog = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./docs/en_us/blog" }),
-  schema: () =>
-    z.object({
-      pubDatetime: z.date(),
-      series: z.string().optional(),
-      image: z.string().optional(),
-      title: z.string(),
-      draft: z.boolean().optional(),
-      tags: z.array(z.string()).default(["others"]),
-      category: z.string(),
-      description: z.string(),
-    }),
-});
-
-const projects = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./docs/en_us/projects" }),
-  schema: () =>
-    z.object({
-      name: z.string(),
-      technologies: z.array(z.string()),
-      description: z.string(),
-      image: z.string().optional(),
-      sourceCode: z.string().optional(),
-      preview: z.string().optional(),
-      type: z.union([
-        z.literal("core"),
-        z.literal("side"),
-      ])
-    }),
-});
-
-const zh_cn_blog = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./docs/zh_cn/blog" }),
-  schema: () =>
-    z.object({
-      pubDatetime: z.date(),
-      series: z.string().optional(),
-      image: z.string().optional(),
-      title: z.string(),
-      draft: z.boolean().optional(),
-      tags: z.array(z.string()).default(["others"]),
-      category: z.string(),
-      description: z.string(),
-    }),
-});
-
-function getBlog() {
-
+function createBlogCollection(base: string) {
+  return defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx}", base }),
+    schema: () =>
+      z.object({
+        pubDatetime: z.date(),
+        series: z.string().optional(),
+        image: z.string().optional(),
+        title: z.string(),
+        draft: z.boolean().optional(),
+        tags: z.array(z.string()).default(["others"]),
+        category: z.string(),
+        description: z.string(),
+      }),
+  });
 }
 
-const zh_cn_projects = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./docs/zh_cn/projects" }),
-  schema: () =>
-    z.object({
-      name: z.string(),
-      technologies: z.array(z.string()),
-      description: z.string(),
-      image: z.string().optional(),
-      sourceCode: z.string().optional(),
-      preview: z.string().optional(),
-      type: z.union([
-        z.literal("core"),
-        z.literal("side"),
-      ])
-    }),
-});
+function createProjectCollection(base: string) {
+  return defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx}", base }),
+    schema: () =>
+      z.object({
+        name: z.string(),
+        technologies: z.array(z.string()),
+        description: z.string(),
+        image: z.string().optional(),
+        sourceCode: z.string().optional(),
+        preview: z.string().optional(),
+        type: z.union([z.literal("top"), z.literal("normal")]),
+      }),
+  });
+}
 
-export const collections = { blog, projects, "zh_cn/blog": zh_cn_blog, zh_cn_projects };
+export const collections = {
+  blog: createBlogCollection("./docs/en_us/blog"),
+  projects: createProjectCollection("./docs/en_us/projects"),
+  "zh_cn/blog": createBlogCollection("./docs/zh_cn/blog"),
+  "zh_cn_projects": createProjectCollection("./docs/zh_cn/projects"),
+};

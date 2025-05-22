@@ -10,8 +10,8 @@ import ProjectItem from "@/components/sections/projects/project-item.astro";
 
 const projects = await getCollection("zh_cn_projects");
 
-const coreProjects = projects.filter(project => project.data.type === "core");
-const sideProjects = projects.filter(project => project.data.type === "side");
+const coreProjects = projects.filter(project => project.data.type === "top");
+const sideProjects = projects.filter(project => project.data.type === "normal");
 ---
 
 <PageLayout
@@ -21,7 +21,7 @@ const sideProjects = projects.filter(project => project.data.type === "side");
   <Pattern />
   <Box>
     <BoxHeader>
-      <BoxTitle> 构建持久项目 </BoxTitle>
+      <BoxTitle> 置顶 </BoxTitle>
     </BoxHeader>
 
     {coreProjects.map(item => <ProjectItem project={item} />)}
@@ -32,7 +32,7 @@ const sideProjects = projects.filter(project => project.data.type === "side");
       <Pattern />
       <Box>
         <BoxHeader>
-          <BoxTitle>Side Hustles</BoxTitle>
+          <BoxTitle>标准</BoxTitle>
         </BoxHeader>
         {sideProjects.map(item => <ProjectItem project={item} />)}
       </Box>

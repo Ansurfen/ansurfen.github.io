@@ -18,7 +18,7 @@ import BoxContent from "@/components/box/content.astro";
 
 import LinkBtn from "@/components/ui/link-btn.astro";
 import Badge from "@/components/ui/badge.astro";
-import { languages, type LanguageCode } from "@/lib/i18n";
+import { getPath, languages, type LanguageCode } from "@/lib/i18n";
 
 interface Props {
   title: string;
@@ -52,7 +52,7 @@ switch (target) {
   <main class="mx-auto min-h-screen max-w-3xl" aria-label="Main content">
     <Pattern className="h-14">
       <div class="z-1 mx-2 mt-auto flex w-full items-center justify-between">
-        <LinkBtn ariaLabel="Back btn" href="/projects">
+        <LinkBtn ariaLabel="Back btn" href={`${getPath(Astro.url)}/projects`}>
           <ArrowLeft />
         </LinkBtn>
         <div>
