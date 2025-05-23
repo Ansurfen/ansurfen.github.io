@@ -1,3 +1,5 @@
+import { getRelativeLocaleUrl } from "astro:i18n";
+
 export interface LanguageInfo {
   name: string;
   path: string;
@@ -22,3 +24,17 @@ export function getLanguage(url: URL) {
     url.pathname.includes(languages[key].path)
   ) || "en_us";
 }
+
+export function getLocaleCode(url: URL) {
+
+}
+
+export function getLocaleTimeCode(url: URL) {
+
+}
+
+export function getLocalePath(url: URL): string {
+  return getRelativeLocaleUrl(url.pathname)
+}
+
+// TODO unit test
