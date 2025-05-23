@@ -8,7 +8,7 @@ import BoxTitle from "@/components/box/title.astro";
 import { getCollection } from "astro:content";
 import ProjectItem from "@/components/sections/projects/project-item.astro";
 
-const projects = await getCollection("zhCNProjects");
+const projects = await getCollection("zhTWProjects");
 
 const coreProjects = projects.filter(project => project.data.type === "top");
 const sideProjects = projects.filter(project => project.data.type === "normal");

@@ -1,0 +1,66 @@
+---
+pubDatetime: 2025-05-21
+title: Building a Personal Blog with Astro
+description: 🌟 Documenting my blog framework selection journey
+category: Essay
+series: Learning Sharing
+tags:
+    - Learning
+    - Blog
+    - VuePress
+    - Hugo
+    - Hexo
+    - Astro
+    - WorkFlow
+---
+
+## 🛠️ Framework Selection
+1. VuePress → Better for documentation, weaker blog ecosystem 📄
+    * Documentation-friendly but limited blog features
+    * Theme choices lean toward technical documentation style
+2. Hugo → Complex configuration (extended version requires GCC), breaking changes ⚠️
+    * Requires GCC toolchain for compilation
+    * Version updates often lack backward compatibility
+    * Theme dependencies on specific versions cause runtime failures
+3. Hexo → Node.js ecosystem friendly, but limited theme selection 🌀
+    * Simple Node.js-based development environment
+    * Themes lack diversity and innovative styles
+4. Astro → Final choice! ✨
+    * Easy configuration and flexible UI
+    * Downside: Need to learn its unique hybrid rendering model
+
+> 💡 Astro Rendering Explained:
+> Astro uses a distinctive "static generation + on-demand hydration" approach. By default all components are server-side rendered (SSR) to static HTML. When interactivity is needed, specific components can be selectively hydrated for client-side rendering (CSR). This "islands architecture" ensures fast initial loading while providing necessary interactivity.
+
+After all that technical talk, actual development mainly involves writing TypeScript mixed with Markdown. When styling is needed, you write the CSS yourself and then apply Markdown content to those styled components.
+
+The tradeoff? What could have been simple Markdown-based blogging now requires writing Astro files to control UI styling for that flexibility. But for non-coding-newbies, the customization payoff seems worth it. I even wrote Vitest unit tests for my blog's utility functions :).
+
+## 🎢 Development Journey
+It took me two full days to build a blog I'm somewhat satisfied with.
+
+Initially I wanted to use VuePress since it's my usual go-to, but after browsing themes I realized it's better suited for documentation. Like using a screwdriver to tighten nuts - it works but isn't ideal.
+
+Then I discovered Hugo but found configuration troublesome - the themes I liked required the extended version, which needed GCC toolchain installation.
+
+After finally setting up the environment, I learned Hugo updates often introduce breaking changes without backward compatibility, making my chosen template fail. Game over.
+
+Next I tried Hexo. Compared to Hugo, its Node.js foundation made development friendlier, but I still couldn't find any appealing themes after extensive searching.
+
+After consulting AI, I discovered Astro. After browsing many free blog templates, I finally found one that was acceptable.
+
+I was excited at first, but the implementation process proved challenging. I initially thought the `---` syntax was just sugar coating for `<script>`, but later realized it's Astro's critical marker separating server-side from client-side code. Server code executes at build time, client code runs in browsers.
+
+The multilingual implementation also felt unintuitive - instead of having all content under en_us/zh_cn directories, the official demo splits languages across content directories. After much compromise, I ended up with a barely acceptable solution.
+
+## 🚀 Deployment Experience
+
+GitHub Workflow and Pages provide great convenience for developers, but writing YAML scripts often feels restrictive and awkward.
+
+To deploy both my blog and metrics generation, I made over 20 commits of trial-and-error adjustments. The final solution involved creating a separate repository for metrics.
+
+My requirements were somewhat special - I needed to generate GitHub Metrics images and reference them from my blog, with both deployed under the same URL.
+
+Initially AI generated two YAML files that would overwrite each other when run together. Merging them with filename declarations somehow broke metrics.svg generation.
+
+Ultimately I had to split the workflows across two repositories. At least the problem got solved.

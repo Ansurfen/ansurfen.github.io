@@ -59,12 +59,12 @@ Due to length limitations, please visit my article [《Past, Present, Future》]
                 "tags": ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
             },
             {
-                "subtitle": "Vue3 Frontend Development",
+                "subtitle": "Vue Frontend Development",
                 "year": "03.2025 - Present",
                 "description": `
 - ♦ Routine maintenance of DevOps platform
                 `,
-                "tags": ["Vue3", "TypeScript", "devops", "element-plus"]
+                "tags": ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
             }
         ]
     }
@@ -117,7 +117,7 @@ export const zhCN: Experience[] = [
         title: "实习",
         positions: [
             {
-                subtitle: "NodeJS后端开发",
+                subtitle: "NodeJS 后端开发",
                 year: "03.2025 - 至今",
                 description: `
 - ♦ 基于 TypeScript 语法树以及 JsonSchema 命令行工具链实现声明式 TypeScript 定义转接口文档，并自动同步到 API 管理平台。
@@ -129,12 +129,78 @@ export const zhCN: Experience[] = [
                 tags: ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
             },
             {
-                subtitle: "Vue3前端开发",
+                subtitle: "Vue 前端开发",
                 year: "03.2025 - 至今",
                 description: `
 - ♦ DevOps 平台日常维护
                 `,
-                tags: ["Vue3", "TypeScript", "devops", "element-plus"]
+                tags: ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
+            }
+        ]
+    }
+] as const;
+
+const zhTW: Experience[] = [
+    {
+        title: "大學",
+        positions: [
+            {
+                subtitle: "後端開發/ Golang 開發",
+                year: "09.2021 - 06.2025",
+                description: `我與 Golang 的相識始於大一上學期末的寒假。
+從此，我大部分的技術棧幾乎都圍繞 Go 語言展開。
+
+同大部分 Gopher 一樣，我學習和使用的首個 Web 開發技術棧就是 Gin + Gorm。通過這個經歷，讓我往後能夠直接上手各種不同的語言框架（如：SpringBoot、Django、Flask、Express、Koa 等）及其第三方函式庫。
+
+後來開始接觸微服務，陸續研究了 GRPC、ProtoBuf、ETCD、Grafana、Prometheus、Docker 等現代化技術及工具鏈。
+感覺還是學到不少東西，不過比較可惜的是後來沒有自己完整搭建一套微服務專案。`,
+                tags: ["後端開發", "Golang", "Go語言", "容器", "微服務", "雲端原生"]
+            },
+            {
+                subtitle: "前端開發",
+                year: "05.2022 - 06.2025",
+                description: `同後端開發一樣，接觸前端也充滿各種機緣巧合。
+如果非要說一個起點的話，應該是一次比賽和一個群組聊天吧。
+
+由於高中的一些經歷，使我對編寫 JQuery 以及前端三件套（HTML/CSS/JS）有一定的了解。
+因此，我找了個簡單的專案直接上手了 Vue 框架及其工具鏈（如：Pinia、Vite、Vue Router、Vuex）。
+
+出於對 TSX 的興趣，我還學習了 React 及其工具鏈。
+
+後來，由於對行動端開發的興趣，得知了 Flutter 這個技術棧及其「一次編寫，多端運行」的特性。
+它也因此成為了我畢業設計的主要技術棧。`,
+                tags: ["前端開發", "JQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "心路歷程",
+                year: "09.2021 - 12.2022",
+                description: `在大學期間出於好奇陸續學了不少技術，雖然回憶起來基本上都是淺嘗輒止，沒有用它們寫出實際的專案。
+不過，學習這些技術的過程極大滿足了我當時對技術的好奇心。
+由於篇幅過長，請移步我的文章 [《過去，現在，未來》](./articles/past-now-future) 查看詳情。`,
+                tags: ["總結", "回憶", "展望", "考研", "區塊鏈", "智能合約", "Solidity", "虛幻5", "量化交易", "資料庫", "作業系統", "深度學習", "桌面開發", "遊戲開發", "Minecraft 模組"]
+            },
+        ]
+    },
+    {
+        title: "實習",
+        positions: [
+            {
+                subtitle: "NodeJS 後端開發",
+                year: "03.2025 - 至今",
+                description: `
+- ♦ 基於 TypeScript 語法樹及 JsonSchema 命令列工具鏈實現宣告式 TypeScript 定義轉接口文件，並自動同步至 API 管理平台。
+- ♦ 維護 DevOps 平台日常工作，包括新增模板、實現任務優先級。
+- ♦ 使用 Dagger 重構原 DevOps 平台實現 CI/CD 流水線。
+- ♦ 對接過阿里雲日誌服務，將其 SDK 呼叫方式封裝成類似 ORM 的形式呼叫。
+- ♦ 負責遊戲後台日常維護，對接過 OPPO 小遊戲登入、七牛雲文件上傳等。`,
+                tags: ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
+            },
+            {
+                subtitle: "Vue 前端開發",
+                year: "03.2025 - 至今",
+                description: `
+- ♦ DevOps 平台日常維護`,
+                tags: ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
             }
         ]
     }
@@ -143,4 +209,5 @@ export const zhCN: Experience[] = [
 export const experiences = {
     enUS,
     zhCN,
+    zhTW,
 } as const;

@@ -58,7 +58,21 @@ const zhCN: UserProfile = {
 `,
 } as const;
 
+const zhTW: UserProfile = {
+  role: '程式設計愛好者 / 全端開發',  // zh-HK would use "全棧開發"
+  logo: 'ansurfen',
+  slogan: '我有個大膽的想法...',
+  displayName: "Surfen An",
+  email: "",
+  about: `
+最近，我正在開發一個我認為重要的開源專案 —— [Hulo](https://github.com/hulo-lang/hulo)。它是一個程式語言，但目前仍處於未完成階段。如果你有興趣，可以聯繫我一起學習或開發 :)
+
+另外，我也在空閒時間翻譯 Minecraft 模組。
+`
+} as const;
+
 export const PROFILE = {
   enUS,
   zhCN,
+  zhTW,
 } as const;

@@ -4,16 +4,18 @@ import { ChevronRightIcon, FolderCodeIcon } from "lucide-react";
 import MarkdownRenderer from "@/components/ui/markdown-renderer.astro";
 import type { CollectionEntry } from "astro:content";
 import Badge from "@/components/ui/badge.astro";
-import { getPath } from "@/lib/i18n";
+import { getLocale, getLocalePathByString } from "@/lib/i18n";
+import type { ProjectsCollectionKey } from "@/content.config";
 
 interface Props {
-  project: CollectionEntry<"projects"> | CollectionEntry<"zh_cn_projects">;
+  project: CollectionEntry<ProjectsCollectionKey>;
 }
 const { project } = Astro.props;
+const locale = getLocale(Astro.url);
 ---
 
 <a
-  href={`${getPath(Astro.url)}/projects/${project.id}`}
+  href={getLocalePathByString(locale, `/projects/${project.id}`)}
   class="flex cursor-pointer items-center not-last:border-b"
 >
   <FolderCodeIcon className="mx-4.5 size-5 shrink-0 text-muted-foreground" />

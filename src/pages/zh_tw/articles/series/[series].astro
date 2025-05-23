@@ -2,33 +2,38 @@
 import { getCollection } from "astro:content";
 import ArticleItem from "@/components/article-item.astro";
 import PageLayout from "@/layouts/page-layout.astro";
-
 import Pattern from "@/components/ui/pattern.astro";
-
 import Box from "@/components/box/index.astro";
 import BoxTitle from "@/components/box/title.astro";
 import BoxHeader from "@/components/box/header.astro";
 
 export async function getStaticPaths() {
-  const articels = await getCollection("zhCNBlog");
-  return articels.map(article => ({
-    params: { category: article.data.category },
-  }));
+  const articles = await getCollection("zhTWBlog");
+
+  return articles
+    .map(article => ({
+      params: { series: article.data.series || "" },
+    }))
+    .filter(({ params }) => params.series !== "");
 }
 
-const { category } = Astro.params;
+const { series } = Astro.params;
 
-const articels = await getCollection("zhCNBlog");
-const categoryArticles = articels.filter(
-  article => article.data.category === category
+const articels = await getCollection("zhTWBlog");
+const seiriesArticles = articels.filter(
+  article => article.data.series === series
 );
 
 // Page properties
-const title = category;
-const description = `探索 ${category} 的见解、教训和发现，从我的软件工程之旅中。`;
+const title = series;
+const description = `深入探讨 ${series} 系列，从我的软件工程之旅中精选。`;
 ---
 
-<PageLayout backLink={`/zh_cn/articles`} description={description} title={title}>
+<PageLayout
+  backLink={`/zh_tw/articles`}
+  description={description}
+  title={title}
+>
   <Pattern />
 
   <Box>
@@ -38,7 +43,7 @@ const description = `探索 ${category} 的见解、教训和发现，从我的�
     <div
       class="flex w-full flex-col items-start justify-start divide-y divide-border"
     >
-      {categoryArticles.map(article => <ArticleItem article={article} />)}
+      {seiriesArticles.map(article => <ArticleItem article={article} />)}
     </div>
   </Box>
 </PageLayout>

@@ -3,7 +3,7 @@ import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
 import LanguageSwitch from "../language-switch.astro";
 import type { Links } from "@/lib/constants/i18n";
-
+import { getLocalePathByURL } from "@/lib/i18n";
 interface Props {
   className?: string;
   text: Links;
@@ -21,7 +21,7 @@ const { className, text } = Astro.props;
   <div
     class="mx-auto flex max-w-3xl items-center justify-between px-4 py-1 md:border-x"
   >
-    <a href="/" class="flex-shrink-0">
+    <a href={getLocalePathByURL(Astro.url)} class="flex-shrink-0">
       <h1 class="text-xl font-bold">ansurfen</h1>
     </a>
 

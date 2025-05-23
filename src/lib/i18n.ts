@@ -5,36 +5,36 @@ export interface LanguageInfo {
   path: string;
 }
 
-export type LanguageCode = 'en_us' | 'zh_cn';
+export type Locale = 'en_us' | 'zh_cn' | "zh_tw";
 
-export const languages: Record<LanguageCode, LanguageInfo> = {
-  en_us: { name: "English", path: "/en_us" },
-  zh_cn: { name: "简体中文", path: "/zh_cn" },
+export const languages: Record<Locale, LanguageInfo> = {
+  en_us: { name: "English", path: "en_us" },
+  zh_cn: { name: "简体中文", path: "zh_cn" },
+  zh_tw: { name: "繁體中文", path: "zh_tw" },
 };
 
-export function getPath(url: URL) {
-  const target = (Object.keys(languages) as LanguageCode[]).find(key =>
-    url.pathname.startsWith(languages[key].path)
-  ) || "en_us";
-  return target !== "en_us" ? `/${target}` : "";
-}
-
-export function getLanguage(url: URL) {
-  return (Object.keys(languages) as LanguageCode[]).find(key =>
-    url.pathname.includes(languages[key].path)
+export function getLocale(url: URL): Locale {
+  return (Object.keys(languages) as Locale[]).find(key =>
+    url.pathname.startsWith(`/${languages[key].path}`)
   ) || "en_us";
 }
 
-export function getLocaleCode(url: URL) {
-
+export function getTimeLocale(locale: Locale): string {
+  switch (locale) {
+    case "zh_cn":
+      return "zh-CN";
+    case "zh_tw":
+      return "zh-TW";
+    default:
+      return "en-US";
+  }
 }
 
-export function getLocaleTimeCode(url: URL) {
-
+export function getLocalePathByString(locale: string, path?: string): string {
+  return getRelativeLocaleUrl(locale, path, { normalizeLocale: false });
 }
 
-export function getLocalePath(url: URL): string {
-  return getRelativeLocaleUrl(url.pathname)
+export function getLocalePathByURL(url: URL, path?: string): string {
+  const locale = getLocale(url);
+  return getRelativeLocaleUrl(locale, path, { normalizeLocale: false });
 }
-
-// TODO unit test

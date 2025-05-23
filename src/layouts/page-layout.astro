@@ -14,23 +14,22 @@ import BoxHeader from "@/components/box/header.astro";
 import BoxContent from "@/components/box/content.astro";
 
 import { ArrowLeft } from "lucide-react";
-import { languages, type LanguageCode } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n";
 
 interface Props {
   title: string;
   description: string;
   backLink?: string;
 }
-const target = (Object.keys(languages) as LanguageCode[]).find(key =>
-    Astro.url.pathname.includes(languages[key].path)
-  ) || "en_us";
+const locale = getLocale(Astro.url);
 let navText = navLinkes.enUS;
-switch (target) {
+switch (locale) {
   case "zh_cn":
     navText = navLinkes.zhCN;
     break;
-  default:
-    navText = navLinkes.enUS;
+  case "zh_tw":
+    navText = navLinkes.zhTW;
+    break;
 }
 const { title, description, backLink } = Astro.props;
 ---

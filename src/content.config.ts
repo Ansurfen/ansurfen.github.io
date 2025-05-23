@@ -37,6 +37,11 @@ function createProjectCollection(base: string) {
 export const collections = {
   blog: createBlogCollection("./docs/en_us/blog"),
   projects: createProjectCollection("./docs/en_us/projects"),
-  "zh_cn/blog": createBlogCollection("./docs/zh_cn/blog"),
-  "zh_cn_projects": createProjectCollection("./docs/zh_cn/projects"),
+  zhCNBlog: createBlogCollection("./docs/zh_cn/blog"),
+  zhCNProjects: createProjectCollection("./docs/zh_cn/projects"),
+  zhTWBlog: createBlogCollection("./docs/zh_tw/blog"),
+  zhTWProjects: createProjectCollection("./docs/zh_tw/projects"),
 };
+
+export type BlogCollectionKey = "blog" | "zhCNBlog" | "zhTWBlog";
+export type ProjectsCollectionKey = "projects" | "zhCNProjects" | "zhTWProjects";

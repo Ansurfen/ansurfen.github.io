@@ -16,6 +16,6 @@ export const SOCIAL_LINKS = [
   {
     name: 'X',
     icon: XIcon,
-    url: "https://x.com",
+    url: "https://x.com/ansurfen",
   },
 ];

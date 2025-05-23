@@ -10,7 +10,7 @@ import BoxTitle from "@/components/box/title.astro";
 import BoxHeader from "@/components/box/header.astro";
 
 export async function getStaticPaths() {
-  const articels = await getCollection("zhCNBlog");
+  const articels = await getCollection("zhTWBlog");
   return articels.map(article => ({
     params: { category: article.data.category },
   }));
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 
 const { category } = Astro.params;
 
-const articels = await getCollection("zhCNBlog");
+const articels = await getCollection("zhTWBlog");
 const categoryArticles = articels.filter(
   article => article.data.category === category
 );
@@ -28,7 +28,7 @@ const title = category;
 const description = `探索 ${category} 的见解、教训和发现，从我的软件工程之旅中。`;
 ---
 
-<PageLayout backLink={`/zh_cn/articles`} description={description} title={title}>
+<PageLayout backLink={`/zh_tw/articles`} description={description} title={title}>
   <Pattern />
 
   <Box>

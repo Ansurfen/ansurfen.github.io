@@ -4,9 +4,10 @@ import type { CollectionEntry } from "astro:content";
 import LinkButton from "@/components/ui/link-btn.astro";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import type { BlogCollectionKey } from "@/content.config";
 
 export interface Props {
-  page: Page<CollectionEntry<"blog"> | CollectionEntry<"zh_cn/blog">>;
+  page: Page<CollectionEntry<BlogCollectionKey>>;
 }
 
 const { page } = Astro.props;

@@ -1,26 +1,30 @@
 ---
-import { getLanguage, getPath } from "@/lib/i18n";
+import type { BlogCollectionKey } from "@/content.config";
+import { getLocale, getLocalePathByString, getTimeLocale } from "@/lib/i18n";
 import type { CollectionEntry } from "astro:content";
 import { ChevronRightIcon, NotebookPen } from "lucide-react";
 import getReadingTime from "reading-time";
 
 interface Props {
-  article: CollectionEntry<"blog"> | CollectionEntry<"zh_cn/blog">;
+  article: CollectionEntry<BlogCollectionKey>;
 }
 
 const { article } = Astro.props;
 
-const language = getLanguage(Astro.url);
+const locale = getLocale(Astro.url);
 
-const formattedDate = new Intl.DateTimeFormat(language === "zh_cn" ? "zh-CN" : "en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-}).format(article.data.pubDatetime);
+const formattedDate = new Intl.DateTimeFormat(
+  getTimeLocale(locale),
+  {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }
+).format(article.data.pubDatetime);
 ---
 
 <a
-  href={`${getPath(Astro.url)}/articles/${article.id}`}
+  href={getLocalePathByString(locale, `/articles/${article.id}`)}
   class="group flex w-full cursor-pointer items-center"
 >
   <NotebookPen className="mx-5 size-5 shrink-0 text-muted-foreground" />

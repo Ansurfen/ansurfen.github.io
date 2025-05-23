@@ -16,7 +16,7 @@ import BoxContent from "@/components/box/content.astro";
 
 import type { MarkdownHeading } from "astro";
 import LinkBtn from "@/components/ui/link-btn.astro";
-import { getPath, languages, type LanguageCode } from "@/lib/i18n";
+import { getLocale, getLocalePathByString, getTimeLocale } from "@/lib/i18n";
 
 interface Props {
   title: string;
@@ -29,20 +29,18 @@ interface Props {
 
 const { title, readTime, description, date, headings, image } = Astro.props;
 
-const target =
-  (Object.keys(languages) as LanguageCode[]).find(key =>
-    Astro.url.pathname.includes(languages[key].path)
-  ) || "en_us";
+const locale = getLocale(Astro.url);
 let navText = navLinkes.enUS;
-switch (target) {
+switch (locale) {
   case "zh_cn":
     navText = navLinkes.zhCN;
     break;
-  default:
-    navText = navLinkes.enUS;
+  case "zh_tw":
+    navText = navLinkes.zhTW;
+    break;
 }
 
-const formattedDate = new Intl.DateTimeFormat("en-GB", {
+const formattedDate = new Intl.DateTimeFormat(getTimeLocale(locale), {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
@@ -60,7 +58,7 @@ const formattedDate = new Intl.DateTimeFormat("en-GB", {
         <LinkBtn
           ariaLabel="Back link"
           className="absolute bottom-0 left-2 z-1"
-          href={`${getPath(Astro.url)}/articles`}
+          href={getLocalePathByString(locale, "/articles")}
         >
           <ArrowLeft />
         </LinkBtn>

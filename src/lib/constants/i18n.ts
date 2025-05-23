@@ -32,7 +32,7 @@ interface ChineseSocialTexts {
     netease: KeyValuePair
 }
 
-interface ChinesePlatformTexts extends ChineseBlogTexts, ChineseSocialTexts {}
+interface ChinesePlatformTexts extends ChineseBlogTexts, ChineseSocialTexts { }
 
 interface EnglishSocialTexts {
     twitter: KeyValuePair
@@ -50,6 +50,7 @@ interface EnglishSocialTexts {
     discord: KeyValuePair
     hackernews: KeyValuePair
     v2ex: KeyValuePair
+    quora: KeyValuePair
 }
 
 export interface ProfileTexts extends
@@ -170,9 +171,37 @@ const enUSProfile = {
     }
 } satisfies ProfileTexts;
 
+const zhTWProfile = {
+    twitter: {
+        key: "追蹤我的",
+        value: "Twitter"
+    },
+    linkedin: {
+        key: "與我聯繫於",
+        value: "LinkedIn"
+    },
+    github: {
+        key: "查看我的專案於",
+        value: "GitHub"
+    },
+    discord: {
+        key: "加入我的",
+        value: "Discord"
+    },
+    contact: {
+        key: "我正尋找新機會",
+        value: "聯繫我"
+    },
+    resume: {
+        key: "查看我的",
+        value: "履歷"  // zh-HK would use "CV" or "個人履歷"
+    }
+} satisfies ProfileTexts;
+
 export const profileTexts = {
-    zhCN: zhCNProfile,
     enUS: enUSProfile,
+    zhCN: zhCNProfile,
+    zhTW: zhTWProfile,
 };
 
 export interface ExperienceTexts {
@@ -182,15 +211,20 @@ export interface ExperienceTexts {
 }
 
 export const experienceTexts = {
+    enUS: {
+        name: "Experience",
+        showMore: "Show more",
+        showLess: "Show less"
+    } satisfies ExperienceTexts,
     zhCN: {
         name: "经历",
         showMore: "展开",
         showLess: "收起"
     } satisfies ExperienceTexts,
-    enUS: {
-        name: "Experience",
-        showMore: "Show more",
-        showLess: "Show less"
+    zhTW: {
+        name: "經歷",
+        showMore: "展開",
+        showLess: "收起"
     } satisfies ExperienceTexts,
 };
 
@@ -199,14 +233,19 @@ type Link = { label: string, href: string }
 export type Links = Link[];
 
 export const navLinkes = {
+    enUS: [
+        { label: "Home", href: "/" },
+        { label: "Articles", href: "/articles" },
+        { label: "Projects", href: "/projects" }
+    ] satisfies Links,
     zhCN: [
         { label: "首页", href: "/" },
         { label: "文章", href: "/articles" },
         { label: "项目", href: "/projects" }
     ] satisfies Links,
-    enUS: [
-        { label: "Home", href: "/" },
-        { label: "Articles", href: "/articles" },
-        { label: "Projects", href: "/projects" }
+    zhTW: [
+        { label: "首頁", href: "/" },          // zh-HK 可能用「主頁」
+        { label: "文章", href: "/articles" },  // 兩地相同
+        { label: "專案", href: "/projects" }    // zh-HK 可能用「項目」
     ] satisfies Links,
 };

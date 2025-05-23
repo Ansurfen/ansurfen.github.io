@@ -8,7 +8,7 @@ import BoxTitle from "@/components/box/title.astro";
 import BoxHeader from "@/components/box/header.astro";
 
 export async function getStaticPaths() {
-  const articles = await getCollection("zh_cn/blog");
+  const articles = await getCollection("zhCNBlog");
 
   return articles
     .map(article => ({
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 
 const { series } = Astro.params;
 
-const articels = await getCollection("zh_cn/blog");
+const articels = await getCollection("zhCNBlog");
 const seiriesArticles = articels.filter(
   article => article.data.series === series
 );
