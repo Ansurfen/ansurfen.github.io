@@ -3,4 +3,4 @@ export function getRelativeLocaleUrl(locale: string, path?: string, options?: { 
     return path || '/';
   }
   return `/${locale}${path || ''}`;
-} 
+}

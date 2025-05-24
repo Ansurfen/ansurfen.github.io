@@ -2,8 +2,7 @@
 import Avatar from "@/components/ui/avatar.astro";
 import Box from "@/components/box/index.astro";
 import BoxContent from "@/components/box/content.astro";
-
-import { account, type UserProfile } from "@/lib/constants/profile";
+ 
 import { Briefcase } from "lucide-react";
 
 import VerifiedIcon from "@/components/ui/icons/verified.astro";
@@ -11,7 +10,8 @@ import XIcon from "@/components/ui/icons/x.astro";
 import GithubIcon from "@/components/ui/icons/github.astro";
 import LinkedinIcon from "@/components/ui/icons/linkedin.astro";
 import DiscordIcon from "@/components/ui/icons/discord.astro";
-import type { ProfileTexts } from "@/lib/constants/i18n";
+import type { ProfileTexts, UserProfile } from "@/lib/types";
+import { account } from "@/constants";
 
 interface Props {
   info: UserProfile;

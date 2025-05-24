@@ -3,7 +3,7 @@ import Box from "@/components/box/index.astro";
 import BoxHeader from "@/components/box/header.astro";
 import BoxTitle from "@/components/box/title.astro";
 import BoxContent from "@/components/box/content.astro";
-import { TECH_STACK } from "@/lib/constants/tech-stack";
+import { techStack } from "@/constants";
 
 interface Props {
   title: string;
@@ -22,7 +22,7 @@ const { title } = Astro.props;
       style="content-visibility: auto; contain-intrinsic-size: auto 48px;"
     >
       {
-        TECH_STACK.map(item => (
+        techStack.map(item => (
           <a
             href={item.href}
             target="_blank"

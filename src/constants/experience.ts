@@ -1,4 +1,27 @@
-import type { Experience } from "../types";
+import type { Experience, ExperienceTexts, Language } from "@/lib/types";
+
+export const experienceTexts: Record<Language, ExperienceTexts> = {
+    enUS: {
+        name: "Experience",
+        showMore: "Show more",
+        showLess: "Show less"
+    },
+    zhCN: {
+        name: "经历",
+        showMore: "展开",
+        showLess: "收起"
+    },
+    zhTW: {
+        name: "經歷",
+        showMore: "展開",
+        showLess: "收起"
+    },
+    jaJP: {
+        name: "経験",
+        showMore: "展開",
+        showLess: "閉じる"
+    },
+};
 
 export const enUS: Experience[] = [
     {
@@ -206,8 +229,11 @@ const zhTW: Experience[] = [
     }
 ] as const;
 
-export const experiences = {
+const jaJP: Experience[] = []
+
+export const experiences: Record<Language, Experience[]> = {
     enUS,
     zhCN,
     zhTW,
+    jaJP,
 } as const;

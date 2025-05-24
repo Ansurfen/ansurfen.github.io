@@ -16,7 +16,7 @@ import {
   Astro,
 } from "developer-icons";
 
-export const TECH_STACK = [
+export const techStack = [
   // Programming Languages
   {
     title: "TypeScript",

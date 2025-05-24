@@ -1,65 +1,7 @@
-type KeyValuePair = { key: string, value: string }
-
-interface GitTexts {
-    github: KeyValuePair
-    gitlab: KeyValuePair
-    bitbucket: KeyValuePair
-    sourceforge: KeyValuePair
-    codepen: KeyValuePair
-    codebase: KeyValuePair
-    gitee: KeyValuePair
-    gitea: KeyValuePair
-}
-
-interface ChineseBlogTexts {
-    csdn: KeyValuePair
-    jianshu: KeyValuePair
-    zcool: KeyValuePair
-    cnblogs: KeyValuePair
-    studygolang: KeyValuePair
-}
-
-interface ChineseSocialTexts {
-    qq: KeyValuePair
-    wechat: KeyValuePair
-    weibo: KeyValuePair
-    zhihu: KeyValuePair
-    acfun: KeyValuePair
-    bilibili: KeyValuePair
-    douyin: KeyValuePair
-    kuaishou: KeyValuePair
-    rednote: KeyValuePair
-    netease: KeyValuePair
-}
-
-interface ChinesePlatformTexts extends ChineseBlogTexts, ChineseSocialTexts { }
-
-interface EnglishSocialTexts {
-    twitter: KeyValuePair
-    linkedin: KeyValuePair
-    reddit: KeyValuePair
-    telegram: KeyValuePair
-    youtube: KeyValuePair
-    twitch: KeyValuePair
-    tiktok: KeyValuePair
-    instagram: KeyValuePair
-    facebook: KeyValuePair
-    stackoverflow: KeyValuePair
-    medium: KeyValuePair
-    devto: KeyValuePair
-    discord: KeyValuePair
-    hackernews: KeyValuePair
-    v2ex: KeyValuePair
-    quora: KeyValuePair
-}
-
-export interface ProfileTexts extends
-    Partial<GitTexts>, Partial<ChinesePlatformTexts>, Partial<EnglishSocialTexts> {
-    contact?: KeyValuePair
-    resume?: KeyValuePair
-    email?: KeyValuePair
-    leetcode?: KeyValuePair
-}
+import type { Account, Language, ProfileTexts, UserProfile } from "@/lib/types";
+import LinkedinIcon from '@/components/ui/icons/linkedin.astro'
+import XIcon from '@/components/ui/icons/x.astro'
+import GithubIcon from '@/components/ui/icons/github.astro'
 
 const zhCNProfile = {
     twitter: {
@@ -213,65 +155,79 @@ const jaJPProfile = {
     },
 } satisfies ProfileTexts;
 
-export const profileTexts = {
+export const profileTexts: Record<Language, ProfileTexts> = {
     enUS: enUSProfile,
     zhCN: zhCNProfile,
     zhTW: zhTWProfile,
     jaJP: jaJPProfile,
 };
 
-export interface ExperienceTexts {
-    name: string
-    showMore: string
-    showLess: string
-}
-
-export const experienceTexts = {
-    enUS: {
-        name: "Experience",
-        showMore: "Show more",
-        showLess: "Show less"
-    } satisfies ExperienceTexts,
-    zhCN: {
-        name: "经历",
-        showMore: "展开",
-        showLess: "收起"
-    } satisfies ExperienceTexts,
-    zhTW: {
-        name: "經歷",
-        showMore: "展開",
-        showLess: "收起"
-    } satisfies ExperienceTexts,
-    jaJP: {
-        name: "経験",
-        showMore: "展開",
-        showLess: "閉じる"
-    } satisfies ExperienceTexts,
+export const account: Partial<Account> = {
+    waitChance: true,
+    twitter: "https://x.com/ansurfen",
+    discord: "https://discord.gg/#",
+    github: "https://github.com/ansurfen",
 };
 
-type Link = { label: string, href: string }
+const enUS: UserProfile = {
+    role: 'Programming Enthusiasts / Full-stack Developer',
+    logo: 'ansurfen',
+    slogan: 'I have a bold idea...',
+    displayName: "Surfen An",
+    email: "",
+    about: `
+At present, I am developing what I think is a major open source project —— [Hulo](https://github.com/hulo-lang/hulo). It is a programming language, but it is still at the WIP stage. If you are interested, you can contact me to study or develop :).
 
-export type Links = Link[];
+In addition, I translate Minecraft mods in my spare time. 
+`,
+} as const;
 
-export const navLinkes: Record<"enUS" | "zhCN" | "zhTW" | "jaJP", Links> = {
-    enUS: [
-        { label: "Home", href: "/" },
-        { label: "Articles", href: "/articles" },
-        { label: "Projects", href: "/projects" }
-    ],
-    zhCN: [
-        { label: "首页", href: "/" },
-        { label: "文章", href: "/articles" },
-        { label: "项目", href: "/projects" }
-    ],
-    zhTW: [
-        { label: "首頁", href: "/" },          // zh-HK 可能用「主頁」
-        { label: "文章", href: "/articles" },  // 兩地相同
-        { label: "專案", href: "/projects" }    // zh-HK 可能用「項目」
-    ],
-    jaJP: [
-        { label: "ホーム", href: "/" },
-        { label: "記事", href: "/articles" },
-        { label: "プロジェクト", href: "/projects" }
-    ],
-};
+const zhCN: UserProfile = {
+    role: '编程爱好者 / 全栈开发',
+    logo: 'ansurfen',
+    slogan: '我有一个大胆的想法...',
+    displayName: "Surfen An",
+    email: "",
+    about: `
+最近, 我正在开发我认为重要的开源项目 —— [Hulo](https://github.com/hulo-lang/hulo)。它是一个编程语言，但仍然处于未完成阶段。如果你感兴趣，你可以联系我一起学习或开发 :)。
+
+另外，我还在空闲时间翻译 Minecraft 模组。
+`,
+} as const;
+
+const zhTW: UserProfile = {
+    role: '程式設計愛好者 / 全端開發',  // zh-HK would use "全棧開發"
+    logo: 'ansurfen',
+    slogan: '我有個大膽的想法...',
+    displayName: "Surfen An",
+    email: "",
+    about: `
+最近，我正在開發一個我認為重要的開源專案 —— [Hulo](https://github.com/hulo-lang/hulo)。它是一個程式語言，但目前仍處於未完成階段。如果你有興趣，可以聯繫我一起學習或開發 :)
+
+另外，我也在空閒時間翻譯 Minecraft 模組。
+`
+} as const;
+
+export const profile = {
+    enUS,
+    zhCN,
+    zhTW,
+} as const;
+
+export const socialLinks = [
+    {
+        name: 'Github',
+        icon: GithubIcon,
+        url: "https://github.com/ansurfen",
+    },
+    {
+        name: 'Linkedin',
+        icon: LinkedinIcon,
+        url: "https://www.linkedin.com",
+    },
+    {
+        name: 'X',
+        icon: XIcon,
+        url: "https://x.com/ansurfen",
+    },
+];

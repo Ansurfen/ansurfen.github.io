@@ -7,10 +7,14 @@ import Profile from "@/components/profile.astro";
 import About from "@/components/sections/about.astro";
 import TechStack from "@/components/tech-stack.astro";
 import Experience from "@/components/sections/experience/experience.astro";
-import { PROFILE } from "@/lib/constants/profile";
-import { experienceTexts, navLinkes, profileTexts } from "@/lib/constants/i18n";
+import {
+  profile,
+  profileTexts,
+  experienceTexts,
+  experiences,
+} from "@/constants";
+import { navLinkes } from "@/lib/i18n";
 import Statistic from "@/components/statistic.astro";
-import { experiences } from "@/lib/constants/experience";
 ---
 
 <Layout title="Surfen An">
@@ -21,9 +25,9 @@ import { experiences } from "@/lib/constants/experience";
     class="mx-auto min-h-[calc(100vh-120px)] max-w-3xl"
   >
     <Pattern className="h-14" />
-    <Profile info={PROFILE.enUS} text={profileTexts.enUS} />
+    <Profile info={profile.enUS} text={profileTexts.enUS} />
     <Pattern />
-    <About title="About" about={PROFILE.enUS.about} />
+    <About title="About" about={profile.enUS.about} />
     <Pattern />
     <TechStack title="Tech Stack" />
     <Pattern />

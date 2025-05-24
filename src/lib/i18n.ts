@@ -1,4 +1,6 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Links } from "./types";
+import type { Language } from "./types";
 
 export interface LanguageInfo {
   name: string;
@@ -41,3 +43,26 @@ export function getLocalePathByURL(url: URL, path?: string): string {
   const locale = getLocale(url);
   return getRelativeLocaleUrl(locale, path, { normalizeLocale: false });
 }
+
+export const navLinkes: Record<Language, Links> = {
+  enUS: [
+    { label: "Home", href: "/" },
+    { label: "Articles", href: "/articles" },
+    { label: "Projects", href: "/projects" }
+  ],
+  zhCN: [
+    { label: "首页", href: "/" },
+    { label: "文章", href: "/articles" },
+    { label: "项目", href: "/projects" }
+  ],
+  zhTW: [
+    { label: "首頁", href: "/" },          // zh-HK 可能用「主頁」
+    { label: "文章", href: "/articles" },  // 兩地相同
+    { label: "專案", href: "/projects" }    // zh-HK 可能用「項目」
+  ],
+  jaJP: [
+    { label: "ホーム", href: "/" },
+    { label: "記事", href: "/articles" },
+    { label: "プロジェクト", href: "/projects" }
+  ],
+};

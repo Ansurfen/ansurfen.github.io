@@ -41,7 +41,9 @@ export const collections = {
   zhCNProjects: createProjectCollection("./docs/zh_cn/projects"),
   zhTWBlog: createBlogCollection("./docs/zh_tw/blog"),
   zhTWProjects: createProjectCollection("./docs/zh_tw/projects"),
+  jaJPBlog: createBlogCollection("./docs/ja_jp/blog"),
+  jaJPProjects: createProjectCollection("./docs/ja_jp/projects"),
 };
 
-export type BlogCollectionKey = "blog" | "zhCNBlog" | "zhTWBlog";
-export type ProjectsCollectionKey = "projects" | "zhCNProjects" | "zhTWProjects";
+export type BlogCollectionKey = "blog" | "zhCNBlog" | "zhTWBlog" | "jaJPBlog";
+export type ProjectsCollectionKey = "projects" | "zhCNProjects" | "zhTWProjects" | "jaJPProjects";
