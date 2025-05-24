@@ -5,12 +5,13 @@ export interface LanguageInfo {
   path: string;
 }
 
-export type Locale = 'en_us' | 'zh_cn' | "zh_tw";
+export type Locale = 'en_us' | 'zh_cn' | "zh_tw" | "ja_jp";
 
 export const languages: Record<Locale, LanguageInfo> = {
   en_us: { name: "English", path: "en_us" },
   zh_cn: { name: "简体中文", path: "zh_cn" },
   zh_tw: { name: "繁體中文", path: "zh_tw" },
+  ja_jp: { name: "日本語", path: "ja_jp" },
 };
 
 export function getLocale(url: URL): Locale {
@@ -25,6 +26,8 @@ export function getTimeLocale(locale: Locale): string {
       return "zh-CN";
     case "zh_tw":
       return "zh-TW";
+    case "ja_jp":
+      return "ja-JP";
     default:
       return "en-US";
   }

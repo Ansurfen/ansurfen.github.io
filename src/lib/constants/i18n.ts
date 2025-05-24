@@ -198,10 +198,26 @@ const zhTWProfile = {
     }
 } satisfies ProfileTexts;
 
+const jaJPProfile = {
+    twitter: {
+        key: "フォローする",
+        value: "Twitter"
+    },
+    linkedin: {
+        key: "連絡する",
+        value: "LinkedIn"
+    },
+    discord: {
+        key: "参加する",
+        value: "Discord"
+    },
+} satisfies ProfileTexts;
+
 export const profileTexts = {
     enUS: enUSProfile,
     zhCN: zhCNProfile,
     zhTW: zhTWProfile,
+    jaJP: jaJPProfile,
 };
 
 export interface ExperienceTexts {
@@ -226,26 +242,36 @@ export const experienceTexts = {
         showMore: "展開",
         showLess: "收起"
     } satisfies ExperienceTexts,
+    jaJP: {
+        name: "経験",
+        showMore: "展開",
+        showLess: "閉じる"
+    } satisfies ExperienceTexts,
 };
 
 type Link = { label: string, href: string }
 
 export type Links = Link[];
 
-export const navLinkes = {
+export const navLinkes: Record<"enUS" | "zhCN" | "zhTW" | "jaJP", Links> = {
     enUS: [
         { label: "Home", href: "/" },
         { label: "Articles", href: "/articles" },
         { label: "Projects", href: "/projects" }
-    ] satisfies Links,
+    ],
     zhCN: [
         { label: "首页", href: "/" },
         { label: "文章", href: "/articles" },
         { label: "项目", href: "/projects" }
-    ] satisfies Links,
+    ],
     zhTW: [
         { label: "首頁", href: "/" },          // zh-HK 可能用「主頁」
         { label: "文章", href: "/articles" },  // 兩地相同
         { label: "專案", href: "/projects" }    // zh-HK 可能用「項目」
-    ] satisfies Links,
+    ],
+    jaJP: [
+        { label: "ホーム", href: "/" },
+        { label: "記事", href: "/articles" },
+        { label: "プロジェクト", href: "/projects" }
+    ],
 };
