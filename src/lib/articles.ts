@@ -25,4 +25,11 @@ export async function getSeriesPaths(collection: BlogCollection) {
 export async function getSeriesArticles(collection: BlogCollection, series: string) {
     const articles = await getCollection(collection);
     return articles.filter(article => article.data.series === series);
+}
+
+export async function getCategoryPaths(collection: BlogCollection) {
+    const articles = await getCollection(collection);
+    return articles.map(article => ({
+        params: { category: article.data.category },
+    }));
 } 

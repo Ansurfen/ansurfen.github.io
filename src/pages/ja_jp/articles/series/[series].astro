@@ -1,49 +1,23 @@
 ---
-import { getCollection } from "astro:content";
-import ArticleItem from "@/components/article-item.astro";
-import PageLayout from "@/layouts/page-layout.astro";
-import Pattern from "@/components/ui/pattern.astro";
-import Box from "@/components/box/index.astro";
-import BoxTitle from "@/components/box/title.astro";
-import BoxHeader from "@/components/box/header.astro";
+import SeriesLayout from "@/layouts/series-layout.astro";
+import { getSeriesPaths } from "@/lib/articles";
 
 export async function getStaticPaths() {
-  const articles = await getCollection("jaJPBlog");
-
-  return articles
-    .map(article => ({
-      params: { series: article.data.series || "" },
-    }))
-    .filter(({ params }) => params.series !== "");
+  return getSeriesPaths("jaJPBlog");
 }
 
 const { series } = Astro.params;
-
-const articels = await getCollection("jaJPBlog");
-const seiriesArticles = articels.filter(
-  article => article.data.series === series
-);
 
 // Page properties
 const title = series;
 const description = `「${series}」 シリーズを深掘りし、私のソフトウェアエンジニアリングの旅から選び抜かれた内容をお届けします。`;
 ---
 
-<PageLayout
-  backLink={`/ja_jp/articles`}
-  description={description}
+<SeriesLayout
+  series={series}
   title={title}
->
-  <Pattern />
-
-  <Box>
-    <BoxHeader>
-      <BoxTitle>記事</BoxTitle>
-    </BoxHeader>
-    <div
-      class="flex w-full flex-col items-start justify-start divide-y divide-border"
-    >
-      {seiriesArticles.map(article => <ArticleItem article={article} />)}
-    </div>
-  </Box>
-</PageLayout>
+  baseLink="/ja_jp/articles"
+  description={description}
+  collectionName="jaJPBlog"
+  articlesTitle="記事"
+/>

@@ -1,0 +1,42 @@
+---
+import ArticleItem from "@/components/article-item.astro";
+import Pattern from "@/components/ui/pattern.astro";
+import type { BlogCollection } from "@/content.config";
+import { getCollection } from "astro:content";
+import PageLayout from "./page-layout.astro";
+import Box from "@/components/box/index.astro";
+import BoxHeader from "@/components/box/header.astro";
+import BoxTitle from "@/components/box/title.astro";
+
+interface Props {
+  series: string;
+  title: string;
+  articlesTitle: string;
+  baseLink: string;
+  description: string;
+  collectionName: BlogCollection;
+}
+
+const { series, title, articlesTitle, baseLink, description, collectionName } =
+  Astro.props;
+
+const articles = await getCollection(collectionName);
+const seiriesArticles = articles.filter(
+  article => article.data.series === series
+);
+---
+
+<PageLayout backLink={baseLink} description={description} title={title}>
+  <Pattern />
+
+  <Box>
+    <BoxHeader>
+      <BoxTitle>{articlesTitle}</BoxTitle>
+    </BoxHeader>
+    <div
+      class="flex w-full flex-col items-start justify-start divide-y divide-border"
+    >
+      {seiriesArticles.map(article => <ArticleItem article={article} />)}
+    </div>
+  </Box>
+</PageLayout>

@@ -18,7 +18,7 @@ interface Props {
   collectionName: ProjectCollection;
 }
 
-const { locale, title, description, pinnedTitle, normalTitle, collectionName } = Astro.props;
+const { title, description, pinnedTitle, normalTitle, collectionName } = Astro.props;
 
 const projects = await getCollection(collectionName);
 const coreProjects = projects.filter(project => project.data.type === "top");
