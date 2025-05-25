@@ -14,6 +14,7 @@ const currentLocale = getLocale(Astro.url);
       "flex h-8 w-[55px] items-center gap-0.5 px-1 cursor-pointer"
     )}
     aria-label="Language selector"
+    onclick="toggleLanguageMenu()"
   >
     <Languages className="h-[1.2rem] w-[1.2rem]" />
     <ChevronDown
@@ -24,6 +25,7 @@ const currentLocale = getLocale(Astro.url);
   </button>
 
   <div
+    id="language-menu"
     class="invisible absolute right-0 z-50 mt-1 w-24 rounded-md border bg-background opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100"
   >
     <ul class="py-1">
@@ -47,6 +49,43 @@ const currentLocale = getLocale(Astro.url);
 <script is:inline>
   const localePaths = ['/en_us', '/zh_cn', '/zh_tw', '/ja_jp'];
   const nonEnglishPaths = localePaths.filter(path => path !== '/en_us');
+
+  // 检测是否为移动设备
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // 切换语言菜单显示/隐藏
+  function toggleLanguageMenu() {
+    // 只在移动设备上处理点击事件
+    if (!isMobile) return;
+
+    const menu = document.getElementById('language-menu');
+    const chevron = document.getElementById('chevron-icon');
+    const isVisible = menu.classList.contains('visible');
+    
+    if (isVisible) {
+      menu.classList.remove('visible', 'opacity-100');
+      menu.classList.add('invisible', 'opacity-0');
+      chevron.style.transform = 'rotate(0deg)';
+    } else {
+      menu.classList.remove('invisible', 'opacity-0');
+      menu.classList.add('visible', 'opacity-100');
+      chevron.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  // 点击页面其他地方关闭菜单（仅在移动设备上）
+  if (isMobile) {
+    document.addEventListener('click', (event) => {
+      const menu = document.getElementById('language-menu');
+      const toggle = document.getElementById('language-toggle');
+      
+      if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.remove('visible', 'opacity-100');
+        menu.classList.add('invisible', 'opacity-0');
+        document.getElementById('chevron-icon').style.transform = 'rotate(0deg)';
+      }
+    });
+  }
 
   // 切换语言时移除所有语言前缀
   const setLanguage = (locale, clickedButton) => {
