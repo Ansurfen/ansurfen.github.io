@@ -17,6 +17,7 @@ import BoxContent from "@/components/box/content.astro";
 import type { MarkdownHeading } from "astro";
 import LinkBtn from "@/components/ui/link-btn.astro";
 import { getLocale, getLocalePathByString, getTimeLocale } from "@/lib/i18n";
+import { toc } from "@/constants";
 
 interface Props {
   title: string;
@@ -82,7 +83,7 @@ const formattedDate = new Intl.DateTimeFormat(getTimeLocale(locale), {
         </BoxContent>
       </Box>
 
-      <Toc headings={headings} />
+      <Toc title={toc[locale]} headings={headings} />
     </div>
   </main>
 
