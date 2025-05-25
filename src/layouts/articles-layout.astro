@@ -1,0 +1,109 @@
+---
+import ArticleItem from "@/components/article-item.astro";
+import Pattern from "@/components/ui/pattern.astro";
+import Box from "@/components/box/index.astro";
+import BoxTitle from "@/components/box/title.astro";
+import BoxHeader from "@/components/box/header.astro";
+import BoxContent from "@/components/box/content.astro";
+import LinkTag from "@/components/ui/link-tag.astro";
+import Pagination from "@/components/pagination.astro";
+import PageLayout from "@/layouts/page-layout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import type { Page } from "astro";
+import type { BlogCollection } from "@/content.config";
+
+interface Props {
+  collection: BlogCollection;
+  title: string;
+  description: string;
+  seriesTitle: string;
+  categoriesTitle: string;
+  articlesTitle: string;
+  basePath: string;
+  page: Page<CollectionEntry<BlogCollection>>;
+}
+
+const {
+  collection,
+  title,
+  description,
+  seriesTitle,
+  categoriesTitle,
+  articlesTitle,
+  basePath,
+  page,
+} = Astro.props;
+
+const articles = await getCollection(collection);
+const categories = [...new Set(articles.map(article => article.data.category))];
+const series = [
+  ...new Set(
+    articles
+      .map(article => article.data.series)
+      .filter((series): series is string => series !== undefined)
+  ),
+];
+---
+
+<PageLayout description={description} title={title}>
+  <Pattern />
+
+  <Box>
+    <BoxHeader>
+      <BoxTitle>{seriesTitle}</BoxTitle>
+    </BoxHeader>
+    <BoxContent>
+      <div class="flex flex-wrap items-center justify-start gap-x-4 gap-y-3">
+        {
+          series.map(seriesItem => (
+            <LinkTag
+              href={`${basePath}/series/${seriesItem}`}
+              tag={seriesItem}
+            />
+          ))
+        }
+      </div>
+    </BoxContent>
+  </Box>
+
+  <Pattern />
+
+  <Box>
+    <BoxHeader>
+      <BoxTitle>{categoriesTitle}</BoxTitle>
+    </BoxHeader>
+    <BoxContent>
+      <div class="flex flex-wrap items-center justify-start gap-x-4 gap-y-3">
+        {
+          categories.map(category => (
+            <LinkTag
+              href={`${basePath}/categories/${category}`}
+              tag={category}
+            />
+          ))
+        }
+      </div>
+    </BoxContent>
+  </Box>
+
+  <Pattern />
+
+  <Box>
+    <BoxHeader>
+      <BoxTitle>{articlesTitle}</BoxTitle>
+    </BoxHeader>
+    <div
+      class="flex w-full flex-col items-start justify-start divide-y divide-border"
+    >
+      {page.data.map(article => <ArticleItem article={article} />)}
+    </div>
+
+    <div class="border-t py-2">
+      <Pagination page={page} />
+    </div>
+  </Box>
+
+  <Pattern />
+</PageLayout>
+

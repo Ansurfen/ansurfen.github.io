@@ -5,10 +5,10 @@ import MarkdownRenderer from "@/components/ui/markdown-renderer.astro";
 import type { CollectionEntry } from "astro:content";
 import Badge from "@/components/ui/badge.astro";
 import { getLocale, getLocalePathByString } from "@/lib/i18n";
-import type { ProjectsCollectionKey } from "@/content.config";
+import type { ProjectCollection } from "@/content.config";
 
 interface Props {
-  project: CollectionEntry<ProjectsCollectionKey>;
+  project: CollectionEntry<ProjectCollection>;
 }
 const { project } = Astro.props;
 const locale = getLocale(Astro.url);

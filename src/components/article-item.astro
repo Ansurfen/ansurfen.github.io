@@ -1,12 +1,12 @@
 ---
-import type { BlogCollectionKey } from "@/content.config";
+import type { BlogCollection } from "@/content.config";
 import { getLocale, getLocalePathByString, getTimeLocale } from "@/lib/i18n";
 import type { CollectionEntry } from "astro:content";
 import { ChevronRightIcon, NotebookPen } from "lucide-react";
 import getReadingTime from "reading-time";
 
 interface Props {
-  article: CollectionEntry<BlogCollectionKey>;
+  article: CollectionEntry<BlogCollection>;
 }
 
 const { article } = Astro.props;

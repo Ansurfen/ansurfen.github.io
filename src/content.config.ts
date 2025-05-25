@@ -45,5 +45,5 @@ export const collections = {
   jaJPProjects: createProjectCollection("./docs/ja_jp/projects"),
 };
 
-export type BlogCollectionKey = "blog" | "zhCNBlog" | "zhTWBlog" | "jaJPBlog";
-export type ProjectsCollectionKey = "projects" | "zhCNProjects" | "zhTWProjects" | "jaJPProjects";
+export type BlogCollection = "blog" | "zhCNBlog" | "zhTWBlog" | "jaJPBlog";
+export type ProjectCollection = "projects" | "zhCNProjects" | "zhTWProjects" | "jaJPProjects";

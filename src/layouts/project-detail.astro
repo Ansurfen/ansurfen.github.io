@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import ProjectLayout from "@/layouts/project-layout.astro";
+import { render } from "astro:content";
+import type { ProjectCollection } from "@/content.config";
+
+interface Props {
+  collection: ProjectCollection;
+  projectId: string;
+}
+
+const { collection, projectId } = Astro.props;
+
+const projects = await getCollection(collection);
+const project = projects.find(p => p.id === projectId);
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+
+const rendered = await render(project);
+---
+
+<ProjectLayout
+  title={project.data.name}
+  technologies={project.data.technologies}
+  sourceCode={project.data.sourceCode}
+  preview={project.data.preview}
+  image={project.data.image}
+  description={project.data.description}
+>
+  <rendered.Content />
+</ProjectLayout>
+

@@ -1,0 +1,51 @@
+---
+import Pattern from "@/components/ui/pattern.astro";
+import PageLayout from "@/layouts/page-layout.astro";
+import Box from "@/components/box/index.astro";
+import BoxHeader from "@/components/box/header.astro";
+import BoxTitle from "@/components/box/title.astro";
+import { getCollection } from "astro:content";
+import ProjectItem from "@/components/sections/projects/project-item.astro";
+import type { Locale } from "@/lib/i18n";
+import type { ProjectCollection } from "@/content.config";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  pinnedTitle: string;
+  normalTitle: string;
+  collectionName: ProjectCollection;
+}
+
+const { locale, title, description, pinnedTitle, normalTitle, collectionName } = Astro.props;
+
+const projects = await getCollection(collectionName);
+const coreProjects = projects.filter(project => project.data.type === "top");
+const sideProjects = projects.filter(project => project.data.type === "normal");
+---
+
+<PageLayout description={description} title={title}>
+  <Pattern />
+  <Box>
+    <BoxHeader>
+      <BoxTitle>{pinnedTitle}</BoxTitle>
+    </BoxHeader>
+
+    {coreProjects.map(item => <ProjectItem project={item} />)}
+  </Box>
+
+  {
+    sideProjects.length > 0 && (
+      <Pattern />
+      <Box>
+        <BoxHeader>
+          <BoxTitle>{normalTitle}</BoxTitle>
+        </BoxHeader>
+        {sideProjects.map(item => <ProjectItem project={item} />)}
+      </Box>
+    )
+  }
+ 
+  <Pattern />
+</PageLayout> 
