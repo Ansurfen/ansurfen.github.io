@@ -1,22 +1,23 @@
-import type { Experience, ExperienceTexts, Language } from "@/lib/types";
+import type { Experience, ExperienceTexts } from "@/lib/types";
+import type { Locale } from "@/lib/i18n";
 
-export const experienceTexts: Record<Language, ExperienceTexts> = {
-    enUS: {
+export const experienceTexts: Record<Locale, ExperienceTexts> = {
+    en_us: {
         name: "Experience",
         showMore: "Show more",
         showLess: "Show less"
     },
-    zhCN: {
+    zh_cn: {
         name: "经历",
         showMore: "展开",
         showLess: "收起"
     },
-    zhTW: {
+    zh_tw: {
         name: "經歷",
         showMore: "展開",
         showLess: "收起"
     },
-    jaJP: {
+    ja_jp: {
         name: "経験",
         showMore: "展開",
         showLess: "閉じる"
@@ -297,9 +298,9 @@ export const jaJP: Experience[] = [
     }
 ] as const;
 
-export const experiences: Record<Language, Experience[]> = {
-    enUS,
-    zhCN,
-    zhTW,
-    jaJP,
+export const experiences: Record<Locale, Experience[]> = {
+    en_us: enUS,
+    zh_cn: zhCN,
+    zh_tw: zhTW,
+    ja_jp: jaJP,
 } as const;

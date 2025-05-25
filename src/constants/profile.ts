@@ -1,7 +1,8 @@
-import type { Account, Language, ProfileTexts, UserProfile } from "@/lib/types";
+import type { Account, ProfileTexts, Profile } from "@/lib/types";
 import LinkedinIcon from '@/components/ui/icons/linkedin.astro'
 import XIcon from '@/components/ui/icons/x.astro'
 import GithubIcon from '@/components/ui/icons/github.astro'
+import type { Locale } from "@/lib/i18n";
 
 const zhCNProfile = {
     twitter: {
@@ -163,11 +164,11 @@ const jaJPProfile = {
     }
 } satisfies ProfileTexts;
 
-export const profileTexts: Record<Language, ProfileTexts> = {
-    enUS: enUSProfile,
-    zhCN: zhCNProfile,
-    zhTW: zhTWProfile,
-    jaJP: jaJPProfile,
+export const profileTexts: Record<Locale, ProfileTexts> = {
+    en_us: enUSProfile,
+    zh_cn: zhCNProfile,
+    zh_tw: zhTWProfile,
+    ja_jp: jaJPProfile,
 };
 
 export const account: Partial<Account> = {
@@ -177,10 +178,10 @@ export const account: Partial<Account> = {
     github: "https://github.com/ansurfen",
 };
 
-const enUS: UserProfile = {
+const enUS: Profile = {
     role: 'Programming Enthusiasts / Full-stack Developer',
     logo: 'ansurfen',
-    slogan: 'I have a bold idea...',
+    slogan: 'Do your best, and respect what you cannot yet do.',
     displayName: "Surfen An",
     email: "",
     about: `
@@ -190,10 +191,10 @@ In addition, I translate Minecraft mods in my spare time.
 `,
 } as const;
 
-const zhCN: UserProfile = {
+const zhCN: Profile = {
     role: '编程爱好者 / 全栈开发',
     logo: 'ansurfen',
-    slogan: '我有一个大胆的想法...',
+    slogan: '尽你所能，敬你所不能',
     displayName: "Surfen An",
     email: "",
     about: `
@@ -203,10 +204,10 @@ const zhCN: UserProfile = {
 `,
 } as const;
 
-const zhTW: UserProfile = {
+const zhTW: Profile = {
     role: '程式設計愛好者 / 全端開發',  // zh-HK would use "全棧開發"
     logo: 'ansurfen',
-    slogan: '我有個大膽的想法...',
+    slogan: '盡你所能，敬你所不能',
     displayName: "Surfen An",
     email: "",
     about: `
@@ -216,10 +217,10 @@ const zhTW: UserProfile = {
 `
 } as const;
 
-const jaJP: UserProfile = {
+const jaJP: Profile = {
     role: 'プログラミング愛好家 / フルスタック開発者',
     logo: 'ansurfen',
-    slogan: '私は大胆なアイデアを持っています...',
+    slogan: 'できる限りのことを尽くし、できないことに敬意を払う',
     displayName: "Surfen An",
     email: "",
     about: `
@@ -229,11 +230,11 @@ const jaJP: UserProfile = {
     `
 } as const;
 
-export const profile = {
-    enUS,
-    zhCN,
-    zhTW,
-    jaJP,
+export const profile: Record<Locale, Profile> = {
+    en_us: enUS,
+    zh_cn: zhCN,
+    zh_tw: zhTW,
+    ja_jp: jaJP,
 } as const;
 
 export const socialLinks = [

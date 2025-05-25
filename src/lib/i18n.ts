@@ -1,6 +1,5 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import type { Links } from "./types";
-import type { Language } from "./types";
 
 export interface LanguageInfo {
   name: string;
@@ -44,23 +43,23 @@ export function getLocalePathByURL(url: URL, path?: string): string {
   return getRelativeLocaleUrl(locale, path, { normalizeLocale: false });
 }
 
-export const navLinkes: Record<Language, Links> = {
-  enUS: [
+export const navLinkes: Record<Locale, Links> = {
+  en_us: [
     { label: "Home", href: "/" },
     { label: "Articles", href: "/articles" },
     { label: "Projects", href: "/projects" }
   ],
-  zhCN: [
+  zh_cn: [
     { label: "首页", href: "/" },
     { label: "文章", href: "/articles" },
     { label: "项目", href: "/projects" }
   ],
-  zhTW: [
+  zh_tw: [
     { label: "首頁", href: "/" },          // zh-HK 可能用「主頁」
     { label: "文章", href: "/articles" },  // 兩地相同
     { label: "專案", href: "/projects" }    // zh-HK 可能用「項目」
   ],
-  jaJP: [
+  ja_jp: [
     { label: "ホーム", href: "/" },
     { label: "記事", href: "/articles" },
     { label: "プロジェクト", href: "/projects" }
@@ -68,14 +67,5 @@ export const navLinkes: Record<Language, Links> = {
 };
 
 export function getNavLinkes(locale: Locale): Links {
-  switch (locale) {
-    case "zh_cn":
-      return navLinkes.zhCN;
-    case "zh_tw":
-      return navLinkes.zhTW;
-    case "ja_jp":
-      return navLinkes.jaJP;
-    default:
-      return navLinkes.enUS;
-  }
+  return navLinkes[locale] || navLinkes.en_us;
 }

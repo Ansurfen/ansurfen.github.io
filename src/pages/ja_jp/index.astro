@@ -18,20 +18,20 @@ import Statistic from "@/components/statistic.astro";
 ---
 
 <Layout title="Surfen An">
-  <Navbar text={navLinkes.jaJP} />
+  <Navbar text={navLinkes.ja_jp} />
 
   <main
     aria-label="Main content"
     class="mx-auto min-h-[calc(100vh-120px)] max-w-3xl"
   >
     <Pattern className="h-14" />
-    <Profile info={profile.jaJP} text={profileTexts.jaJP} />
+    <Profile info={profile.ja_jp} text={profileTexts.ja_jp} />
     <Pattern />
-    <About title="プロフィール" about={profile.jaJP.about} />
+    <About title="プロフィール" about={profile.ja_jp.about} />
     <Pattern />
     <TechStack title="技術スタック" />
     <Pattern />
-    <Experience text={experienceTexts.jaJP} experiences={experiences.jaJP} />
+    <Experience text={experienceTexts.ja_jp} experiences={experiences.ja_jp} />
     <Pattern />
     <Statistic title="統計" />
     <Pattern />

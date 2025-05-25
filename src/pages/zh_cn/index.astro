@@ -18,20 +18,20 @@ import Statistic from "@/components/statistic.astro";
 ---
 
 <Layout title="Surfen An">
-  <Navbar text={navLinkes.zhCN} />
+  <Navbar text={navLinkes.zh_cn} />
 
   <main
     aria-label="Main content"
     class="mx-auto min-h-[calc(100vh-120px)] max-w-3xl"
   >
     <Pattern className="h-14" />
-    <Profile info={profile.zhCN} text={profileTexts.zhCN} />
+    <Profile info={profile.zh_cn} text={profileTexts.zh_cn} />
     <Pattern />
-    <About title="关于" about={profile.zhCN.about} />
+    <About title="关于" about={profile.zh_cn.about} />
     <Pattern />
     <TechStack title="技术栈" />
     <Pattern />
-    <Experience text={experienceTexts.zhCN} experiences={experiences.zhCN} />
+    <Experience text={experienceTexts.zh_cn} experiences={experiences.zh_cn} />
     <Pattern />
     <Statistic title="统计" />
     <Pattern />

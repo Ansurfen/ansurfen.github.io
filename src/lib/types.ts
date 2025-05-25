@@ -84,8 +84,6 @@ type Link = { label: string, href: string }
 
 export type Links = Link[];
 
-export type Language = "enUS" | "zhCN" | "zhTW" | "jaJP";
-
 export interface Account {
     waitChance: boolean;
     email: string;
@@ -104,7 +102,7 @@ export interface Account {
     gitea: string;
 }
 
-export interface UserProfile {
+export interface Profile {
     role: string;
     logo: string;
     slogan: string;
