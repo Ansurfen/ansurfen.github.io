@@ -43,7 +43,17 @@ export const collections = {
   zhTWProjects: createProjectCollection("./docs/zh_tw/projects"),
   jaJPBlog: createBlogCollection("./docs/ja_jp/blog"),
   jaJPProjects: createProjectCollection("./docs/ja_jp/projects"),
+  ruBlog: createBlogCollection("./docs/ru/blog"),
+  ruProjects: createProjectCollection("./docs/ru/projects"),
+  esESBlog: createBlogCollection("./docs/es_es/blog"),
+  esESProjects: createProjectCollection("./docs/es_es/projects"),
+  ptPTBlog: createBlogCollection("./docs/pt_pt/blog"),
+  ptPTProjects: createProjectCollection("./docs/pt_pt/projects"),
+  frFRBlog: createBlogCollection("./docs/fr_fr/blog"),
+  frFRProjects: createProjectCollection("./docs/fr_fr/projects"),
+  arSABlog: createBlogCollection("./docs/ar_sa/blog"),
+  arSAProjects: createProjectCollection("./docs/ar_sa/projects"),
 };
 
-export type BlogCollection = "blog" | "zhCNBlog" | "zhTWBlog" | "jaJPBlog";
-export type ProjectCollection = "projects" | "zhCNProjects" | "zhTWProjects" | "jaJPProjects";
+export type BlogCollection = "blog" | "zhCNBlog" | "zhTWBlog" | "jaJPBlog" | "ruBlog" | "esESBlog" | "ptPTBlog" | "frFRBlog" | "arSABlog";
+export type ProjectCollection = "projects" | "zhCNProjects" | "zhTWProjects" | "jaJPProjects" | "ruProjects" | "esESProjects" | "ptPTProjects" | "frFRProjects" | "arSAProjects";

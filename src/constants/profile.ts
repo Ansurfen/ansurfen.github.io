@@ -164,11 +164,152 @@ const jaJPProfile = {
     }
 } satisfies ProfileTexts;
 
+const frFRProfile = {
+    twitter: {
+        key: "Suivez-moi sur",
+        value: "Twitter"
+    },
+    linkedin: {
+        key: "Connectons-nous sur",
+        value: "LinkedIn"
+    },
+    github: {
+        key: "Consultez mes dépôts sur",
+        value: "GitHub"
+    },
+    discord: {
+        key: "Rejoignez-moi sur",
+        value: "Discord"
+    },
+    contact: {
+        key: "Je suis ouvert à de nouvelles opportunités, n'hésitez pas à",
+        value: "me contacter"
+    },
+    resume: {
+        key: "Jetez un œil à mon",
+        value: "CV"
+    }
+} satisfies ProfileTexts;
+
+const esESProfile = {
+    twitter: {
+        key: "Sígueme en",
+        value: "Twitter"
+    },
+    linkedin: {
+        key: "Conectemos en",
+        value: "LinkedIn"
+    },
+    github: {
+        key: "Mira mis repositorios en",
+        value: "GitHub"
+    },
+    discord: {
+        key: "Únete a mí en",
+        value: "Discord"
+    },
+    contact: {
+        key: "Estoy abierto a nuevas oportunidades, no dudes en",
+        value: "contactarme"
+    },
+    resume: {
+        key: "Echa un vistazo a mi",
+        value: "currículum"
+    }
+} satisfies ProfileTexts;
+
+const ptPTProfile = {
+    twitter: {
+        key: "Siga-me no",
+        value: "Twitter"
+    },
+    linkedin: {
+        key: "Conecte-se comigo no",
+        value: "LinkedIn"
+    },
+    github: {
+        key: "Veja meus repositórios no",
+        value: "GitHub"
+    },
+    discord: {
+        key: "Junte-se a mim no",
+        value: "Discord"
+    },
+    contact: {
+        key: "Estou aberto a novas oportunidades, sinta-se à vontade para",
+        value: "entrar em contato"
+    },
+    resume: {
+        key: "Dê uma olhada no meu",
+        value: "Currículo"
+    }
+} satisfies ProfileTexts;
+
+const ruProfile = {
+    twitter: {
+        key: "Подпишитесь на меня в",
+        value: "Twitter"
+    },
+    linkedin: {
+        key: "Свяжемся через",
+        value: "LinkedIn"
+    },
+    github: {
+        key: "Посмотрите мои репозитории на",
+        value: "GitHub"
+    },
+    discord: {
+        key: "Присоединяйтесь ко мне в",
+        value: "Discord"
+    },
+    contact: {
+        key: "Открыт для новых возможностей, пожалуйста",
+        value: "свяжитесь со мной"
+    },
+    resume: {
+        key: "Посмотрите мое",
+        value: "резюме"
+    }
+} satisfies ProfileTexts;
+
+const arSAProfile = {
+    twitter: {
+        key: "تابعني على",
+        value: "تويتر"
+    },
+    linkedin: {
+        key: "تواصل معي عبر",
+        value: "لينكدإن"
+    },
+    github: {
+        key: "اطلع على مستودعاتي في",
+        value: "جيت هب"
+    },
+    discord: {
+        key: "انضم إلي على",
+        value: "ديسكورد"
+    },
+    contact: {
+        key: "أنا منفتح على فرص جديدة، لا تتردد في",
+        value: "الاتصال بي"
+    },
+    resume: {
+        key: "اطلع على",
+        value: "السيرة الذاتية"
+    }
+} satisfies ProfileTexts;
+
+
 export const profileTexts: Record<Locale, ProfileTexts> = {
     en_us: enUSProfile,
     zh_cn: zhCNProfile,
     zh_tw: zhTWProfile,
     ja_jp: jaJPProfile,
+    fr_fr: frFRProfile,
+    es_es: esESProfile,
+    pt_pt: ptPTProfile,
+    ru: ruProfile,
+    ar_sa: arSAProfile,
 };
 
 export const account: Partial<Account> = {
@@ -230,11 +371,83 @@ const jaJP: Profile = {
     `
 } as const;
 
+const frFR: Profile = {
+    role: "Passionné de programmation / Développeur full-stack",
+    logo: "ansurfen",
+    slogan: "Fais de ton mieux, honore ce que tu ne peux pas",
+    displayName: "Surfen An",
+    email: "",
+    about: `
+  Dernièrement, je travaille sur un projet open-source qui me tient à cœur — [Hulo](https://github.com/hulo-lang/hulo). C’est un langage de programmation encore en développement. Si tu es intéressé(e), n'hésite pas à me contacter pour apprendre ou développer ensemble :)
+  
+  Je traduis aussi des mods Minecraft pendant mon temps libre.
+  `,
+} as const;
+
+const esES: Profile = {
+    role: "Apasionado de la programación / Desarrollador full-stack",
+    logo: "ansurfen",
+    slogan: "Haz lo mejor que puedas, honra lo que no puedas",
+    displayName: "Surfen An",
+    email: "",
+    about: `
+  Últimamente he estado desarrollando un proyecto de código abierto que considero importante: [Hulo](https://github.com/hulo-lang/hulo). Es un lenguaje de programación que aún está en desarrollo. Si te interesa, puedes contactarme para aprender o desarrollar juntos :)
+  
+  También traduzco mods de Minecraft en mi tiempo libre.
+  `,
+} as const;
+
+const ptPT: Profile = {
+    role: "Entusiasta de programação / Desenvolvedor full-stack",
+    logo: "ansurfen",
+    slogan: "Dê o seu melhor, honre o que não pode",
+    displayName: "Surfen An",
+    email: "",
+    about: `
+  Recentemente, estou desenvolvendo um projeto open-source que considero importante — [Hulo](https://github.com/hulo-lang/hulo). É uma linguagem de programação, ainda em fase de desenvolvimento. Se estiver interessado, entre em contato para aprender ou desenvolver comigo :)
+  
+  Também traduzo mods de Minecraft no meu tempo livre.
+  `,
+} as const;
+
+const ru: Profile = {
+    role: "Любитель программирования / Full-Stack разработчик",
+    logo: "ansurfen",
+    slogan: "Делай всё возможное, уважай невозможное",
+    displayName: "Surfen An",
+    email: "",
+    about: `
+  В последнее время я разрабатываю важный для меня open-source проект — [Hulo](https://github.com/hulo-lang/hulo). Это язык программирования, который пока ещё не завершён. Если тебе интересно, присоединяйся — будем учиться и разрабатывать вместе :)
+  
+  В свободное время я также перевожу моды для Minecraft.
+  `,
+} as const;
+
+
+const arSA: Profile = {
+    role: "هاوي برمجة / مطور شامل",
+    logo: "ansurfen",
+    slogan: "افعل ما بوسعك، وكن موقرًا لما لا تستطيع",
+    displayName: "Surfen An",
+    email: "",
+    about: `
+  مؤخرًا، أعمل على مشروع مفتوح المصدر أعتبره مهمًا — [Hulo](https://github.com/hulo-lang/hulo). إنه لغة برمجة، لا تزال في مراحل التطوير. إذا كنت مهتمًا، لا تتردد في التواصل معي للتعلم أو التطوير معنا :)
+  
+  كما أقوم بترجمة إضافات ماينكرافت في أوقات فراغي.
+  `,
+} as const;
+
+
 export const profile: Record<Locale, Profile> = {
     en_us: enUS,
     zh_cn: zhCN,
     zh_tw: zhTW,
     ja_jp: jaJP,
+    fr_fr: frFR,
+    es_es: esES,
+    pt_pt: ptPT,
+    ru: ru,
+    ar_sa: arSA,
 } as const;
 
 export const socialLinks = [

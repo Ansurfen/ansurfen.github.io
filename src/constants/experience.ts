@@ -22,6 +22,31 @@ export const experienceTexts: Record<Locale, ExperienceTexts> = {
         showMore: "展開",
         showLess: "閉じる"
     },
+    fr_fr: {
+        name: "Expérience",
+        showMore: "Afficher plus",
+        showLess: "Afficher moins"
+    },
+    es_es: {
+        name: "Experiencia",
+        showMore: "Mostrar más",
+        showLess: "Mostrar menos"
+    },
+    pt_pt: {
+        name: "Experiência",
+        showMore: "Mostrar mais",
+        showLess: "Mostrar menos"
+    },
+    ru: {
+        name: "Опыт",
+        showMore: "Показать больше",
+        showLess: "Показать меньше"
+    },
+    ar_sa: {
+        name: "الخبرة",
+        showMore: "إظهار المزيد",
+        showLess: "إخفاء المزيد"
+    }
 };
 
 export const enUS: Experience[] = [
@@ -298,9 +323,348 @@ export const jaJP: Experience[] = [
     }
 ] as const;
 
+export const frFR: Experience[] = [
+    {
+        title: "Université",
+        positions: [
+            {
+                subtitle: "Développement Backend / Développement Golang",
+                year: "09.2021 - 06.2025",
+                description: `J'ai découvert Golang pendant les vacances d'hiver de ma première année universitaire. Depuis, la majorité de ma pile technologique tourne autour de ce langage.
+  
+  Comme beaucoup de développeurs Golang, j'ai commencé avec le framework web Gin et l'ORM Gorm. Cette expérience m'a permis de m'adapter rapidement à divers frameworks dans d'autres langages (tels que SpringBoot, Django, Flask, Express, Koa) et à leurs bibliothèques tierces.
+  
+  Par la suite, je me suis intéressé aux microservices, explorant des technologies modernes et des chaînes d'outils telles que GRPC, ProtoBuf, ETCD, Grafana, Prometheus et Docker.
+  
+  J'ai beaucoup appris, bien que je n'aie pas eu l'occasion de construire un projet complet de microservices moi-même.`,
+                tags: ["Développement Backend", "Golang", "Langage Go", "Conteneurs", "Microservices", "Cloud Native"]
+            },
+            {
+                subtitle: "Développement Frontend",
+                year: "05.2022 - 06.2025",
+                description: `Mon parcours en développement frontend a également été marqué par des événements fortuits. Si je devais identifier un point de départ, ce serait une compétition et une discussion de groupe.
+  
+  Grâce à certaines expériences au lycée, j'avais une compréhension de base de jQuery et des technologies frontend (HTML/CSS/JS). J'ai donc directement abordé le framework Vue et sa chaîne d'outils (telles que Pinia, Vite, Vue Router, Vuex) avec un projet simple.
+  
+  Par intérêt pour TSX, j'ai également appris React et sa chaîne d'outils.
+  
+  Plus tard, motivé par un intérêt pour le développement mobile, j'ai découvert Flutter et sa fonctionnalité "écrire une fois, exécuter partout". Il est ainsi devenu la principale pile technologique de mon projet de fin d'études.`,
+                tags: ["Développement Frontend", "jQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "Parcours Personnel",
+                year: "09.2021 - 12.2022",
+                description: `Pendant l'université, j'ai exploré de nombreuses choses par curiosité. Bien que, rétrospectivement, la plupart aient été superficielles, et je n'ai pas construit de projets concrets avec elles.
+  
+  Néanmoins, le processus d'apprentissage de ces technologies a grandement satisfait ma curiosité à l'époque.
+  
+  En raison de la longueur, veuillez consulter mon article [“Passé, Présent, Futur”](./articles/past-now-future) pour plus de détails.`,
+                tags: ["Résumé", "Réflexion", "Perspective", "Examen d'entrée aux études supérieures", "Blockchain", "Contrats Intelligents", "Solidity", "Unreal Engine 5", "Trading Quantitatif", "Bases de Données", "Systèmes d'Exploitation", "Apprentissage Profond", "Développement Desktop", "Développement de Jeux", "Mods Minecraft"]
+            }
+        ]
+    },
+    {
+        title: "Stage",
+        positions: [
+            {
+                subtitle: "Développement Backend NodeJS",
+                year: "03.2025 - Présent",
+                description: `
+  - ♦ Mise en œuvre d'une chaîne d'outils en ligne de commande basée sur l'AST TypeScript et JsonSchema pour convertir de manière déclarative les définitions TypeScript en documentation API et synchroniser automatiquement avec la plateforme de gestion d'API.
+  - ♦ Maintenance quotidienne de la plateforme DevOps, y compris l'ajout de modèles et la mise en œuvre de la priorisation des tâches.
+  - ♦ Refactorisation de la plateforme DevOps d'origine en utilisant Dagger pour implémenter des pipelines CI/CD.
+  - ♦ Intégration du service de journalisation Alibaba Cloud, encapsulant ses appels SDK dans une méthode d'invocation semblable à un ORM.
+  - ♦ Responsable de la maintenance quotidienne du backend du jeu, intégration de la connexion au mini-jeu OPPO, des téléchargements de fichiers Qiniu Cloud, etc.
+          `,
+                tags: ["NodeJS", "TypeScript", "Koa", "Express", "Sequelize", "MySQL", "MongoDB", "Redis", "Jaeger", "DevOps", "CI/CD", "Dagger"]
+            },
+            {
+                subtitle: "Développement Frontend Vue",
+                year: "03.2025 - Présent",
+                description: `
+  - ♦ Maintenance quotidienne de la plateforme DevOps
+          `,
+                tags: ["Vue", "Vue Router", "Vite", "TypeScript", "DevOps", "Element Plus"]
+            }
+        ]
+    }
+] as const;
+
+
+export const esES: Experience[] = [
+    {
+        title: "Universidad",
+        positions: [
+            {
+                subtitle: "Desarrollo Backend / Desarrollo Golang",
+                year: "09.2021 - 06.2025",
+                description: `Descubrí Golang durante las vacaciones de invierno al final de mi primer semestre universitario. Desde entonces, la mayoría de mi stack tecnológico ha girado en torno a este lenguaje.
+  
+  Como muchos desarrolladores de Golang, comencé con el framework web Gin y el ORM Gorm. Esta experiencia me permitió adaptarme rápidamente a diversos frameworks en otros lenguajes (como SpringBoot, Django, Flask, Express, Koa) y sus bibliotecas de terceros.
+  
+  Posteriormente, me adentré en los microservicios, explorando tecnologías modernas y cadenas de herramientas como GRPC, ProtoBuf, ETCD, Grafana, Prometheus y Docker.
+  
+  Aprendí mucho, aunque es una pena que no haya tenido la oportunidad de construir un proyecto completo de microservicios por mi cuenta.`,
+                tags: ["Desarrollo Backend", "Golang", "Lenguaje Go", "Contenedores", "Microservicios", "Cloud Native"]
+            },
+            {
+                subtitle: "Desarrollo Frontend",
+                year: "05.2022 - 06.2025",
+                description: `Mi camino en el desarrollo frontend también estuvo lleno de eventos fortuitos. Si tuviera que señalar un punto de partida, sería una competencia y una conversación grupal.
+  
+  Gracias a algunas experiencias en la escuela secundaria, tenía una comprensión básica de jQuery y las tecnologías frontend (HTML/CSS/JS). Por lo tanto, abordé directamente el framework Vue y su cadena de herramientas (como Pinia, Vite, Vue Router, Vuex) con un proyecto simple.
+  
+  Por interés en TSX, también aprendí React y su cadena de herramientas.
+  
+  Más tarde, motivado por un interés en el desarrollo móvil, descubrí Flutter y su característica de "escribir una vez, ejecutar en todas partes". Así se convirtió en la principal pila tecnológica de mi proyecto de graduación.`,
+                tags: ["Desarrollo Frontend", "jQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "Trayectoria Personal",
+                year: "09.2021 - 12.2022",
+                description: `Durante la universidad, exploré muchas cosas por curiosidad. Aunque, en retrospectiva, la mayoría fueron superficiales y no construí proyectos concretos con ellas.
+  
+  Sin embargo, el proceso de aprendizaje de estas tecnologías satisfizo en gran medida mi curiosidad en ese momento.
+  
+  Debido a la extensión, por favor consulte mi artículo [“Pasado, Presente, Futuro”](./articles/past-now-future) para más detalles.`,
+                tags: ["Resumen", "Reflexión", "Perspectiva", "Examen de ingreso a posgrado", "Blockchain", "Contratos Inteligentes", "Solidity", "Unreal Engine 5", "Trading Cuantitativo", "Bases de Datos", "Sistemas Operativos", "Aprendizaje Profundo", "Desarrollo de Escritorio", "Desarrollo de Juegos", "Mods de Minecraft"]
+            }
+        ]
+    },
+    {
+        title: "Pasantía",
+        positions: [
+            {
+                subtitle: "Desarrollo Backend NodeJS",
+                year: "03.2025 - Presente",
+                description: `
+  - ♦ Implementación de una cadena de herramientas de línea de comandos basada en AST de TypeScript y JsonSchema para convertir de manera declarativa definiciones de TypeScript en documentación de API y sincronizar automáticamente con la plataforma de gestión de API.
+  - ♦ Mantenimiento diario de la plataforma DevOps, incluyendo la adición de plantillas y la implementación de priorización de tareas.
+  - ♦ Refactorización de la plataforma DevOps original utilizando Dagger para implementar pipelines CI/CD.
+  - ♦ Integración del servicio de registros de Alibaba Cloud, encapsulando sus llamadas SDK en un método de invocación similar a un ORM.
+  - ♦ Responsable del mantenimiento diario del backend del juego, integración del inicio de sesión del mini-juego OPPO, cargas de archivos en Qiniu Cloud, etc.
+          `,
+                tags: ["NodeJS", "TypeScript", "Koa", "Express", "Sequelize", "MySQL", "MongoDB", "Redis", "Jaeger", "DevOps", "CI/CD", "Dagger"]
+            },
+            {
+                subtitle: "Desarrollo Frontend Vue",
+                year: "03.2025 - Presente",
+                description: `
+  - ♦ Mantenimiento diario de la plataforma DevOps
+          `,
+                tags: ["Vue", "Vue Router", "Vite", "TypeScript", "DevOps", "Element Plus"]
+            }
+        ]
+    }
+] as const;
+
+export const ptPT: Experience[] = [
+    {
+        title: "Universidade",
+        positions: [
+            {
+                subtitle: "Desenvolvimento Backend / Golang",
+                year: "09.2021 - 06.2025",
+                description: `Conheci a linguagem Go durante as férias de inverno do primeiro ano. 
+  Desde então, a maioria das minhas stacks giram em torno do Golang.
+  
+  Como a maioria dos Gophers, comecei com o stack Gin + Gorm para desenvolvimento web. Essa experiência me permitiu adaptar-me rapidamente a outros frameworks (como SpringBoot, Django, Flask, Express, Koa) e bibliotecas de terceiros.
+  
+  Mais tarde, comecei a explorar microsserviços e tecnologias modernas como GRPC, ProtoBuf, ETCD, Grafana, Prometheus e Docker.
+  Aprendi bastante, embora infelizmente não tenha construído um sistema completo de microsserviços.`,
+                tags: ["Desenvolvimento Backend", "Golang", "Contêineres", "Microsserviços", "Cloud Native"]
+            },
+            {
+                subtitle: "Desenvolvimento Frontend",
+                year: "05.2022 - 06.2025",
+                description: `Minha jornada no frontend também começou com algumas coincidências interessantes.
+  Talvez o ponto de partida tenha sido uma competição e um grupo de bate-papo.
+  
+  Graças a experiências anteriores no ensino médio, eu já tinha algum conhecimento em JQuery e no trio HTML/CSS/JS.
+  Assim, comecei com Vue e suas ferramentas (Pinia, Vite, Vue Router, Vuex).
+  
+  Por interesse no TSX, também aprendi React e seu ecossistema.
+  
+  Mais tarde, descobri o Flutter e sua proposta de "escreva uma vez, execute em qualquer lugar", o que acabou sendo a base do meu projeto de graduação.`,
+                tags: ["Frontend", "JQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "Jornada de Aprendizado",
+                year: "09.2021 - 12.2022",
+                description: `Durante a universidade, explorei muitos assuntos por curiosidade. Embora a maioria tenha sido superficial, me diverti bastante.
+  
+  Essas experiências satisfizeram minha curiosidade tecnológica.
+  
+  Para mais detalhes, consulte meu artigo [Passado, Presente e Futuro](./articles/past-now-future).`,
+                tags: ["Resumo", "Memórias", "Futuro", "Mestrado", "Blockchain", "Solidity", "Unreal Engine", "Trading", "Banco de Dados", "SO", "IA", "Desktop", "GameDev", "Minecraft Mods"]
+            }
+        ]
+    },
+    {
+        title: "Estágio",
+        positions: [
+            {
+                subtitle: "Desenvolvedor Backend com NodeJS",
+                year: "03.2025 - presente",
+                description: `
+  - ♦ Ferramenta CLI baseada em AST do TypeScript e JsonSchema para gerar docs e sincronizar com plataforma de APIs.
+  - ♦ Manutenção de plataforma DevOps, incluindo criação de templates e tarefas com prioridade.
+  - ♦ Refatoração do CI/CD com Dagger.
+  - ♦ Integração com Alibaba Cloud Logs com estilo ORM.
+  - ♦ Manutenção do backend de jogos, integração com login OPPO MiniGames, upload com Qiniu.`,
+                tags: ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
+            },
+            {
+                subtitle: "Desenvolvedor Frontend com Vue",
+                year: "03.2025 - presente",
+                description: `
+  - ♦ Manutenção da plataforma DevOps.`,
+                tags: ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
+            }
+        ]
+    }
+];
+
+export const ru: Experience[] = [
+    {
+        title: "Университет",
+        positions: [
+            {
+                subtitle: "Бэкенд-разработка / Golang",
+                year: "09.2021 - 06.2025",
+                description: `С Go я познакомился в зимние каникулы первого курса.
+  С тех пор большинство моих стеков сосредоточены вокруг Go.
+  
+  Как и многие Gopher'ы, я начал с Gin + Gorm. Этот опыт позволил мне быстро освоить другие фреймворки (SpringBoot, Django, Flask, Express, Koa) и сторонние библиотеки.
+  
+  Позже я начал изучать микросервисы и современные технологии: GRPC, ProtoBuf, ETCD, Grafana, Prometheus, Docker.
+  Многое удалось изучить, но, к сожалению, не получилось создать полноценную систему микросервисов.`,
+                tags: ["Бэкенд", "Golang", "Контейнеры", "Микросервисы", "Облачные технологии"]
+            },
+            {
+                subtitle: "Фронтенд-разработка",
+                year: "05.2022 - 06.2025",
+                description: `Моя история с фронтендом началась также случайно — благодаря конкурсу и чату.
+  
+  Благодаря опыту в школе, я знал JQuery и HTML/CSS/JS.
+  Сразу начал с Vue и его экосистемы (Pinia, Vite, Vue Router, Vuex).
+  
+  Из интереса к TSX я изучил React и его инструменты.
+  
+  Позже узнал о Flutter и его кросс-платформенной возможности. Это стало основой моего дипломного проекта.`,
+                tags: ["Фронтенд", "JQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "Личный путь",
+                year: "09.2021 - 12.2022",
+                description: `В университете я изучал многое ради интереса. Пусть это и было поверхностно, но я получал удовольствие.
+  
+  Этот путь удовлетворил моё техническое любопытство.
+  
+  Подробнее читайте в моей статье [Прошлое, Настоящее, Будущее](./articles/past-now-future).`,
+                tags: ["Итоги", "Воспоминания", "Будущее", "Магистратура", "Блокчейн", "Solidity", "Unreal Engine", "Алготрейдинг", "БД", "ОС", "ИИ", "Desktop", "GameDev", "Моды Minecraft"]
+            }
+        ]
+    },
+    {
+        title: "Стажировка",
+        positions: [
+            {
+                subtitle: "NodeJS Бэкенд-разработчик",
+                year: "03.2025 - по настоящее время",
+                description: `
+  - ♦ CLI-инструмент на основе AST TypeScript и JsonSchema для генерации документации и синхронизации с платформой API.
+  - ♦ Поддержка DevOps-платформы: шаблоны, приоритет задач.
+  - ♦ Переписал CI/CD на Dagger.
+  - ♦ Интеграция с Alibaba Cloud Logs в стиле ORM.
+  - ♦ Поддержка игрового бэкенда, логин OPPO, загрузка файлов на Qiniu.`,
+                tags: ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
+            },
+            {
+                subtitle: "Frontend-разработчик на Vue",
+                year: "03.2025 - по настоящее время",
+                description: `
+  - ♦ Поддержка платформы DevOps.`,
+                tags: ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
+            }
+        ]
+    }
+];
+
+export const arSA: Experience[] = [
+    {
+        title: "الجامعة",
+        positions: [
+            {
+                subtitle: "تطوير الخلفية / Golang",
+                year: "09.2021 - 06.2025",
+                description: `بدأت التعرف على Golang في عطلة الشتاء من السنة الأولى.
+  منذ ذلك الحين، أصبحت معظم تقنياتي تدور حول لغة Go.
+  
+  مثل معظم المبرمجين، بدأت باستخدام Gin + Gorm لتطوير الويب، مما ساعدني لاحقًا على التكيف بسهولة مع أطر عمل أخرى مثل SpringBoot وDjango وFlask وExpress وKoa.
+  
+  لاحقًا، بدأت في استكشاف الخدمات المصغرة والتقنيات الحديثة مثل GRPC وProtoBuf وETCD وGrafana وPrometheus وDocker.
+  تعلمت الكثير، رغم أنني لم أبني نظام خدمات مصغرة متكامل.`,
+                tags: ["تطوير الخلفية", "Golang", "الحاويات", "الخدمات المصغرة", "الحوسبة السحابية"]
+            },
+            {
+                subtitle: "تطوير الواجهة الأمامية",
+                year: "05.2022 - 06.2025",
+                description: `بدأت رحلتي في الواجهة الأمامية بسبب بعض الصدف.
+  ربما كان نقطة البداية هي مسابقة ومجموعة دردشة.
+  
+  بفضل تجربتي في المدرسة الثانوية، كنت أعرف JQuery وثلاثي HTML/CSS/JS.
+  ثم بدأت باستخدام Vue وأدواته (Pinia وVite وVue Router وVuex).
+  
+  بدافع الفضول، تعلمت أيضًا React.
+  
+  لاحقًا، اكتشفت Flutter وإمكانيته لتشغيل التطبيقات على عدة منصات. أصبح هو التقنية الرئيسية لمشروعي التخرج.`,
+                tags: ["الواجهة الأمامية", "JQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "رحلة التعلم",
+                year: "09.2021 - 12.2022",
+                description: `خلال الجامعة، تعلمت أشياء كثيرة بدافع الفضول. ربما لم أقم بإنشاء مشاريع عملية بها، لكنها أشبعت فضولي.
+  
+  لمزيد من التفاصيل، راجع مقالتي [الماضي، الحاضر، المستقبل](./articles/past-now-future).`,
+                tags: ["ملخص", "ذكريات", "مستقبل", "الدراسات العليا", "البلوك تشين", "Solidity", "Unreal Engine", "تداول آلي", "قواعد البيانات", "أنظمة التشغيل", "الذكاء الاصطناعي", "تطوير سطح المكتب", "تطوير الألعاب", "مودات Minecraft"]
+            }
+        ]
+    },
+    {
+        title: "التدريب العملي",
+        positions: [
+            {
+                subtitle: "مطور خلفي باستخدام NodeJS",
+                year: "03.2025 - حتى الآن",
+                description: `
+  - ♦ أداة سطر أوامر تعتمد على AST وJsonSchema لتوليد الوثائق ومزامنتها مع منصة API.
+  - ♦ صيانة منصة DevOps، بما في ذلك القوالب وأولوية المهام.
+  - ♦ إعادة بناء خطوط CI/CD باستخدام Dagger.
+  - ♦ دمج خدمات السجلات من Aliyun بأسلوب ORM.
+  - ♦ دعم الواجهة الخلفية للألعاب، تسجيل الدخول عبر OPPO، رفع الملفات إلى Qiniu.`,
+                tags: ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
+            },
+            {
+                subtitle: "مطور واجهة أمامية باستخدام Vue",
+                year: "03.2025 - حتى الآن",
+                description: `
+  - ♦ صيانة منصة DevOps.`,
+                tags: ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
+            }
+        ]
+    }
+];
+
+
 export const experiences: Record<Locale, Experience[]> = {
     en_us: enUS,
     zh_cn: zhCN,
     zh_tw: zhTW,
     ja_jp: jaJP,
+    fr_fr: frFR,
+    es_es: esES,
+    pt_pt: ptPT,
+    ru: ru,
+    ar_sa: arSA,
 } as const;
