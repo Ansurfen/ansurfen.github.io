@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/navbar/index.astro";
 import Footer from "@/components/footer.astro";
 import Github from "@/components/ui/icons/github.astro";
-import { navLinkes } from "@/lib/i18n";
+import { getNavLinkes } from "@/lib/i18n";
 
 import { ExternalLink } from "lucide-react";
 
@@ -33,15 +33,7 @@ const { title, technologies, description, preview, sourceCode, image } =
   Astro.props;
 
 const locale = getLocale(Astro.url);
-let navText = navLinkes.enUS;
-switch (locale) {
-  case "zh_cn":
-    navText = navLinkes.zhCN;
-    break;
-  case "zh_tw":
-    navText = navLinkes.zhTW;
-    break;
-}
+const navText = getNavLinkes(locale);
 ---
 
 <Layout title={`${title}`} ogImage={image} description={description}>

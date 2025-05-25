@@ -142,7 +142,7 @@ const zhTWProfile = {
 
 const jaJPProfile = {
     twitter: {
-        key: "フォローする",
+        key: "フォローしてください",
         value: "Twitter"
     },
     linkedin: {
@@ -153,6 +153,14 @@ const jaJPProfile = {
         key: "参加する",
         value: "Discord"
     },
+    github: {
+        key: "コードを見る",
+        value: "GitHub"
+    },
+    contact: {
+        key: "新しい機会を探しています",
+        value: "お問い合わせ"
+    }
 } satisfies ProfileTexts;
 
 export const profileTexts: Record<Language, ProfileTexts> = {
@@ -208,10 +216,24 @@ const zhTW: UserProfile = {
 `
 } as const;
 
+const jaJP: UserProfile = {
+    role: 'プログラミング愛好家 / フルスタック開発者',
+    logo: 'ansurfen',
+    slogan: '私は大胆なアイデアを持っています...',
+    displayName: "Surfen An",
+    email: "",
+    about: `
+現在、私は自分が重要だと思っている大規模なオープンソースプロジェクトを開発しています —— [Hulo](https://github.com/hulo-lang/hulo)。これはプログラミング言語ですが、まだ開発中です。興味がある方は、私に連絡して一緒に学びたいと思います :)
+
+また、私は空き時間に Minecraft モッドを翻訳しています。
+    `
+} as const;
+
 export const profile = {
     enUS,
     zhCN,
     zhTW,
+    jaJP,
 } as const;
 
 export const socialLinks = [

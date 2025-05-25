@@ -66,3 +66,16 @@ export const navLinkes: Record<Language, Links> = {
     { label: "プロジェクト", href: "/projects" }
   ],
 };
+
+export function getNavLinkes(locale: Locale): Links {
+  switch (locale) {
+    case "zh_cn":
+      return navLinkes.zhCN;
+    case "zh_tw":
+      return navLinkes.zhTW;
+    case "ja_jp":
+      return navLinkes.jaJP;
+    default:
+      return navLinkes.enUS;
+  }
+}

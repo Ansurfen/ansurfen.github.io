@@ -229,7 +229,73 @@ const zhTW: Experience[] = [
     }
 ] as const;
 
-const jaJP: Experience[] = []
+export const jaJP: Experience[] = [
+    {
+        title: "大学",
+        positions: [
+            {
+                subtitle: "バックエンド開発 / Golang 開発",
+                year: "09.2021 - 06.2025",
+                description: `Golangとの出会いは、大学1年の冬休みに始まりました。
+  それ以来、私の技術スタックはほぼGo言語を中心に展開しています。
+  
+  多くのGopherと同じように、私が最初に学び使ったWeb開発スタックは Gin + Gorm でした。
+  この経験により、SpringBoot、Django、Flask、Express、Koaなど、他の多くの言語フレームワークやサードパーティライブラリにもすぐに対応できるようになりました。
+  
+  その後、マイクロサービスにも触れ始め、GRPC、ProtoBuf、ETCD、Grafana、Prometheus、Dockerなどのモダンな技術やツールチェーンを順に学んできました。
+  多くのことを学べたと思いますが、残念ながら完全なマイクロサービスプロジェクトを一から構築することはできませんでした。`,
+                tags: ["バックエンド開発", "Golang", "Go言語", "コンテナ", "マイクロサービス", "クラウドネイティブ"]
+            },
+            {
+                subtitle: "フロントエンド開発",
+                year: "05.2022 - 06.2025",
+                description: `バックエンド開発と同様に、フロントエンドとの出会いも偶然の積み重ねでした。
+  出発点を挙げるなら、それはあるコンテストとチャットグループです。
+  
+  高校時代の経験から、JQueryやHTML/CSS/JSの基本にはある程度慣れていました。
+  そのため、簡単なプロジェクトからVueフレームワークとそのツールチェーン（Pinia、Vite、Vue Router、Vuex）に手を出しました。
+  
+  TSXに興味を持ったことから、Reactとそのエコシステムにも取り組みました。
+  
+  さらに、モバイル開発への興味から、"一度書けば複数プラットフォームで動作する"という特徴を持つFlutterを知り、卒業制作の主要技術スタックとして採用しました。`,
+                tags: ["フロントエンド開発", "JQuery", "Vue3", "TypeScript", "React", "Dart", "Flutter"]
+            },
+            {
+                subtitle: "学びの道のり",
+                year: "09.2021 - 12.2022",
+                description: `大学生活中、好奇心から多くの技術に手を出しましたが、振り返ってみるとほとんどが表面的な学習に留まり、実際のプロジェクトとして形にすることはできませんでした。
+  とはいえ、それらを学ぶ過程は、当時の技術への強い興味を十分に満たしてくれました。
+  詳細については、私の記事 [《過去、現在、未来》](./articles/past-now-future) をご覧ください。`,
+                tags: ["まとめ", "思い出", "展望", "大学院試験", "ブロックチェーン", "スマートコントラクト", "Solidity", "Unreal Engine 5", "クオンツ取引", "データベース", "OS", "ディープラーニング", "デスクトップ開発", "ゲーム開発", "Minecraft Mod"]
+            }
+        ]
+    },
+    {
+        title: "インターンシップ",
+        positions: [
+            {
+                subtitle: "NodeJS バックエンド開発",
+                year: "03.2025 - 現在",
+                description: `
+  - ♦ TypeScriptの構文木とJsonSchemaを利用し、コマンドラインツールを作成。宣言的なTypeScript定義からAPIドキュメントを生成し、API管理プラットフォームに自動同期。
+  - ♦ DevOpsプラットフォームの日常的な保守業務（テンプレート追加、タスク優先度管理など）を担当。
+  - ♦ Daggerを用いて既存のDevOpsプラットフォームのCI/CDパイプラインをリファクタリング。
+  - ♦ Alibaba Cloudのログサービスを接続し、ORMのような呼び出し方ができるSDKラッパーを実装。
+  - ♦ ゲームバックエンドの保守、OPPOミニゲームログインや七牛クラウドのファイルアップロード対応などを担当。
+          `,
+                tags: ["NodeJS", "TypeScript", "koa", "express", "sequelize", "mysql", "mongo", "redis", "jaeger", "devops", "CI/CD", "dagger"]
+            },
+            {
+                subtitle: "Vue フロントエンド開発",
+                year: "03.2025 - 現在",
+                description: `
+  - ♦ DevOpsプラットフォームの日常保守
+          `,
+                tags: ["vue", "vue-router", "vite", "TypeScript", "devops", "element-plus"]
+            }
+        ]
+    }
+] as const;
 
 export const experiences: Record<Language, Experience[]> = {
     enUS,

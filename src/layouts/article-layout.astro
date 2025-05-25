@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/navbar/index.astro";
 import Footer from "@/components/footer.astro";
 import Toc from "@/components/toc.astro";
-import { navLinkes } from "@/lib/i18n";
+import { getNavLinkes } from "@/lib/i18n";
 
 import Pattern from "@/components/ui/pattern.astro";
 
@@ -30,15 +30,7 @@ interface Props {
 const { title, readTime, description, date, headings, image } = Astro.props;
 
 const locale = getLocale(Astro.url);
-let navText = navLinkes.enUS;
-switch (locale) {
-  case "zh_cn":
-    navText = navLinkes.zhCN;
-    break;
-  case "zh_tw":
-    navText = navLinkes.zhTW;
-    break;
-}
+const navText = getNavLinkes(locale);
 
 const formattedDate = new Intl.DateTimeFormat(getTimeLocale(locale), {
   day: "2-digit",

@@ -45,7 +45,7 @@ const currentLocale = getLocale(Astro.url);
 </div>
 
 <script is:inline>
-  const localePaths = ['/en_us', '/zh_cn', '/zh_tw']
+  const localePaths = ['/en_us', '/zh_cn', '/zh_tw', '/ja_jp']
 
   // 切换语言时移除所有语言前缀
   const setLanguage = (locale, clickedButton) => {
@@ -84,7 +84,7 @@ const currentLocale = getLocale(Astro.url);
       // 英语特殊处理：无前缀路径或/en_us路径都算选中
       const isSelected =
         langCode === "en_us"
-          ? !currentPath.startsWith("/zh_cn") && !currentPath.startsWith("/zh_tw")
+          ? !currentPath.startsWith("/zh_cn") && !currentPath.startsWith("/zh_tw") && !currentPath.startsWith("/ja_jp")
           : currentPath.startsWith(langPath);
 
       button.setAttribute("data-selected", isSelected ? "true" : "false");

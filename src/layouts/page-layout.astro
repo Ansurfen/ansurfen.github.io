@@ -6,7 +6,7 @@ import Navbar from "@/components/navbar/index.astro";
 import Footer from "@/components/footer.astro";
 import LinkBtn from "@/components/ui/link-btn.astro";
 import Pattern from "@/components/ui/pattern.astro";
-import { navLinkes } from "@/lib/i18n";
+import { getNavLinkes } from "@/lib/i18n";
 
 import Box from "@/components/box/index.astro";
 import BoxTitle from "@/components/box/title.astro";
@@ -22,15 +22,8 @@ interface Props {
   backLink?: string;
 }
 const locale = getLocale(Astro.url);
-let navText = navLinkes.enUS;
-switch (locale) {
-  case "zh_cn":
-    navText = navLinkes.zhCN;
-    break;
-  case "zh_tw":
-    navText = navLinkes.zhTW;
-    break;
-}
+const navText = getNavLinkes(locale);
+
 const { title, description, backLink } = Astro.props;
 ---
 

@@ -35,6 +35,7 @@ interface ChineseBlogTexts {
     zcool: KeyValuePair
     cnblogs: KeyValuePair
     studygolang: KeyValuePair
+    segmentfault: KeyValuePair
 }
 
 interface ChineseSocialTexts {
