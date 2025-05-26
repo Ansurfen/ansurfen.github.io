@@ -29,7 +29,7 @@ function createProjectCollection(base: string) {
         image: z.string().optional(),
         sourceCode: z.string().optional(),
         preview: z.string().optional(),
-        type: z.union([z.literal("top"), z.literal("normal")]),
+        type: z.union([z.literal("core"), z.literal("side")]),
       }),
   });
 }

@@ -13,23 +13,23 @@ interface Props {
   locale: Locale;
   title: string;
   description: string;
-  pinnedTitle: string;
-  normalTitle: string;
+  coreTitle: string;
+  sideTitle: string;
   collectionName: ProjectCollection;
 }
 
-const { title, description, pinnedTitle, normalTitle, collectionName } = Astro.props;
+const { title, description, coreTitle, sideTitle, collectionName } = Astro.props;
 
 const projects = await getCollection(collectionName);
-const coreProjects = projects.filter(project => project.data.type === "top");
-const sideProjects = projects.filter(project => project.data.type === "normal");
+const coreProjects = projects.filter(project => project.data.type === "core");
+const sideProjects = projects.filter(project => project.data.type === "side");
 ---
 
 <PageLayout description={description} title={title}>
   <Pattern />
   <Box>
     <BoxHeader>
-      <BoxTitle>{pinnedTitle}</BoxTitle>
+      <BoxTitle>{coreTitle}</BoxTitle>
     </BoxHeader>
 
     {coreProjects.map(item => <ProjectItem project={item} />)}
@@ -40,7 +40,7 @@ const sideProjects = projects.filter(project => project.data.type === "normal");
       <Pattern />
       <Box>
         <BoxHeader>
-          <BoxTitle>{normalTitle}</BoxTitle>
+          <BoxTitle>{sideTitle}</BoxTitle>
         </BoxHeader>
         {sideProjects.map(item => <ProjectItem project={item} />)}
       </Box>
