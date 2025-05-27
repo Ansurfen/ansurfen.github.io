@@ -2,8 +2,8 @@
 import Avatar from "@/components/ui/avatar.astro";
 import Box from "@/components/box/index.astro";
 import BoxContent from "@/components/box/content.astro";
- 
-import { Briefcase } from "lucide-react";
+
+import { Briefcase, Ellipsis } from "lucide-react";
 
 import VerifiedIcon from "@/components/ui/icons/verified.astro";
 import XIcon from "@/components/ui/icons/x.astro";
@@ -87,7 +87,7 @@ const { info, text } = Astro.props;
           <XIcon className="size-4" />
           {text.twitter?.key}
           <a
-            href={account.twitter}
+            href={account.twitter.href}
             target="_blank"
             class="underline underline-offset-4"
           >
@@ -103,7 +103,7 @@ const { info, text } = Astro.props;
           <LinkedinIcon className="size-4" />
           {text.linkedin?.key}
           <a
-            href={account.linkedin}
+            href={account.linkedin.href}
             class="underline underline-offset-4"
             target="_blank"
           >
@@ -119,7 +119,7 @@ const { info, text } = Astro.props;
           <GithubIcon className="size-4" />
           {text.github?.key}
           <a
-            href={account.github}
+            href={account.github.href}
             class="underline underline-offset-4"
             target="_blank"
           >
@@ -135,7 +135,7 @@ const { info, text } = Astro.props;
           <DiscordIcon className="size-4" />
           {text.discord?.key}
           <a
-            href={account.discord}
+            href={account.discord.href}
             class="underline underline-offset-4"
             target="_blank"
           >
@@ -144,5 +144,16 @@ const { info, text } = Astro.props;
         </span>
       )
     }
+
+    <span class="flex items-center justify-start gap-2">
+      <Ellipsis className="size-4" />
+      {text.more.key}
+      <a
+        href="social"
+        class="underline underline-offset-4"
+      >
+        {text.more.value}
+      </a>
+    </span>
   </BoxContent>
 </Box>

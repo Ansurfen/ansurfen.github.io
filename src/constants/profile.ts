@@ -2,6 +2,7 @@ import type { Account, ProfileTexts, Profile } from "@/lib/types";
 import LinkedinIcon from '@/components/ui/icons/linkedin.astro'
 import XIcon from '@/components/ui/icons/x.astro'
 import GithubIcon from '@/components/ui/icons/github.astro'
+import { Discord, GitHubDark } from "developer-icons";
 import type { Locale } from "@/lib/i18n";
 
 const zhCNProfile = {
@@ -84,6 +85,10 @@ const zhCNProfile = {
     hackernews: {
         key: "浏览我的",
         value: "Hacker News"
+    },
+    more: {
+        key: "查看我的",
+        value: "社交平台"
     }
 } satisfies ProfileTexts;
 
@@ -111,6 +116,10 @@ const enUSProfile = {
     resume: {
         key: "Take a look at my",
         value: "Resume"
+    },
+    more: {
+        key: "Check out my",
+        value: "Social Platforms"
     }
 } satisfies ProfileTexts;
 
@@ -138,6 +147,10 @@ const zhTWProfile = {
     resume: {
         key: "查看我的",
         value: "履歷"  // zh-HK would use "CV" or "個人履歷"
+    },
+    more: {
+        key: "查看我的",
+        value: "社交平台"
     }
 } satisfies ProfileTexts;
 
@@ -161,6 +174,10 @@ const jaJPProfile = {
     contact: {
         key: "新しい機会を探しています",
         value: "お問い合わせ"
+    },
+    more: {
+        key: "私の",
+        value: "ソーシャルメディアを見る"
     }
 } satisfies ProfileTexts;
 
@@ -188,6 +205,10 @@ const frFRProfile = {
     resume: {
         key: "Jetez un œil à mon",
         value: "CV"
+    },
+    more: {
+        key: "Voir mes",
+        value: "plateformes sociales"
     }
 } satisfies ProfileTexts;
 
@@ -215,6 +236,10 @@ const esESProfile = {
     resume: {
         key: "Echa un vistazo a mi",
         value: "currículum"
+    },
+    more: {
+        key: "Ver mis",
+        value: "redes sociales"
     }
 } satisfies ProfileTexts;
 
@@ -242,6 +267,10 @@ const ptPTProfile = {
     resume: {
         key: "Dê uma olhada no meu",
         value: "Currículo"
+    },
+    more: {
+        key: "Ver minhas",
+        value: "redes sociais"
     }
 } satisfies ProfileTexts;
 
@@ -269,6 +298,10 @@ const ruProfile = {
     resume: {
         key: "Посмотрите мое",
         value: "резюме"
+    },
+    more: {
+        key: "Посмотреть мои",
+        value: "социальные сети"
     }
 } satisfies ProfileTexts;
 
@@ -296,6 +329,10 @@ const arSAProfile = {
     resume: {
         key: "اطلع على",
         value: "السيرة الذاتية"
+    },
+    more: {
+        key: "عرض",
+        value: "منصاتي الاجتماعية"
     }
 } satisfies ProfileTexts;
 
@@ -314,10 +351,24 @@ export const profileTexts: Record<Locale, ProfileTexts> = {
 
 export const account: Partial<Account> = {
     waitChance: true,
-    twitter: "https://x.com/ansurfen",
-    discord: "https://discord.gg/#",
-    github: "https://github.com/ansurfen",
+    twitter: {
+        title: "Twitter",
+        href: "https://x.com/ansurfen",
+        icon: XIcon,
+    },
+    discord: {
+        title: "Discord",
+        href: "https://discord.gg/#",
+        icon: Discord,
+    },
+    github: {
+        title: "GitHub",
+        href: "https://github.com/ansurfen",
+        icon: GitHubDark,
+    },
 };
+
+export const pinnedAccounts = ["github", "twitter", "discord"]
 
 const enUS: Profile = {
     role: 'Programming Enthusiasts / Full-stack Developer',

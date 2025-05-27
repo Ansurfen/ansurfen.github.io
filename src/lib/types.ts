@@ -78,6 +78,7 @@ export interface ProfileTexts extends
     resume?: KeyValuePair
     email?: KeyValuePair
     leetcode?: KeyValuePair
+    more: KeyValuePair
 }
 
 type Link = { label: string, href: string }
@@ -90,16 +91,53 @@ export interface Account {
     telephone: string;
     resume: string;
 
-    twitter: string;
-    discord: string;
-    reddit: string;
-    linkedin: string;
+    twitter: Media;
+    discord: Media;
+    reddit: Media;
+    linkedin: Media;
 
     /// git
-    github: string;
-    gitlab: string;
-    gitee: string;
-    gitea: string;
+    github: Media;
+    gitlab: Media;
+    gitee: Media;
+    gitea: Media;
+}
+
+type Media = {
+    title: string;
+    href: string;
+    icon: any;
+}
+
+export interface GitMedia {
+    github: Media;
+    gitlab: Media;
+    gitee: Media;
+    gitea: Media;
+    gitcode: Media;
+    sourceforge: Media;
+    codepen: Media;
+    codebase: Media;
+    bitbucket: Media;
+}
+
+export interface BlogMedia {
+    csdn: Media;
+    jianshu: Media;
+    zcool: Media;
+    cnblogs: Media;
+    studygolang: Media;
+    segmentfault: Media;
+    v2ex: Media;
+    juejin: Media;
+    devto: Media;
+    medium: Media;
+}
+
+export interface SocialNetworkMedia {
+    facebook: Media;
+    twitter: Media;
+    discord: Media;
 }
 
 export interface Profile {
