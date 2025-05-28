@@ -103,7 +103,7 @@ export interface Account {
     gitea: Media;
 }
 
-type Media = {
+export type Media = {
     title: string;
     href: string;
     icon: any;
@@ -149,6 +149,13 @@ export interface SocialNetworkMedia {
     linkedin: Media;
     reddit: Media;
     messenger: Media;
+}
+
+export interface VideoMedia {
+    youtube: Media;
+    bilibili: Media;
+    douyin: Media;
+    kuaishou: Media;
 }
 
 export interface Profile {

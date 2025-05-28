@@ -9,7 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import LinkBtn from "@/components/ui/link-btn.astro";
 import BoxTitle from "@/components/box/title.astro";
 import BoxContent from "@/components/box/content.astro";
-import { blogMedia, gitMedia, socialNetworkMedia } from "@/constants/account";
+import { blogMedia, gitMedia, socialNetworkMedia, videoMedia } from "@/constants/account";
 const backLink = "/";
 
 const locale = getLocale(Astro.url);
@@ -112,34 +112,66 @@ const navText = getNavLinkes(locale);
       <Pattern />
       <BoxHeader>
         <BoxTitle>Social Networks</BoxTitle>
-        <BoxContent>
-          <div
-            class="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-3"
-            style="content-visibility: auto; contain-intrinsic-size: auto 48px;"
-          >
-            {
-              Object.values(socialNetworkMedia).map(item => (
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class:list={[
-                    "flex h-10 min-w-[120px] items-center justify-center gap-2 rounded-md border border-solid bg-blue-50/10 p-2",
-                    "transition-all duration-200 hover:bg-blue-50/20",
-                  ]}
-                >
-                  {item.icon && (
-                    <span class="flex size-5 items-center justify-center">
-                      <item.icon className="size-5" />
-                    </span>
-                  )}
-                  <span class="truncate text-sm">{item.title}</span>
-                </a>
-              ))
-            }
-          </div>
-        </BoxContent>
       </BoxHeader>
+      <BoxContent>
+        <div
+          class="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-3"
+          style="content-visibility: auto; contain-intrinsic-size: auto 48px;"
+        >
+          {
+            Object.values(socialNetworkMedia).map(item => (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  "flex h-10 min-w-[120px] items-center justify-center gap-2 rounded-md border border-solid bg-blue-50/10 p-2",
+                  "transition-all duration-200 hover:bg-blue-50/20",
+                ]}
+              >
+                {item.icon && (
+                  <span class="flex size-5 items-center justify-center">
+                    <item.icon className="size-5" />
+                  </span>
+                )}
+                <span class="truncate text-sm">{item.title}</span>
+              </a>
+            ))
+          }
+        </div>
+      </BoxContent>
+      <Pattern />
+
+      <BoxHeader>
+        <BoxTitle>Video</BoxTitle>
+      </BoxHeader>
+      <BoxContent>
+        <div
+          class="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-3"
+          style="content-visibility: auto; contain-intrinsic-size: auto 48px;"
+        >
+          {
+            Object.values(videoMedia).map(item => (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  "flex h-10 min-w-[120px] items-center justify-center gap-2 rounded-md border border-solid bg-blue-50/10 p-2",
+                  "transition-all duration-200 hover:bg-blue-50/20",
+                ]}
+              >
+                {item.icon && (
+                  <span class="flex size-5 items-center justify-center">
+                    <item.icon className="size-5" />
+                  </span>
+                )}
+                <span class="truncate text-sm">{item.title}</span>
+              </a>
+            ))
+          }
+        </div>
+      </BoxContent>
     </Box>
   </main>
 </Layout>

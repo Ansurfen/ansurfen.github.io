@@ -3,7 +3,8 @@ import Gitea from "@/components/ui/icons/gitea.astro";
 import GitCode from "@/components/ui/icons/gitcode.astro";
 import Codepen from "@/components/ui/icons/codepen.astro";
 import Sourceforge from "@/components/ui/icons/sourceforge.astro";
-import type { BlogMedia, GitMedia, SocialNetworkMedia } from "@/lib/types";
+import type { BlogMedia, GitMedia, SocialNetworkMedia, VideoMedia } from "@/lib/types";
+import type { Media } from "@/lib/types";
 import CSDN from "@/components/ui/icons/csdn.astro";
 import Jianshu from "@/components/ui/icons/jianshu.astro";
 import { GitHubDark, GitLab, Bitbucket, Facebook, XDark, Discord, YouTube, Messenger } from "developer-icons";
@@ -17,6 +18,7 @@ import Cnblogs from "@/components/ui/icons/cnblogs.astro";
 import HackerNews from "@/components/ui/icons/hacker-news.astro";
 import Rednote from "@/components/ui/icons/rednote.astro";
 import Zhihu from "@/components/ui/icons/zhihu.astro";
+import Bilibili from "@/components/ui/icons/bilibili.astro";
 
 export const gitMedia: Partial<GitMedia> = {
     github: {
@@ -149,5 +151,18 @@ export const socialNetworkMedia: Partial<SocialNetworkMedia> = {
         title: "Messenger",
         href: "https://www.messenger.com/t/ansurfen",
         icon: Messenger,
+    },
+}
+
+export const videoMedia: Record<string, Media> = {
+    youtube: {
+        title: "YouTube",
+        href: "https://www.youtube.com/@ansurfen",
+        icon: YouTube,
+    },
+    bilibili: {
+        title: "Bilibili",
+        href: "https://space.bilibili.com/158202745",
+        icon: Bilibili,
     },
 }
