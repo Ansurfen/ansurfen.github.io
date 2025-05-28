@@ -6,15 +6,7 @@ import Sourceforge from "@/components/ui/icons/sourceforge.astro";
 import type { BlogMedia, GitMedia, SocialNetworkMedia } from "@/lib/types";
 import CSDN from "@/components/ui/icons/csdn.astro";
 import Jianshu from "@/components/ui/icons/jianshu.astro";
-import { GitHubDark, GitLab, Bitbucket, Facebook, XDark, Discord, YouTube } from "developer-icons";
-import {
-    Book,
-    PenTool,
-    Globe,
-    Code2,
-    FileCode,
-    GitFork,
-} from "lucide-react";
+import { GitHubDark, GitLab, Bitbucket, Facebook, XDark, Discord, YouTube, Messenger } from "developer-icons";
 import V2Ex from "@/components/ui/icons/v2ex.astro";
 import Juejin from "@/components/ui/icons/juejin.astro";
 import Segmentfault from "@/components/ui/icons/segmentfault.astro";
@@ -22,6 +14,9 @@ import Studygolang from "@/components/ui/icons/studygolang.astro";
 import Medium from "@/components/ui/icons/medium.astro";
 import Devto from "@/components/ui/icons/dev-to.astro";
 import Cnblogs from "@/components/ui/icons/cnblogs.astro";
+import HackerNews from "@/components/ui/icons/hacker-news.astro";
+import Rednote from "@/components/ui/icons/rednote.astro";
+import Zhihu from "@/components/ui/icons/zhihu.astro";
 
 export const gitMedia: Partial<GitMedia> = {
     github: {
@@ -107,6 +102,16 @@ export const blogMedia: Partial<BlogMedia> = {
         href: "https://studygolang.com/user/ansurfen",
         icon: Studygolang,
     },
+    rednote: {
+        title: "小红书",
+        href: "https://www.xiaohongshu.com/user/profile/64c889d0000000000e026e31",
+        icon: Rednote,
+    },
+    zhihu: {
+        title: "知乎",
+        href: "https://www.zhihu.com/people/dycoldwind",
+        icon: Zhihu,
+    },
     devto: {
         title: "Dev.to",
         href: "https://dev.to/ansurfen",
@@ -116,6 +121,11 @@ export const blogMedia: Partial<BlogMedia> = {
         title: "Medium",
         href: "https://medium.com/@ansurfen",
         icon: Medium,
+    },
+    hackernews: {
+        title: "Hacker News",
+        href: "https://news.ycombinator.com/user?id=ansurfen",
+        icon: HackerNews,
     },
 }
 
@@ -134,5 +144,10 @@ export const socialNetworkMedia: Partial<SocialNetworkMedia> = {
         title: "Discord",
         href: "https://discord.com/invite/ansurfen",
         icon: Discord,
+    },
+    messenger: {
+        title: "Messenger",
+        href: "https://www.messenger.com/t/ansurfen",
+        icon: Messenger,
     },
 }

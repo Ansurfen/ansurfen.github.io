@@ -132,12 +132,23 @@ export interface BlogMedia {
     juejin: Media;
     devto: Media;
     medium: Media;
+    hackernews: Media;
+    rednote: Media;
+    zhihu: Media;
 }
 
 export interface SocialNetworkMedia {
     facebook: Media;
     twitter: Media;
     discord: Media;
+    telegram: Media;
+    youtube: Media;
+    twitch: Media;
+    tiktok: Media;
+    instagram: Media;
+    linkedin: Media;
+    reddit: Media;
+    messenger: Media;
 }
 
 export interface Profile {
