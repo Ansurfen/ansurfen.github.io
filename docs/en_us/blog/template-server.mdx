@@ -1,0 +1,136 @@
+---
+pubDatetime: 2025-06-11
+title: The Bumpy Road of Server-Side Rendering
+description: 🌟 Recording the bumpy development journey of server-side rendering
+category: Essays
+series: Learning Sharing
+tags:
+    - Learning
+    - Template Engine
+    - Server-Side Rendering
+    - Build Tools
+    - JQuery
+---
+
+Let me start with the conclusion: unless you're building a static website project like a blog or have deep expertise in this field, ordinary frontend and backend developers should avoid server-side rendering if possible.
+
+## The Beginning
+For a coder who has experienced both frontend and backend development, I never thought I would encounter template engine-based web development again after leaving school.
+
+Thinking back to template engines, my first encounter was probably when I was learning Golang basics as a freshman and briefly went through the template standard library. At the time, I thought templates were quite good for scaffolding, but for writing frontend, they were a bit lacking (I had already heard of Vue when I was learning Golang).
+
+Looking back now, professional tasks should be done with professional tools. The birth of toolchains like Node.js, NPM, and Webpack truly revolutionized web development patterns.
+
+In my junior year, the school offered courses related to JSP development, which might have been my first relatively complete experience developing a server-side rendered website. My memory is a bit fuzzy, but I think I used it to build a logistics management system for a course project. Although it was only a thousand lines of code, the development experience was truly terrible.
+
+For a Gopher who had already experienced the Spring Boot ecosystem, concepts like Servlet, Tomcat, and JavaBean felt like a step backward. Combined with the outdated Eclipse editor, manually importing JDBC dependency libraries without package management tools, and pages served by Tomcat... this combination of factors made my impression of JSP development plummet to rock bottom.
+
+Not to mention mixing Java code with HTML templates, and the lifecycle limitations of startup and rendering. Therefore, it can be concluded that template engine development really requires a lot of patience.
+
+As they say, there are no coincidences. Due to recent project needs, I set my sights on a website that looked quite good, and since it happened to be open source, I had the idea of doing secondary development based on it...
+
+## Running the Project
+
+The first step of secondary development was to get the original project running. Unfortunately, the original project had historical legacy issues and was written in a very old environment, filled with relics from ancient times like Python 2.x and jQuery. There were even Bootstrap versions that couldn't be found in the npm repository.
+
+After consuming some AI Agent credits, I barely managed to migrate the project from Python 2.x to 3.x and got it running smoothly. Then began the long and winding migration journey.
+
+## Template Migration
+
+Since template engine rules differ for each language, although their usage is quite similar, syntax differences still require some fine-tuning. As a coder living in the AI era, how could I possibly tire myself out with manual migration?
+
+So, I spent some more Agent credits and had AI successfully migrate the Python template syntax to Golang rules, and used the famous Go web framework — Gin — to serve the project. Currently, everything seems to be going smoothly.
+
+## Type Hints
+
+For developers accustomed to writing statically typed languages and TypeScript, seeing screens full of `any` in JavaScript code can cause nausea and discomfort. So, without much thought, I installed pnpm and Vite, even though I knew there would be many differences between template-based development and frontend-backend separation.
+
+Because template rendering requires server-side parsing, while build tools like Vite directly compile source files that can run, they can't parse template syntax. This means installing Vite would be useless except for taking up disk space. However, using libraries with @types installed via pnpm and renaming .js files to .ts provided some type hints, which at least served as consolation.
+
+## Template Error Correction and Code Hints
+
+When I tried to replace the original project's template file extension `.html` with Go template file extension `.tmpl`, the syntax highlighting and code hints disappeared, leaving only the hover-to-view field type plugin still working.
+
+Later, the omnipotent AI came up with a black magic solution for me — translating `.vue` to `.tmpl` to achieve highlighting and code hints.
+
+**Input:**
+```vue
+<li v-for="item in .Items">{{ item }}</li>
+```
+
+**Output:**
+```html
+{{range .Items}}
+    <li>{{.item}}</li>
+{{end}}
+```
+
+So, after some friendly communication with AI, it designed what seemed like a reasonable syntax for me. Using the `@vue/compiler-dom` library to manipulate Vue's AST and generate template code based on the syntax tree, everything seemed to be on the right track.
+
+However, I quickly realized the problem with this approach: templates are too flexible, and interpolation can be inserted anywhere. Vue, as a structured description framework, certainly can't be applicable to every scenario.
+
+Later, I thought, why not just use the original HTML code hints? So, for code hints and syntax checking, everything returned to square one.
+
+But I wasn't willing to give up on all this back-and-forth, perhaps because I wanted to try something different. So, the grand series "The Bumpy Road of Server-Side Rendering" appeared, allowing me to write a blog post XD
+
+## Migrating jQuery
+
+Since the original website's core logic used jQuery to manipulate DOM, calculate paths, and draw lines with d3.js, when I first saw the prominent jquery.js file in the folder, I had the idea of replacing it with more modern solutions like React or Vue.
+
+But when I saw that the core logic was written in a full 1200 lines and most of the logic involved DOM manipulation and path calculations, I decisively abandoned this idea. 1200 lines isn't too much, but it's not little either. Especially since much of the logic involves calculations, understanding its implementation would be harder than rewriting from scratch.
+
+However, learning from previous development lessons — the principle that completion is more important than perfection — if it can run, why change it? So, being good at compromise, I decided to give it a small upgrade: adding specific type definitions to the type signatures filled with lots of `any`.
+
+Yes, I adopted a more moderate approach, changing .js code to .ts code. When HTML needs to import .js files, call tsc to compile .ts into .js for it to use. Technically, there's no improvement, just adding types and adjusting command lines.
+
+But this process taught me quite a bit as a half-baked frontend developer.
+
+### Simulating Classes
+
+In early JavaScript when there was no `class` keyword, you could use functions to simulate classes, then extend the function's prototype chain to implement methods. The function could be seen as a constructor and could be called to return an "object." This method now seems like dirty work, but back then it must have been quite elegant.
+
+### Single File Compilation
+
+If you split single-file source code into multiple files and use imports, calling tsc to compile won't bundle them into a single file. I asked AI, but there were no related compilation options for concatenating code first and then compiling into a single file.
+
+But how could I, who loves to tinker, just give up? If it doesn't work, I'll implement concatenation by hand-rolling the syntax tree (crossed out, professional things should be left to professionals XD).
+
+So, with curiosity, I asked GPT about some single-file compilation methods and toolchains. I also learned about esbuild's role. I had heard that Vite is built on esbuild for bundling, but I hadn't practiced it myself. Moreover, my project also had Vite, which previously had no use, but now finally had a purpose. I thought, perhaps this was fate's arrangement.
+
+From installing pnpm + Vite with an empty head, to accidentally giving me the opportunity to encounter esbuild, now no one could stop me from using it to compile single files.
+
+However, reality quickly gave me a hard slap. esbuild compilation comes with compression, and the output was missing more than half the content. Although the output was a single file, the code was also missing more than half. This was worse than just using tsc compilation to get by.
+
+But due to my competitive nature, I had to get it working today.
+
+......(ten years later)
+
+After my intense output, the problem still couldn't be solved. I suspect it's esbuild's code compression mechanism causing issues, or there might be many undefined libraries in the code that weren't imported, causing esbuild to be unable to correctly deduce and discard them. Its error tolerance should be smaller than tsc's, so I stopped.
+
+Yes, that's right, I gave up again. Sometimes it's like this, taking a step back opens up new horizons. I convinced myself again hhh. If it can run, don't mess with it unnecessarily. Completion is more important than perfection.
+
+## Handling Ancient Dependencies
+
+In past development, many people were accustomed to placing xxx.min.js or complete implementations in static folders and uploading them to GitHub together, which now seems quite ugly to me. It's no different from uploading node_modules to remote repositories. Therefore, handling these files became urgent.
+
+My first thought was to import them via import and let Vite bundle them. But current toolchains seem like linkers, only linking referenced definitions and unable to export complete implementations.
+
+Therefore, I made another compromise. I decided to introduce them through pre-run downloads, but downloads come in several types.
+
+At first, I chose to extract desired files from node_modules into static. But the project I pulled down was quite old, with many libraries like Bootstrap, FontAwesome, d3.js, and jQuery being at least 10 years behind the latest versions. Therefore, some source files couldn't even be found in the Node.js repository.
+
+Then, I turned to pulling from their open-source repositories, introducing them through gitmodule, which seemed the most sophisticated way, then extracting what I wanted.
+
+But when I tried to introduce Bootstrap, it gave me a hard slap. Since it's a project that has been operating for decades, just cloning takes a lot of time. If you add network fluctuations, the repository can't be fully cloned, let alone switching branches, so I stopped.
+
+Later, I made some more attempts, and GPT suggested downloading directly from CDN. Only then did I realize I could extract source files from there. Previously, I knew that production environments mostly introduce libraries through CDN, but I never thought development environments could do the same. Indeed, the simplest approach is often the best.
+
+## Implementing Hot Reload
+
+The above solutions were filled with various compromises and grievances, but there was finally one feature that I was quite satisfied with. That is, like modern web development frameworks, the browser refreshes immediately when web page source code is edited.
+
+There are countless ways to implement hot reload. I adopted the simplest and most intuitive method. Using Go's fsnotify library to monitor specified directories, when files in the directory change, the operating system pushes events to the framework, then I use WebSocket connections to tell the frontend to refresh the browser.
+
+That's what I thought, that's what GPT suggested, and that's how the code was written. Everything went very smoothly. I easily implemented hot reload for the website, and this feature is highly recommended for developers who haven't implemented it before.
+
+Of course, the above solution might not be the most elegant, but it's the most violent and easiest solution I could think of. After all, completion is more important than perfection :) 

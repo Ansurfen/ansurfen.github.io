@@ -1,0 +1,170 @@
+---
+pubDatetime: 2025-01-27
+title: 我的第一个AI项目：从零搭建RAG知识库的踩坑之旅
+description: 一个传统开发者的AI初体验，记录从技术选型到最终实现的完整过程，包括文档分块、多轮检索、本地LLM集成等关键技术的实践心得
+category: 技术实践
+series: AI学习笔记
+tags:
+    - RAG
+    - 知识库
+    - 本地模型
+    - LLM
+    - 大模型
+    - Ollama
+    - MCP
+    - FastAPI
+    - ChromaDB
+    - Sentence-Transformers
+    - 向量数据库
+    - 语义搜索
+    - 多轮检索
+    - 文档处理
+    - Python
+    - 踩坑记录
+---
+
+## 项目背景
+
+我是一个 AI 应用开发的初学者。过去，我一直专注于传统的前后端、工具链项目的开发，对于 AI 的了解非常浅薄。
+最近，我在正在实现一个工具链的项目并为其编写文档。突然产生了一个想法，那么就是我可续可以利用 MCP 协议告诉 AI 项目的具体细节，然后让它为我编写代码。
+说干就干吧，在和 GPT 讨论过后，我决定采用以下技术栈：
+
+- **后端框架**: FastAPI + Python - 选择FastAPI是因为它的异步特性和自动API文档生成
+- **向量数据库**: ChromaDB (带内存fallback) - 支持持久化存储，同时提供内存模式用于开发测试
+- **向量化模型**: Sentence Transformers - 轻量级且效果不错的embedding模型
+- **大语言模型**: 本地Qwen2.5-7B via Ollama - 完全本地化，保护隐私
+- **架构模式**: RAG (检索增强生成) - 结合文档检索和LLM生成
+
+```mermaid
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   文档处理器     │    │   向量存储       │    │   LLM服务       │
+│   Document      │───▶│   (内存/        │───▶│   (OpenAI/     │
+│   Processor     │    │    ChromaDB)    │    │    Ollama)      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   知识服务       │    │   FastAPI       │    │   多轮检索       │
+│   Knowledge     │◀───│   HTTP API      │◀──│   Multi-round   │
+│   Service       │    │                 │    │   Retrieval     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## 踩坑经历
+
+### 文档分块策略
+
+最开始我直接想把整个文档丢进去向量化，但考虑到模型token限制和文档结构，这条路似乎难以走通。
+因此，GPT 告诉我必须先切割文档为一个有一个 Chunk 才能进行向量化。
+我的文档都是用 Markdown 格式书写的，其中包含大量的h2、h3、h4标题，这些标题也为分割 Chunk 创造了条件。
+花了大概半小时，我实现了一个基于 Markdown 标题的分块策略，而不是简单的按行数切分。
+
+```python
+# 基于标题的分块策略
+def create_chunks_by_headers(self, content: str, metadata: Dict) -> List[Chunk]:
+    chunks = []
+    lines = content.split('\n')
+    current_chunk = []
+    current_title = metadata.get('title', '')
+    
+    for line in lines:
+        if line.startswith('#'):
+            # 保存当前chunk
+            if current_chunk:
+                chunks.append(Chunk(
+                    content='\n'.join(current_chunk),
+                    metadata={**metadata, 'title': current_title}
+                ))
+            current_chunk = [line]
+            current_title = line.lstrip('#').strip()
+        else:
+            current_chunk.append(line)
+    
+    # 保存最后一个chunk
+    if current_chunk:
+        chunks.append(Chunk(
+            content='\n'.join(current_chunk),
+            metadata={**metadata, 'title': current_title}
+        ))
+    
+    return chunks
+```
+
+### 相似度搜索的困境
+
+文档向量化完成之后，便可以用输入的 Query 去检索向量数据库，然后根据相似度返回结果。
+当我满怀期待地测试相似度搜索，搜索的结果却差强人意。
+问题在于很多关键词在原文中并不显式出现，导致无法匹配到相关信息。
+
+比如搜索"函数定义"，但文档中可能写的是"function declaration"或者"如何创建函数"，这种语义相似但词汇不同的情况很多。
+
+GPT 告诉我，可以采用多轮检索的方式来解决这个问题。
+
+### 多轮检索的改进
+
+后来我了解到多轮检索的概念，并决定试试。
+
+1. **第一轮**: 低阈值(0.3)的广泛搜索，捕获更多候选
+2. **第二轮**: 高阈值(0.7)的精炼搜索，筛选高质量结果
+3. **合并去重**: 结合两轮结果并去重
+
+```python
+def search_with_context(self, query: str, max_results: int = 5) -> Tuple[List[SearchResult], str]:
+    # 第一轮：广泛搜索
+    broad_results = self.vector_store.search(query, max_results * 2, threshold=0.3)
+    
+    # 第二轮：精炼搜索
+    refined_results = self.vector_store.search(query, max_results, threshold=0.7)
+    
+    # 合并结果并去重
+    all_results = self._merge_and_deduplicate(broad_results, refined_results)
+    
+    # 构建上下文
+    context = self._build_context(all_results[:max_results])
+    
+    return all_results[:max_results], context
+```
+
+效果确实有改善，虽然并不完美，但比之前相比至少能匹配上了。
+
+## LLM集成的顺利
+
+相比数据预处理的坎坷，LLM集成倒是比较顺利。
+我通过Ollama调用本地的Qwen2.5-7B模型，配合合适的prompt模板，效果还算可以。
+
+```python
+def answer_question(self, context: str, query: str) -> str:
+    prompt = f"""基于以下文档内容回答问题。如果文档中没有相关信息，请说明无法找到答案。
+
+文档内容：
+{context}
+
+问题：{query}
+
+回答："""
+    
+    return self.llm_provider.generate(prompt, context, query)
+```
+
+本地模型的好处是完全保护隐私，而且响应速度也还可以接受。
+
+## MCP的噩梦
+
+最让我头疼的是MCP协议的实践。GPT给我生成了很多"脏代码"，包括：
+
+- 繁琐的访问链，到处都是`any`类型
+- 无效的函数签名
+- 错误的参数传递
+- 类型定义混乱
+
+更糟糕的是，我常用的 Cursor IDE 对 MCP 集成支持很差。
+在捣鼓了半小时无果后，最终我听取了 AI 的建议直接利用 HTTP 调用替代 MCP。
+
+## 总结
+
+这个项目让我对 AI 开发有了更深入的理解。
+RAG 架构确实很强大，但数据预处理的质量直接影响最终效果。
+多轮检索是个不错的改进思路，MCP 协议虽然概念很好，但实际使用还有待成熟。
+
+作为一个 AI 新手，这次经历让我意识到 AI 开发不仅仅是调用 API 那么简单，数据质量、检索策略、prompt 工程都很重要。
+虽然踩了不少坑，但收获很大。

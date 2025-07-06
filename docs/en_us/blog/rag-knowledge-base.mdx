@@ -1,0 +1,167 @@
+---
+pubDatetime: 2025-01-27
+title: My First AI Project: A Journey of Building RAG Knowledge Base from Scratch
+description: An AI beginner's experience as a traditional developer, documenting the complete process from technology selection to final implementation, including practical insights on document chunking, multi-round retrieval, local LLM integration and other key technologies
+category: Technical Practice
+series: AI Learning Notes
+tags:
+    - RAG
+    - Knowledge Base
+    - Local Model
+    - LLM
+    - Large Language Model
+    - Ollama
+    - MCP
+    - FastAPI
+    - ChromaDB
+    - Sentence-Transformers
+    - Vector Database
+    - Semantic Search
+    - Multi-round Retrieval
+    - Document Processing
+    - Python
+    - Learning Journey
+---
+
+## Project Background
+
+I'm a beginner in AI application development. In the past, I've been focused on traditional frontend, backend, and toolchain development, with very limited knowledge about AI.
+
+Recently, I've been working on a toolchain project and writing documentation for it. Suddenly, an idea occurred to me - I could use the MCP protocol to tell AI about the project details and let it help me write code.
+
+Let's get started! After discussing with GPT, I decided to adopt the following technology stack:
+
+- **Backend Framework**: FastAPI + Python - Chose FastAPI for its async capabilities and automatic API documentation generation
+- **Vector Database**: ChromaDB (with memory fallback) - Supports persistent storage while providing memory mode for development and testing
+- **Embedding Model**: Sentence Transformers - Lightweight and effective embedding model
+- **Large Language Model**: Local Qwen2.5-7B via Ollama - Completely local deployment, privacy protection
+- **Architecture Pattern**: RAG (Retrieval-Augmented Generation) - Combines document retrieval with LLM generation
+
+```mermaid
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Document      │    │   Vector Store  │    │   LLM Service   │
+│   Processor     │───▶│   (Memory/      │───▶│   (OpenAI/     │
+│                 │    │    ChromaDB)    │    │    Ollama)      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Knowledge     │    │   FastAPI       │    │   Multi-round   │
+│   Service       │◀───│   HTTP API      │◀──│   Retrieval     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## Learning Journey
+
+### Document Chunking Strategy
+
+Initially, I wanted to directly vectorize entire documents, but considering model token limitations and document structure, this approach seemed difficult to implement.
+
+Therefore, GPT told me I had to split documents into chunks before vectorization. My documents are written in Markdown format, containing many h2, h3, h4 headers, which created conditions for chunking.
+
+It took about half an hour to implement a chunking strategy based on Markdown headers rather than simple line-by-line splitting.
+
+```python
+# Header-based chunking strategy
+def create_chunks_by_headers(self, content: str, metadata: Dict) -> List[Chunk]:
+    chunks = []
+    lines = content.split('\n')
+    current_chunk = []
+    current_title = metadata.get('title', '')
+    
+    for line in lines:
+        if line.startswith('#'):
+            # Save current chunk
+            if current_chunk:
+                chunks.append(Chunk(
+                    content='\n'.join(current_chunk),
+                    metadata={**metadata, 'title': current_title}
+                ))
+            current_chunk = [line]
+            current_title = line.lstrip('#').strip()
+        else:
+            current_chunk.append(line)
+    
+    # Save the last chunk
+    if current_chunk:
+        chunks.append(Chunk(
+            content='\n'.join(current_chunk),
+            metadata={**metadata, 'title': current_title}
+        ))
+    
+    return chunks
+```
+
+### The Dilemma of Similarity Search
+
+After document vectorization was complete, I could use input queries to search the vector database and return results based on similarity.
+
+When I eagerly tested similarity search, the results were disappointing. The problem was that many keywords didn't explicitly appear in the original text, making it impossible to match relevant information.
+
+For example, searching for "function definition" but the document might say "function declaration" or "how to create a function" - there are many cases where semantics are similar but vocabulary differs.
+
+GPT told me I could use multi-round retrieval to solve this problem.
+
+### Multi-round Retrieval Improvement
+
+Later, I learned about the concept of multi-round retrieval and decided to try it.
+
+1. **First Round**: Low threshold (0.3) broad search to capture more candidates
+2. **Second Round**: High threshold (0.7) refined search to filter high-quality results
+3. **Merge and Deduplicate**: Combine results and remove duplicates
+
+```python
+def search_with_context(self, query: str, max_results: int = 5) -> Tuple[List[SearchResult], str]:
+    # First round: broad search
+    broad_results = self.vector_store.search(query, max_results * 2, threshold=0.3)
+    
+    # Second round: refined search
+    refined_results = self.vector_store.search(query, max_results, threshold=0.7)
+    
+    # Merge results and deduplicate
+    all_results = self._merge_and_deduplicate(broad_results, refined_results)
+    
+    # Build context
+    context = self._build_context(all_results[:max_results])
+    
+    return all_results[:max_results], context
+```
+
+The results did improve, though not perfect, but at least it could match better than before.
+
+## Smooth LLM Integration
+
+Compared to the bumpy data preprocessing, LLM integration was quite smooth. I called the local Qwen2.5-7B model through Ollama, and with appropriate prompt templates, the results were acceptable.
+
+```python
+def answer_question(self, context: str, query: str) -> str:
+    prompt = f"""Based on the following document content, answer the question. If there's no relevant information in the documents, please state that no answer can be found.
+
+Document content:
+{context}
+
+Question: {query}
+
+Answer:"""
+    
+    return self.llm_provider.generate(prompt, context, query)
+```
+
+The advantage of local models is complete privacy protection, and the response speed is also acceptable.
+
+## The MCP Nightmare
+
+The most headache-inducing part was the practice of the MCP protocol. GPT generated a lot of "dirty code" for me, including:
+
+- Tedious access chains with `any` types everywhere
+- Invalid function signatures
+- Incorrect parameter passing
+- Confused type definitions
+
+Even worse, my commonly used Cursor IDE has poor MCP integration support. After struggling for half an hour without results, I finally took AI's advice and used HTTP calls instead of MCP.
+
+## Summary
+
+This project gave me a deeper understanding of AI development. The RAG architecture is indeed powerful, but the quality of data preprocessing directly affects the final results. Multi-round retrieval is a good improvement idea, and while the MCP protocol has good concepts, its practical use still needs to mature.
+
+As an AI beginner, this experience made me realize that AI development isn't just about calling APIs - data quality, retrieval strategies, and prompt engineering are all important. Although I encountered many pitfalls, the gains were substantial. 
