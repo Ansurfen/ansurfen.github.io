@@ -37,20 +37,6 @@ Let's get started! After discussing with GPT, I decided to adopt the following t
 - **Large Language Model**: Local Qwen2.5-7B via Ollama - Completely local deployment, privacy protection
 - **Architecture Pattern**: RAG (Retrieval-Augmented Generation) - Combines document retrieval with LLM generation
 
-```mermaid
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Document      │    │   Vector Store  │    │   LLM Service   │
-│   Processor     │───▶│   (Memory/      │───▶│   (OpenAI/     │
-│                 │    │    ChromaDB)    │    │    Ollama)      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Knowledge     │    │   FastAPI       │    │   Multi-round   │
-│   Service       │◀───│   HTTP API      │◀──│   Retrieval     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
-
 ## Learning Journey
 
 ### Document Chunking Strategy
