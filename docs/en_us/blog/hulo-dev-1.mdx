@@ -1,0 +1,89 @@
+---
+pubDatetime: 2025-07-13
+title: Hulo: Write clean, modern code that compiles to VBScript
+description: Hulo first version for release
+category: Essay
+series: Hulo Development
+tags:
+    - study
+    - programming
+    - Hulo
+    - VBScript
+---
+
+Hey VBScript enthusiasts! 👋
+
+So I've been working on a compiler/transpiler project and wanted to tackle something that could actually be useful. You know what's the most frustrating thing about VBScript? Writing complex logic with that verbose syntax and limited features!
+
+That's when I thought - what if we could write scripts in a clean, modern language and have it compile to VBScript? Enter Hulo! 
+
+**What is Hulo?**
+A modern, type safety programming language that transpiles to VBScript, making it much easier to write complex automation scripts for Windows.
+
+**Quick example:**
+
+Simple message box:
+```rust
+MsgBox "Hello, World!"
+```
+
+Functions with types:
+```rust
+fn sayHello(name: str) -> void {
+    MsgBox "Hello, $name!"
+}
+
+fn add(a: num, b: num) => $a + $b
+
+sayHello "Hulo";
+MsgBox add(5, 3);
+```
+
+Classes and objects:
+```rust
+class User {
+    pub name: str
+    pub age: num
+
+    pub fn greet(other: str) {
+        MsgBox "Hello, $other! I'm $name."
+    }
+}
+
+let u = User("John", 25)
+$u.greet("Jane")
+```
+
+Control flow and user input:
+```rust
+let n = InputBox("Input a number:")
+
+if $n < 0 {
+    MsgBox("The number is negative.")
+} else {
+    MsgBox("The number is positive.")
+}
+```
+
+Lists and loops:
+```rust
+let arr: list<num> = [1, 2, 3, 4, 5]
+
+loop $item in $arr {
+    MsgBox $item
+}
+
+loop $i in [0, 1, 2] {
+    MsgBox $i
+}
+```
+
+More examples available in the [examples/](https://github.com/hulo-lang/hulo/tree/main/examples) directory!
+
+No more struggling with VBScript's verbose syntax or limited features - just write clean code and let Hulo handle the VBScript generation!
+
+Would love to hear your thoughts on this approach. Is this something you'd find useful for your VBScript development? Any feedback or suggestions are welcome!
+
+Check it out: https://github.com/hulo-lang/hulo
+
+What do you think?

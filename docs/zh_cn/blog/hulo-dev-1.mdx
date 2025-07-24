@@ -1,0 +1,98 @@
+---
+pubDatetime: 2025-07-13
+title: 我开发了一个编译成 VBScript 的现代编程语言 - Hulo
+description: Hulo开发的第一个版本发布
+category: 随笔
+series: Hulo 开发
+tags:
+    - 学习
+    - 编程语言
+    - Hulo
+    - VBScript
+---
+
+嘿，VBScript 爱好者们！
+
+我最近在做一个编译器/转译器项目，想要解决一些在 Windows 脚本开发中遇到的“老大难”问题。
+
+你知道 VBScript 最令人头疼的是什么吗？
+就是那种 **冗长的语法** 和 **有限的语言能力**，一旦想实现稍微复杂一点的逻辑，就会陷入繁琐的拼接和调试地狱。
+
+于是我开始思考——
+**有没有可能用一种更现代、更清爽的语言来写脚本，然后自动生成 VBScript？**
+
+于是我做了个语言，叫做 Hulo。
+
+**什么是 Hulo？**
+Hulo 是一种现代化、类型安全的编程语言，可以编译（准确说是转译）成 VBScript。
+
+**来看几个实际例子：**
+
+简单的消息框：
+```rust
+MsgBox "Hello, World!"
+```
+
+带类型的函数：
+```rust
+fn sayHello(name: str) -> void {
+    MsgBox "Hello, $name!"
+}
+
+fn add(a: num, b: num) => $a + $b
+
+sayHello "Hulo";
+MsgBox add(5, 3);
+```
+
+类和对象：
+```rust
+class User {
+    pub name: str
+    pub age: num
+
+    pub fn greet(other: str) {
+        MsgBox "Hello, $other! I'm $name."
+    }
+}
+
+let u = User("John", 25)
+$u.greet("Jane")
+```
+
+控制流和用户输入：
+```rust
+let n = InputBox("Input a number:")
+
+if $n < 0 {
+    MsgBox("The number is negative.")
+} else {
+    MsgBox("The number is positive.")
+}
+```
+
+列表和循环：
+```rust
+let arr: list<num> = [1, 2, 3, 4, 5]
+
+loop $item in $arr {
+    MsgBox $item
+}
+
+loop $i in [0, 1, 2] {
+    MsgBox $i
+}
+```
+
+更多示例请前往 GitHub 上的 [examples/](https://github.com/hulo-lang/hulo/tree/main/examples) 查阅！
+
+**写在最后**
+
+我知道 VBScript 生态比较老旧，但它在 Windows 自动化中仍然有着不可替代的位置。
+如果你也正在用 VBScript 做运维、脚本开发、企业级自动化，那么 Hulo 或许能为你带来一点 **久违的开发愉悦感**。
+
+目前项目还在早期阶段，欢迎感兴趣的朋友提建议、提 issue、或者一起来参与开发！
+
+项目地址：https://github.com/hulo-lang/hulo
+
+你觉得这种“现代语言 + 老派平台”的方式靠谱吗？

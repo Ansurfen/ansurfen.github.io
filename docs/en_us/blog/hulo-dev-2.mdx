@@ -1,0 +1,162 @@
+---
+pubDatetime: 2025-07-19
+title: After a Week of Work, My Programming Language Hulo Adds Bash Transpiler and Package Management Tool
+description: Hulo second version for release
+category: Essay
+series: Hulo Development
+tags:
+    - Study
+    - Programming
+    - Hulo
+    - Bash
+    - Package Management
+    - REPL
+---
+
+Hey, script developers!
+
+Remember that modern programming language Hulo I introduced last week that can compile to VBScript? This week it has major updates!
+
+## 🚀 This Week's Major Updates
+
+### 1. **Bash Transpiler Officially Launched!**
+
+Yes, you read that right! Hulo now supports not only VBScript but also Bash!
+
+This means you can use the same modern syntax to generate scripts for both Windows and Linux/macOS:
+
+```rust
+// main.hl
+class User {
+    pub name: str
+    pub age: num
+
+    pub fn to_str() -> str {
+        return "User(name: $name, age: $age)"
+    }
+
+    pub fn greet(other: str) {
+        MsgBox "Hello, $other! I'm $name."
+    }
+}
+
+let u = User("John", 20)
+MsgBox $u.to_str();
+$u.greet("Jane");
+```
+
+Execute the `hulo main.hl` command in the working directory where the file is located to get two transpiled files (of course, the Hulo command also supports other features and reads configuration from huloc.yaml, which I won't list here one by one - you can check with `hulo -h` or consult the official documentation).
+
+**Generated Bash code:**
+```bash
+#!/bin/bash
+function create_user() {
+  local name=$1
+  local age=$2
+  declare -A user
+  user["name"]=$name
+  user["age"]=$age
+  echo "$(declare -p user)"
+}
+function user_to_str() {
+  eval "declare -A user=${1}"
+  echo "User(name: $name, age: $age)"
+}
+function user_greet() {
+  eval "declare -A user=${1}"
+  local other=$2
+  MsgBox "Hello, $other! I'm $name."
+}
+
+u=$(create_user "John" 20)
+MsgBox $(user_to_str $u)
+user_greet $u "Jane"
+```
+
+**Generated VBScript code:**
+```vb
+Class User
+  Public name
+  Public age
+  Public Function to_str()
+    to_str = "User(name: " & name & ", age: " & age & ")"
+  End Function
+  Public Function greet(other)
+    MsgBox("Hello, " & other & "! I'm " & name & ".")
+  End Function
+End Class
+Set u = New User
+u.name = "John"
+u.age = 20
+MsgBox(u.to_str())
+u.greet("Jane")
+```
+
+So far, everything looks normal, right? Unfortunately, the code on the Bash platform cannot run normally - it will error due to missing MsgBox, because we're using MsgBox instead of echo in our Hulo code. Therefore, if you want it to run normally, you need to change MsgBox to echo before transpiling. But doesn't this conflict with Hulo's cross-platform promotion? Haha, the reason is that syntax sugar like `use MsgBox = If<$platform == "vbs", MsgBox, If<$platform == "powershell", Write-Host, echo>>` hasn't been completed yet, causing a disconnect where commands can't be transpiled. Hulo also doesn't want to force command conversion in the transpiler through hardcoding, which brings a poor development experience. This feature will be implemented in future versions - please give Hulo some time.
+
+Ps. Hulo calls this feature "command gymnastics." To implement this feature, Hulo has absorbed all the advantages of TypeScript's type gymnastics, which means this system will include powerful type utilities like Omit, Pick, Exclude, etc., to form a powerful command system.
+
+### 2. **Package Management Tool HLPM is Here!**
+
+The core functionality of `hlpm` is to distribute third-party libraries. Since import doesn't support module resolution yet, although hlpm's core functionality is already developed, running modules is still not supported. However, you can use it to initialize projects first and write `hulo.pkg.yaml` and `huloc.yaml` files to control the project's compilation process. This is somewhat similar to the role of `package.json` and `tsconfig.json`.
+
+```bash
+# Initialize new project
+hlpm init my-script
+
+# Run script
+hlpm run test
+
+# Run file, equivalent to hulo main.hl
+hlpm run main.hl
+```
+
+### 3. **Interactive Development Environment Hulo-REPL**
+
+Added the `hulo-repl` command:
+- [x] Code completion
+- [x] Theme settings
+- [ ] Real-time lexical analysis and syntax analysis debugging (coming soon)
+- [ ] Real-time transpilation (coming soon)
+
+```bash
+PS C:\hulo> hulo-repl
+
+  Hulo-REPL dev
+
+  ➜  Type help for commands, exit to quit
+
+>>> e
+      else    Else statement
+      enum    Enum declaration
+      extend  Extend declaration
+      exit    Exit the REPL
+```
+
+## 🔧 Technical Improvements
+
+### Refactored VBScript Transpiler
+
+- Cleaner code structure, easier to maintain
+- Fixed the `echo "Hello World"` string transpilation issue
+
+This update is a breaking change - some functionality implemented in v0.1.0 may not work in v0.2.0. Especially regarding import, the module design will be closer in the next update.
+
+### Configuration System Upgrade
+- The `hulo` command now supports reading configuration from `huloc.yaml` in the working directory
+- More flexible project configuration management
+
+## 🚧 Next Steps
+
+1. **Batch Transpilation Support** - Make Hulo more powerful on Windows
+2. **Package Publishing System** - Let the community share and reuse code
+3. **Import System** - Support third-party library imports
+4. **Command Gymnastics** - Smarter code generation
+
+## 💭 Final Words
+
+Project repository: https://github.com/hulo-lang/hulo
+
+If you find this project interesting, feel free to open issues on GitHub or join the discussion! Give it a Star to support the project and let more people see it.
+
+What do you think about this "write once, run on multiple platforms" script development approach? Any suggestions or ideas?
