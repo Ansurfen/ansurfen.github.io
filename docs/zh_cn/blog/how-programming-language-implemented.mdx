@@ -1,0 +1,1314 @@
+---
+pubDatetime: 2025-08-10
+title: 一个编程语言是如何实现的 - 从零开始构建Hulo编译器
+description: 深入解析编程语言编译器的核心组件和实现原理，以Hulo语言为例详细介绍解析器、解释器、优化器、转译器等关键模块
+category: 技术分享
+series: 编程语言开发
+tags:
+    - 学习
+    - 编程语言
+    - 编译器
+    - Hulo
+    - 技术原理
+    - 系统设计
+---
+
+最近这一段时间忙着工作和开发[Hulo](https://github.com/hulo-lang/hulo)编程语言，满打满算已经过了三个月多了。心血来潮，想梳理下Hulo编程语言的开发流程，也顺带以个人的视角解读下编程语言是如何从零开始诞生的。希望通过这篇文章，能够为对编程语言实现感兴趣的开发者提供一个实践性的参考，同时也记录下这段充满挑战和收获的开发历程。
+
+# 架构
+
+Hulo语言的定位是批处理脚本的编译器，最终经过编译后的目标语言是Bash、Batch、VBS、PowerShell等脚本语言。为了统一抽象这些不同的目标语言，Hulo不仅仅包含解析器和转译器，还为此设计了完整的编译工具链：
+
+## 核心组件
+
+- **解析器 (Parser)**: 将源代码转换为抽象语法树(AST)
+- **模块管理 (Module Manager)**: 处理依赖关系和符号解析
+- **解释器 (Interpreter)**: 支持元编程和编译时计算
+- **调试器 (Debugger)**: 配合解释器进行调试和错误诊断
+- **优化器 (Optimizer)**: 负责代码剪枝和性能优化
+- **转译器 (Transpiler)**: 将AST转换为目标语言代码
+- **Unsafe模板引擎**: 在转译过程中支持嵌入原生代码
+- **链接器 (Linker)**: 负责将原生代码块链接到一起
+
+## 编译流程
+
+从上面的专有名词上看，Hulo好像该有的都有。但是，大部分组件都还在开发中，只是局部实现并通过了单元测试嘿嘿。不过，这并不影响本次科普的开展。
+
+至此，Hulo的完整编译流程大概是这样的：
+
+源代码 → 解析器 → 模块管理 → 解释器(调试器) → 优化器 → 转译器（携带着unsafe模板引擎） → 链接器 → 目标语言代码
+
+
+## 编译概念
+
+这个完整的过程，Hulo将其称之为编译。整个生命周期都是由编译器(compiler)控制的，编译也就是从一个语法转换成另一个语法的过程，比如说C语言编译成汇编，Hulo语言编译成批处理脚本。
+
+### 与传统编译器的对比
+
+| 传统编译器 | Hulo编译器 |
+|------------|------------|
+| C → 汇编 | Hulo → Bash/Batch/VBS/PowerShell |
+| 机器码执行 | 脚本解释执行 |
+| 多平台汇编 | 多脚本语言 |
+
+这种设计使得Hulo能够为不同的脚本环境生成相应的代码，同时保持了统一的开发体验。
+
+# 源代码
+
+源代码是编程语言实现的基础，每个开发者都熟悉这个概念：编写代码需要创建文件并在其中编写逻辑。源代码主要包含两个部分：文件的扩展名和文件的内容（语法部分）。
+
+## 语法
+
+语法可以说是一个编程语言区别于其他编程语言的重要标志。每种语言都有其独特的语法特性，这些特性在很大程度上决定了语言的风格和用途。例如：
+
+- **Golang**: 管道运算符`<-`、`chan`、`go`、`defer`关键字等，这些特性与其他语言相比有很强的辨识度
+- **C语言**: 宏定义满天飞，预处理器功能强大
+- **TypeScript**: 类型体操，复杂的类型系统
+- **Rust**: 所有权系统、生命周期标注
+- **Python**: 缩进语法、列表推导式
+
+这些语法特性不仅影响代码的编写风格，也在很大程度上决定了标准库的设计和实现方式。当然，也不排除各种语法大杂烩的语言，比如说Hulo就位列其中 ：）
+
+## 文件名
+
+和普通的文本文件类似，代码本身也是一种结构化的文本格式。文件的扩展名可以自由选择，在这里Hulo语言选择了`.hl`作为扩展名。建议在选择扩展名时要与市面上现有的语言区分开来，避免同名扩展名可能导致的编译冲突。尽管文件内容的存储与扩展名无关，但在解析过程中，编译器通常会根据扩展名来确定文件类型和处理方式，因此选择合适的扩展名有助于避免潜在的编译问题。
+
+# 解析器
+
+解析器可以说是源代码到目标语言最重要的基础，它负责将结构化的文本实例化为抽象语法树(AST)，这个过程也被称之为编译前端。解析器通过词法分析器(Lexer)将源代码分解为标记流(Token Stream)，再通过语法分析器(Parser)将标记流转换为抽象语法树，最终将人类可读的源代码转换为机器可处理的树形数据结构。这个树形结构保留了源代码的语法结构信息，为后续的语义分析、类型检查、优化和代码生成等编译后端阶段提供了必要的数据基础。
+
+听起来好像云里雾里是吧，别急，接下来我们举一个简单的例子来说明：
+
+假设我们现在有这样一段代码：`print("Hello, World!")`
+
+## Token（标记）
+
+Token是词法分析的最小单位，每个Token都包含类型和值信息。对于上面的代码，词法分析器会将其分解为以下Token序列：
+
+|类型|值|
+|---|---|
+|IDENT|print|
+|LPAREN|(|
+|STRING|"Hello, World!"|
+|RPAREN|)|
+
+* IDENT 是标识符(Identifier)的缩写，一般变量名、函数名、类名、类型这些都归为标识符。
+* LPAREN、RPAREN分别是Left和Right与Paren单词组合，就是简单的左括号和右括号。
+* STRING 则很显而易见，Hello, World整体是一个字符串的字面量。
+
+Ps. 字面量是一种很常见的说法，比如说 3.14、10、0644这些数字就可以被成为 NUMBER 类型的字面量，而 true 和 false 则是 BOOL 类型的字面量。
+
+也就是说，Token 的作用就是将结构化的语法每个部分进行细分，细分到不可再分为止。我们可以在看一个稍微复杂的例子：
+
+```
+class User {
+    name: str
+    age: bool
+}
+```
+
+|类型|值|说明|
+|---|---|---|
+|CLASS|class|类声明关键字|
+|IDENT|User|类名标识符|
+|LBRACE|{|左大括号，类体开始|
+|IDENT|name|字段名标识符|
+|COLON|:|类型声明分隔符|
+|IDENT|str|类型名标识符|
+|IDENT|age|字段名标识符|
+|COLON|:|类型声明分隔符|
+|IDENT|bool|类型名标识符|
+|RBRACE|}|右大括号，类体结束|
+
+## Lexer（词法分析器）
+
+词法分析器负责将源代码字符串分解为Token流。它的工作过程如下：
+
+1. **字符扫描**：从左到右逐个扫描源代码字符
+2. **模式匹配**：根据预定义的规则识别不同类型的Token
+3. **Token生成**：为每个识别出的模式生成对应的Token
+
+例如，对于`print("Hello, World!")`：
+- 扫描到`print` → 识别为标识符(IDENT)
+- 扫描到`(` → 识别为左括号(LPAREN)
+- 扫描到`"Hello, World!"` → 识别为字符串字面量(STRING)
+- 扫描到`)` → 识别为右括号(RPAREN)
+
+经过词法分析器的处理，源代码被分解为 `Token[]` 数组，每个Token都包含了类型和值信息。
+
+## Parser（语法分析器）
+
+语法分析器负责将Token流转换为抽象语法树(AST)。它根据语言的语法规则，将Token组织成有意义的语法结构。
+
+对于`print("Hello, World!")`，语法分析器会构建如下AST：
+
+```
+CallExpr
+├── Fun: Ident("print")
+└── Args: [StringLiteral("Hello, World!")]
+```
+
+这个AST表示：
+- 这是一个函数调用表达式(CallExpr)
+- 函数名是"print"
+- 参数是一个字符串字面量"Hello, World!"
+
+看到这里，是不是感觉有点熟悉了？在大部分现代化语言的标准库中，往往都包含着解析成该语言AST的库。例如：
+
+- **Golang**: `go/ast` - 提供Go语言的AST定义和解析功能
+- **TypeScript**: `@typescript-eslint/parser` - TypeScript的官方解析器
+- **Python**: `ast`模块 - Python标准库中的抽象语法树模块
+- **JavaScript**: `@babel/parser` - Babel生态中的JavaScript解析器
+- **Rust**: `syn`库 - Rust的语法解析库
+- **Java**: `javac`编译器内置的AST处理
+- **C#**: Roslyn编译器平台提供的语法树API
+
+这些库不仅为语言本身提供了强大的代码分析能力，也为开发者构建工具链、代码格式化、静态分析、代码生成等提供了基础支持。通过使用这些标准化的AST库，开发者可以更容易地实现代码转换、优化和工具开发。
+
+回到分析器本身，我们已经完成了从源代码到结构化实例的转换，是的，编译前端就是在做这样的工作，将难以操作的字符串转换成一个个对象，例如 CallExpr 表达式对象、IfStmt 语句对象、ClassDecl 声明对象... 这些转换将代码变得可操作了起来，它不再是只能靠正则表达式或者字符串处理的语法。
+
+在AST中，节点通常分为三大类：
+
+- **Expr (Expression)**: 表达式节点，表示会产生值的代码片段。例如：
+  - `CallExpr`: 函数调用表达式，如 `print("hello")`
+  - `BinaryExpr`: 二元运算表达式，如 `a + b`
+  - `Ident`: 标识符表达式，如变量名 `x`
+  - `StringLiteral`: 字符串字面量，如 `"hello"`
+
+- **Stmt (Statement)**: 语句节点，表示执行动作的代码片段。例如：
+  - `IfStmt`: if条件语句，如 `if (x > 0) { ... }`
+  - `WhileStmt`: while循环语句，如 `while (i < 10) { ... }`
+  - `AssignStmt`: 赋值语句，如 `x = 10`
+  - `ReturnStmt`: 返回语句，如 `return result`
+
+- **Decl (Declaration)**: 声明节点，表示定义新实体的代码片段。例如：
+  - `ClassDecl`: 类声明，如 `class User { ... }`
+  - `FuncDecl`: 函数声明，如 `function add(a, b) { ... }`
+  - `VarDecl`: 变量声明，如 `var x = 10`
+
+这种分类方式使得AST具有清晰的层次结构，便于后续的语义分析、类型检查和代码生成。
+
+Ps. 当然这都是人为划定的，你也可以都把他们当成同样的节点也是可以的。不过，合理的分类能够帮助我们更好地理解代码结构，并为后续的编译阶段提供更清晰的语义信息。
+
+# 模块管理
+
+现代化的编程语言通常都支持第三方模块的分发和依赖管理。在解析 `import` 语句时，需要判断模块来源的不同情况：标准库、相对路径、绝对路径、第三方依赖等。为此，模块管理成为了一个独立的组件层。
+
+在传统的解释性语言中，模块管理往往与解释器紧密绑定。但是基于Hulo需要转译成目标语言的特点，转换过程中的符号信息也需要在转译器中使用，因此，模块管理被单独提取出来，作为一个独立的服务层，为解释器和转译器分别提供模块信息和符号解析服务。这种设计使得模块管理逻辑更加清晰，也便于后续的维护和扩展。
+
+## 路径解析
+
+为了避免复杂度和歧义，Hulo的模块解析采用了简化的路径解析策略：
+
+**支持的导入方式**
+- **相对路径导入**: 使用 `./` 或 `../` 前缀，如 `import "./utils"` 或 `import "../common"`
+- **标准库导入**: 直接使用模块名，如 `import "os"` 或 `import "math"`
+- **第三方依赖导入**: 使用完整的包名，如 `import "owner/package"`
+
+**不支持的导入方式**
+
+- **绝对路径导入**: 不支持以 `/` 开头的绝对路径
+- **隐式相对路径**: 不支持不带 `./` 或 `../` 的相对路径
+
+这种简化的设计带来了以下好处：
+
+1. **降低复杂度**: 避免了路径解析的歧义问题
+2. **提高性能**: 减少了路径解析的计算开销
+3. **增强安全性**: 避免了绝对路径可能带来的安全风险
+4. **简化实现**: 对于非相对路径的模块名，只需要区分是标准库还是第三方依赖即可
+
+## 模块解析
+
+对于支持的三种导入方式，在解析成功后都会存储一份文件所对应的绝对路径。这样做的好处是便于全局管理文件，能够准确追踪哪些文件已经解析过了，哪些还没有解析。如果不进行这一层路径标准化转换，那么可能出现不同路径书写方式指向同一个文件，导致重复解析的情况发生。
+
+### 解析过程
+
+模块解析包含两个主要步骤：
+
+1. **文件解析**: 将文件读取出来，然后将字符串转换成AST的过程
+2. **符号提取**: 解析完成后还会进行一次AST扫描，提取出类声明、函数声明、Pub导出等信息
+
+
+### 符号表管理
+
+这些提取出的信息由符号表(Symbol Table)管理，每个模块都有一份独立的符号表。符号表存储了模块中所有可访问的符号信息，包括：
+- 类声明及其方法
+- 函数声明
+- 公共导出的变量和常量
+- 类型定义
+
+这边的解析就是将文件读取出来，然后将字符串转换成AST的过程。不过，解析完后还会进行一次AST的扫描，会提取出类声明、函数声明、Pub导出等信息。这些信息往往由符号表(Symbol Table)管理，每个模块各一份独立的符号表。
+
+### 示例
+
+例如，我们有一个包含多个声明的模块文件 `user.hl`：
+
+```hulo
+// user.hl
+pub class User {
+    name: str
+    age: num
+
+    pub fn greet() -> str {
+        return "Hello, " + $this.name
+    }
+}
+
+pub fn create_user(name: str, age: num) -> User {
+    return User{name: $name, age: $age}
+}
+
+const MAX_AGE = 120
+```
+
+解析后，这个模块的符号表可能是这样的：
+
+```hulo
+SymbolTable {
+  "User": {
+    Type: "class",
+    Exported: true,
+    Fields: [
+      { Name: "name", Type: "str", Exported: false },
+      { Name: "age", Type: "num", Exported: false }
+    ],
+    Methods: [
+      { Name: "greet", ReturnType: "str", Exported: true }
+    ]
+  },
+  "create_user": {
+    Type: "function",
+    Exported: true,
+    Params: [
+      { Name: "name", Type: "str" },
+      { Name: "age", Type: "num" }
+    ],
+    ReturnType: "User"
+  },
+  "MAX_AGE": {
+    Type: "constant",
+    Exported: false,
+    Value: 120
+  }
+}
+```
+
+这种抽象使得模块间的依赖分析和符号解析变得更加高效和可靠。当其他模块导入这个文件时，只需要查看符号表就能快速了解可用的公共接口，而不需要重新解析整个AST。
+
+## 符号混淆
+
+这一部分和传统的语言不太一样，是Hulo增加的功能，如果不感兴趣可以直接跳过，不会影响前后连贯性。
+
+### 背景
+
+在Hulo中，支持现代化的模块导入语法，如：
+- `import { date as d } from "time"` - 具名导入并重命名
+- `import * from "time"` - 全量导入
+- `import "time" as t` - 模块别名导入
+
+但是作为目标语言的批处理脚本对别名的支持和对模块的支持却很鸡肋，因此Hulo需要在编译时就解决这个导入问题。
+
+### 解决方案
+
+解决的方式说白了就是改名，将类名、函数名等符号重命名为特定的格式。Hulo采用 `_[模块ID]_[符号类型]_[自增计数器]` 这样的命名规则：
+
+- **模块ID**: 表示符号出现在解析的第几个模块中
+- **符号类型**: 用数字表示不同的符号类型
+  - `0`: 函数 (Function)
+  - `1`: 类 (Class)
+  - `2`: 常量 (Constant)
+  - `3`: 变量 (Variable)
+- **自增计数器**: 表示该模块中该类型符号的序号
+
+### 示例
+
+例如，`_0_1_0` 代表这个符号出现在解析的第0个模块中，类型1表示它是一个Class符号，0代表它是这个模块中第一个被解析出来的Class。
+
+如果后面还有Person类，那么它将被命名为 `_0_1_1`。
+
+### 具体例子
+
+假设有以下导入：
+```hulo
+import { User as MyUser, Person } from "./models"
+import { date as d, time as t } from "time"
+import * from "utils"
+```
+
+经过符号混淆后：
+```hulo
+// 原始符号 -> 混淆后的符号
+User -> _0_1_0      // 第0个模块，类型1(Class)，第0个
+Person -> _0_1_1    // 第0个模块，类型1(Class)，第1个
+date -> _1_0_0      // 第1个模块，类型0(Function)，第0个
+time -> _1_0_1      // 第1个模块，类型0(Function)，第1个
+```
+
+这种符号混淆机制的优势：
+1. **避免命名冲突**: 确保不同模块的符号不会冲突
+2. **简化目标代码**: 生成的目标语言代码更加简洁
+3. **保持语义**: 在编译时解决别名问题，运行时无需额外处理
+4. **可预测性**: 混淆后的名称具有规律性，便于调试和追踪
+
+# 解释器
+
+作为大杂烩语言的集大成者，Hulo吸收了Zig语言的`comptime`语法糖。在`comptime { ... }`表达式的包裹下，代码会在编译的时候执行，就像传统的解释型语言一样。这也为Hulo的元编程提供了强大的支撑，使得Hulo可以实现类似Rust过程宏、编译期反射、直接操作AST等强大功能。
+
+## 编译时执行
+
+假设我们现在有如下代码：
+
+```
+let a = comptime {
+    let sum = 0
+    loop $i := 0; $i < 10; $i++ {
+        echo $i;
+        $sum += $i;
+    }
+    return $sum
+}
+```
+
+在翻译成目标语法的时候会以 `let a = 45` 进行翻译，中间的一大串代码都会被提前执行。这个执行的过程其实就是解释。
+
+## 对象化 & 求值
+
+求值就是解释器执行代码的过程。在Hulo中，解释器需要能够执行各种类型的表达式和语句。
+
+### 对象化
+
+在Hulo中，所有的值都被"对象化"处理。这意味着无论是数字、字符串还是函数，都被包装成统一的对象接口。
+
+下面是Hulo代码中关于对象系统的设计：
+
+```go
+// 定义类型的基本行为
+type Type interface {
+	Name() string // 获取类型名称
+
+	Text() string // 获取类型的文本表示
+
+	Kind() ObjKind // 获取类型种类（如基本类型、对象类型等）
+
+	Implements(u Type) bool // 检查是否实现了某个接口
+
+	AssignableTo(u Type) bool // 检查是否可以赋值给某个类型
+
+	ConvertibleTo(u Type) bool // 检查是否可以转换为某个类型
+}
+
+// 继承Type接口，定义对象的行为
+type Object interface {
+	Type
+	NumMethod() int // 获取方法数量
+	Method(i int) Method // 根据索引获取方法
+	MethodByName(name string) Method // 根据名称获取方法
+	NumField() int // 获取字段数量
+	Field(i int) Type // 根据索引获取字段
+	FieldByName(name string) Type // 根据名称获取字段
+}
+
+// 定义值的基本行为
+type Value interface {
+    Type() Type        // 获取值的类型
+    Text() string      // 获取值的文本表示
+    Interface() any    // 获取底层的Go值
+}
+```
+通过这段代码不难看出，这有点类似于Golang的反射系统。实际上，对象系统的实现上的确参考了反射机制，所有的单元测试接口甚至也和反射的测试如出一辙。可以说，Hulo的解释器在抽象AST的过程中就是将值与类型转换成反射操作，通过统一的接口来操作不同类型的值。
+
+### 求值过程
+
+在对象化的基础上，解释器通过遍历AST节点来执行代码，根据节点类型执行相应的操作。
+
+假设这个我们有`1 + 2 * 3`这样一个表达式，它的AST结构和求值步骤如下：
+```hulo
+BinaryExpr {
+    X: Literal(1),
+    Op: PLUS,
+    Y: BinaryExpr {
+        X: Literal(2),
+        Op: MULTIPLY,
+        Y: Literal(3)
+    }
+}
+```
+
+1. **访问根节点** BinaryExpr(PLUS)
+2. **先求值左子树** Literal(1) → 1
+3. **先求值右子树** BinaryExpr(MULTIPLY)：
+   - 求值左子树 Literal(2) → 2
+   - 求值右子树 Literal(3) → 3
+   - 执行乘法 2 * 3 → 6
+4. **执行加法** 1 + 6 → 7
+
+而这个求值的过程，我们可以用伪代码表示为：
+```go
+func (interp *Interpreter) Eval(node ast.Node) Object {
+    switch node := node.(type) {
+        case *ast.Literal:
+            return interp.evalLiteral(node)
+        case *ast.BinaryExpr:
+            return interp.evalBinaryExpr(node)
+        // ...
+    }
+}
+
+func (interp *Interpreter) evalLiteral(node *ast.Literal) Object {
+    // 简化复杂度，我们假设字面量类型都是 number 类型
+    return &object.NumberValue{Value: node.Value}
+}
+
+func (interp *Interpreter) evalBinaryExpr(node *ast.BinaryExpr) Object {
+    lhs := interp.Eval(node.Lhs) // 计算左值
+    rhs := interp.Eval(node.Rhs) // 计算右值
+
+    // 由 evalLiteral 可知 lhs、rhs 都是 *object.NumberValue，并假设 NumberValue 的类型为 NumberType
+    switch node.Op {
+        case token.PLUS: // 根据值进行加法
+            // 假设 NumberType 有 add 方法可以直接运算
+            return lhs.Type().(*object.NumberType).MethodByName("add").call(rhs)
+        case token.MULTIPLY:
+            // 根据值进行乘法
+    }
+}
+```
+
+节点会逐层递归求值，每一层的求值结果作为上一层节点的子树继续求值。最终返回的不是原始的`string`、`int`、`any`等类型，而是包装成`Object`接口的对象，体现了"一切皆对象"的设计理念。
+
+### 环境管理
+
+解释器维护一个环境(Environment)来存储变量，但为什么要环境管理？这涉及到作用域和变量查找的问题。
+
+#### 为什么需要环境管理？
+
+```hulo
+var globalVar = 100  // 全局变量
+
+fn test() {
+    let localVar = 200  // 局部变量
+    echo $globalVar     // 可以访问全局变量
+    echo $localVar      // 可以访问局部变量
+}
+
+fn another() {
+    echo $globalVar     // 可以访问全局变量
+    echo $localVar      // ❌ 错误！无法访问test函数的局部变量
+}
+```
+
+#### 作用域链
+
+Hulo采用词法作用域，变量查找遵循"就近原则"：
+
+```hulo
+let x = 1  // 全局作用域
+
+fn outer() {
+    let x = 2  // 局部作用域，遮蔽了全局的x
+
+    fn inner() {
+        let x = 3  // 更内层的作用域
+        echo $x    // 输出3，找到最近的x
+    }
+
+    echo $x  // 输出2，找到outer函数中的x
+}
+
+echo $x  // 输出1，找到全局的x
+```
+
+#### 环境链实现
+
+环境通过链表结构实现作用域链：
+
+```go
+type Environment struct {
+    store map[string]Value  // 当前作用域的变量
+    outer *Environment      // 外层环境（父作用域）
+}
+
+func (e *Environment) Get(name string) (Value, bool) {
+    // 先从当前环境查找
+    obj, ok := e.store[name]
+    if ok {
+        return obj, true
+    }
+
+    // 如果没找到，继续在外层环境查找
+    if e.outer != nil {
+        return e.outer.Get(name)
+    }
+
+    // 所有环境都没找到
+    return nil, false
+}
+
+// Fork创建新的环境，类似于函数调用的栈帧
+func (e *Environment) Fork() *Environment {
+    env := NewEnvironment()  // 创建新的环境
+    env.outer = e           // 将当前环境作为外层环境
+    return env              // 返回新环境
+}
+```
+
+Ps. 这个代码只是用于展示的最小实现，实际Hulo的实现将更为复杂。
+
+#### 环境创建过程
+
+> **栈帧(Stack Frame)** 是函数调用时在调用栈上分配的一块内存，用于存储函数的局部变量、参数和返回地址。
+
+在Hulo中，每次函数调用都会通过 `Fork()` 创建一个新的环境，这个新环境就是一个栈帧：
+
+```hulo
+fn outer() {
+    let x = 10
+    fn inner() {
+        let y = 20
+        echo $x + $y  // 30
+    }
+    inner()
+}
+```
+
+执行过程：
+1. **全局环境** `{}`
+2. **调用outer()** → `Fork()` → 创建栈帧1 `{x: 10, outer: 全局环境}`
+3. **调用inner()** → `Fork()` → 创建栈帧2 `{y: 20, outer: 栈帧1}`
+4. **执行echo** → 在栈帧2中查找变量
+   - 查找y：栈帧2中找到 20
+   - 查找x：栈帧2没有 → 栈帧1中找到 10
+5. **inner()返回** → 销毁栈帧2，回到栈帧1
+6. **outer()返回** → 销毁栈帧1，回到全局环境
+
+# 调试器
+
+调试器是编程语言开发中不可或缺的工具，它允许开发者暂停程序执行、检查变量状态、单步执行代码等。而它的核心是**断点机制**，它允许程序在特定位置暂停执行，并查看环境情况。
+
+## 断点
+
+断点本质上就是一个**位置标记**：
+
+```go
+type Breakpoint struct {
+    File      string  // 文件名
+    Line      int     // 行号
+    Column    int     // 列号
+    Condition string  // 条件表达式（可选）
+    Enabled   bool    // 是否启用
+}
+```
+
+调试器会收集用户指定要中断的位置，然后存储起来，待解释器走到那一步的时候暂停。
+
+## 从AST到行列号
+
+在解析器分析AST的时候，我们往往会为AST节点添加位置信息：
+```go
+type Node interface {
+	Pos() token.Pos
+	End() token.Pos
+}
+```
+
+每个AST节点都有两个关键方法：
+- `Pos()` - 返回节点在源代码中的**开始位置**
+- `End()` - 返回节点在源代码中的**结束位置**
+
+
+**具体例子：**
+
+1. **数字字面量 `10`：**
+```go
+type NumericLiteral struct {
+    ValuePos token.Pos  // 数字开始的位置
+    Value    string     // "10"
+}
+
+func (x *NumericLiteral) Pos() token.Pos {
+    return x.ValuePos  // 返回数字开始位置
+}
+
+func (x *NumericLiteral) End() token.Pos {
+    return token.Pos(int(x.ValuePos) + len(x.Value))  // 开始位置 + 长度
+}
+```
+
+2. **标识符 `x`：**
+```go
+type Ident struct {
+    NamePos token.Pos  // 标识符开始位置
+    Name    string     // "x"
+}
+
+func (x *Ident) Pos() token.Pos {
+    return x.NamePos  // 返回标识符开始位置
+}
+
+func (x *Ident) End() token.Pos {
+    return token.Pos(int(x.NamePos) + len(x.Name))  // 开始位置 + 长度
+}
+```
+
+**位置转换过程：**
+
+实际上，计算行列号最简单的方法就是**字符串分割**：
+
+```go
+func (d *Debugger) getLineFromPos(pos token.Pos) int {
+    // 获取文件内容
+    content := d.getFileContent()
+
+    // 将内容按行分割
+    lines := strings.Split(content, "\n")
+
+    // 计算pos在第几行
+    currentPos := 0
+    for i, line := range lines {
+        lineLength := len(line) + 1  // +1 是因为分割符 \n
+        if currentPos <= int(pos) && int(pos) < currentPos + lineLength {
+            return i + 1  // 返回行号（从1开始）
+        }
+        currentPos += lineLength
+    }
+    return 1  // 默认返回第1行
+}
+
+func (d *Debugger) getColumnFromPos(pos token.Pos) int {
+    // 获取文件内容
+    content := d.getFileContent()
+
+    // 将内容按行分割
+    lines := strings.Split(content, "\n")
+
+    // 计算pos在第几列
+    currentPos := 0
+    for _, line := range lines {
+        lineLength := len(line) + 1
+        if currentPos <= int(pos) && int(pos) < currentPos + lineLength {
+            // 计算在当前行中的偏移
+            return int(pos) - currentPos + 1  // 返回列号（从1开始）
+        }
+        currentPos += lineLength
+    }
+    return 1  // 默认返回第1列
+}
+```
+
+**实际例子：**
+
+假设我们有代码：
+```hulo
+fn main() {     // 第1行
+    let x = 10  // 第2行
+}
+```
+
+文件内容：`"fn main() {\n    let x = 10\n}"`
+
+- `let` 关键字：`token.Pos(15)`
+  - 第1行长度：`len("fn main() {") = 12`，加上`\n` = 13
+  - 第2行开始位置：13
+  - `15 - 13 + 1 = 3`，所以`let`在第2行第3列
+
+- `x` 标识符：`token.Pos(19)`
+  - `19 - 13 + 1 = 7`，所以`x`在第2行第7列
+
+- `10` 数字：`token.Pos(23)`
+  - `23 - 13 + 1 = 11`，所以`10`在第2行第11列
+
+Ps. 实际的代码和介绍的肯定不一样，不会写成这样。只是这样计算更直观，方便讲解。
+
+## 断点匹配：检查是否命中
+
+有了断点、位置转换和环境管理，现在我们可以实现完整的断点机制：
+
+解释器在每个语句执行前都要调用断点检查：
+
+```go
+func (interp *Interpreter) Eval(node ast.Node) ast.Node {
+    // 关键：每个节点执行前检查断点
+    if interp.shouldBreak(node) {
+        // 程序暂停，等待调试器命令
+        interp.pause()
+    }
+
+    // 正常执行逻辑...
+    switch node := node.(type) {
+        case *ast.Literal:
+            return interp.evalLiteral(node)
+        case *ast.BinaryExpr:
+            return interp.evalBinaryExpr(node)
+        // ...
+    }
+}
+```
+
+## 暂停机制：如何让程序停下来
+
+当命中断点时，程序需要暂停等待调试器命令：
+
+```go
+func (d *Debugger) pause() {
+    d.isPaused = true
+
+    // 发送暂停信号到调试循环
+    d.pauseChan <- struct{}{}
+
+    // 关键：主线程在这里等待恢复信号
+    for d.isPaused {
+        // 阻塞等待，直到调试器发送恢复命令
+        time.Sleep(10 * time.Millisecond)  // 避免CPU空转
+    }
+}
+```
+这里我们使用 `pauseChan` 变量作为暂停信号管道。当命中断点时，向管道发送信号，这个信号会在调试循环中接收并等待命令。
+
+```go
+func (d *Debugger) debugLoop() {
+    for {
+        select {
+        case <-d.ctx.Done():
+            return // 调试器关闭信号
+        case <-d.pauseChan:
+            // 程序暂停了，开始等待用户命令
+            d.waitForResume()
+        case cmd := <-d.commandChan:
+            d.handleCommand(cmd) // 调试命令
+        }
+    }
+}
+
+func main() {
+    // ...
+    go d.debugLoop()
+    interp.Eval(node)
+    // ...
+}
+```
+
+调试循环可以理解为一个协程/线程，它在调试器启动的时候就会开始运行，与解释器的执行异步，这样双方就不会相互卡住。
+
+- **主线程**：执行Hulo代码，遇到断点时发送信号
+- **调试协程**：监听信号，处理调试命令，控制程序暂停/恢复
+
+当程序命中断点时，主线程向`pauseChan`发送信号，调试协程的select语句检测到这个信号，立即调用`waitForResume()`开始等待用户命令。
+
+**waitForResume的阻塞机制：**
+```go
+func (d *Debugger) waitForResume() {
+    for d.isPaused {
+        select {
+        case cmd := <-d.resumeChan:
+            d.handleCommand(cmd)
+            if cmd.Type == CmdContinue {
+                d.isPaused = false
+                break  // 退出等待，主线程可以继续
+            }
+        }
+    }
+}
+```
+
+`waitForResume()`会一直阻塞在`select`语句上，直到从`resumeChan`接收到继续执行的命令。
+
+**完整的执行流程：**
+
+1. **主线程执行** → 命中断点 → 调用`pause()` → **卡住等待**
+2. **调试协程** → 接收到暂停信号 → 等待用户命令
+3. **用户操作** → 发送继续命令 → 调试协程设置`isPaused = false`
+4. **主线程** → 检测到`isPaused = false` → **继续执行**
+
+## DAP协议
+
+**DAP (Debug Adapter Protocol)** 是微软开发的一个标准化调试协议，它定义了调试器与IDE之间的通信规范。
+
+### 为什么需要DAP？
+
+想象一下，如果你写了一个调试器，但是只能在命令行使用，那多不方便。用户想要在VS Code、IntelliJ IDEA等图形化编辑器中调试代码，怎么办呢？
+
+DAP就是解决这个问题的。它就像是一个"翻译官"，把IDE的调试命令翻译成调试器能理解的语言，再把调试器的反馈翻译成IDE能显示的信息。
+
+
+### DAP消息格式
+
+DAP使用JSON格式进行通信，就像两个人用同一种语言交流：
+
+```json
+{
+    "type": "request",
+    "seq": 1,
+    "command": "setBreakpoints",
+    "arguments": {
+        "source": {
+            "path": "/path/to/file.hl"
+        },
+        "breakpoints": [
+            {
+                "line": 10,
+                "condition": "x > 5"
+            }
+        ]
+    }
+}
+```
+
+这个JSON消息的意思是："请在文件`/path/to/file.hl`的第10行设置一个断点，条件是`x > 5`"。
+
+
+### DAP事件
+
+调试器会向IDE发送各种事件，告诉IDE发生了什么：
+
+```json
+{
+    "type": "event",
+    "seq": 2,
+    "event": "stopped",
+    "body": {
+        "reason": "breakpoint",
+        "threadId": 1,
+        "allThreadsStopped": true
+    }
+}
+```
+
+这个JSON消息的意思是："程序暂停了，原因是命中了断点"。
+
+### 改造调试器
+
+有了DAP协议，我们就可以在VS Code等编辑器中以图形化的方式控制我们的调试器。其实就是通过网络的方式向调试循环发送命令，本着简单原则我们再次改造下上文介绍的伪代码部分：
+
+```go
+func main() {
+    // 启动DAP服务器，监听来自IDE的连接
+    go d.startDAPServer()
+
+    // 启动调试循环，处理调试命令
+    go d.debugLoop()
+
+    // 开始执行程序
+    interp.Eval(node)
+}
+```
+
+**实际工作流程:**
+1. **IDE连接** - VS Code连接到Hulo的DAP服务器
+2. **用户操作** - 用户在VS Code中点击"设置断点"
+3. **发送命令** - VS Code发送JSON命令到DAP服务器
+4. **调试器处理** - Hulo调试器接收命令并设置断点
+5. **程序执行** - 程序运行到断点处暂停
+6. **发送事件** - 调试器发送"程序暂停"事件给VS Code
+7. **界面更新** - VS Code显示程序已暂停，用户可以查看变量
+
+
+这就是现代调试器的标准做法：用统一的协议让不同的工具能够互相配合工作。
+
+# 优化器
+
+优化器的作用是**改进代码质量**，让程序运行得更快、更高效。它通过分析AST，识别可以优化的地方，然后进行相应的改进。
+
+## 优化器的设计思路
+
+Hulo的优化器采用了**剪枝**(Scissor)的设计模式，就像用剪刀修剪树枝一样，把不必要的代码"剪掉"：
+
+```go
+type Optimizer struct {
+    scissors []Scissor // 各种剪枝工具
+}
+
+type Scissor interface {
+    Name() string
+    ShouldCut(node ast.Node) bool  // 判断是否需要剪枝
+    Cut(node ast.Node) ast.Node    // 执行剪枝操作
+}
+```
+
+## 三种剪枝工具
+
+### 1. 常量折叠 (Constant Folding)
+
+**作用：** 把编译时就能计算出的表达式直接算出结果
+
+```hulo
+// 优化前
+let x = 2 + 3 * 4
+
+// 优化后
+let x = 14
+```
+
+**实现原理：**
+```go
+type ConstantFoldingScissor struct{}
+
+func (s *ConstantFoldingScissor) ShouldCut(node ast.Node) bool {
+    return isConstantExpression(node)  // 检查是否是常量表达式
+}
+
+func (s *ConstantFoldingScissor) Cut(node ast.Node) ast.Node {
+    return calculateConstant(node)  // 计算常量值
+}
+```
+
+**什么是常量表达式？**
+- 数字字面量：`42`
+- 字符串字面量：`"hello"`
+- 布尔字面量：`true`, `false`
+- 常量运算：`2 + 3`, `10 * 5`
+
+### 2. 死代码消除 (Dead Code Elimination)
+
+**作用：** 删除永远不会执行的代码
+
+```hulo
+// 优化前
+if false {
+    echo "这段代码永远不会执行"
+}
+echo "只有这行会执行"
+
+// 优化后
+echo "只有这行会执行"
+```
+
+**实现原理：**
+```go
+type DeadCodeScissor struct{}
+
+func (s *DeadCodeScissor) ShouldCut(node ast.Node) bool {
+    return isDeadCode(node)  // 检查是否是死代码
+}
+
+func (s *DeadCodeScissor) Cut(node ast.Node) ast.Node {
+    return nil  // 直接删除
+}
+```
+
+**什么是死代码？**
+- `if false { ... }` - 条件永远为假
+- `while false { ... }` - 循环永远不会执行
+- 无法到达的代码块
+
+### 3. 未使用变量消除 (Unused Variable Elimination)
+
+**作用：** 删除定义了但从未使用的变量
+
+```hulo
+// 优化前
+let x = 10
+let y = 20
+echo $x  // 只使用了x
+
+// 优化后
+let x = 10
+echo $x  // y被删除了
+```
+
+**实现原理：**
+```go
+type UnusedVariableScissor struct{}
+
+func (s *UnusedVariableScissor) ShouldCut(node ast.Node) bool {
+    return isUnusedVariable(node)  // 检查变量是否未使用
+}
+
+func (s *UnusedVariableScissor) Cut(node ast.Node) ast.Node {
+    return nil  // 删除未使用的变量
+}
+```
+
+## 优化过程
+
+优化器采用**自底向上**的优化策略：
+
+```go
+func (o *Optimizer) Optimize(node ast.Node) ast.Node {
+    if node == nil {
+        return nil
+    }
+
+    // 1. 先优化子节点
+    o.optimizeChildren(node)
+
+    // 2. 再优化当前节点
+    for _, scissor := range o.scissors {
+        if scissor.ShouldCut(node) {
+            return scissor.Cut(node)
+        }
+    }
+
+    return node
+}
+```
+
+**为什么要自底向上？**
+
+因为优化往往是**连锁反应**的：
+1. 先优化 `2 + 3` → `5`
+2. 再优化 `5 * 4` → `20`
+3. 最后优化 `let x = 20`
+
+## 实际优化例子
+
+让我们看一个完整的优化过程：
+
+```hulo
+// 原始代码
+let x = 2 + 3
+let y = x * 4
+if false {
+    echo "死代码"
+}
+let unused = 100
+echo $y
+```
+
+**优化步骤：**
+
+1. **常量折叠：** `2 + 3` → `5`
+   ```hulo
+   let x = 5
+   let y = x * 4
+   if false {
+       echo "死代码"
+   }
+   let unused = 100
+   echo $y
+   ```
+
+2. **常量折叠：** `5 * 4` → `20`
+   ```hulo
+   let x = 5
+   let y = 20
+   if false {
+       echo "死代码"
+   }
+   let unused = 100
+   echo $y
+   ```
+
+3. **死代码消除：** 删除 `if false` 块
+   ```hulo
+   let x = 5
+   let y = 20
+   let unused = 100
+   echo $y
+   ```
+
+4. **未使用变量消除：** 删除 `unused` 和 `x`
+   ```hulo
+   let y = 20
+   echo $y
+   ```
+
+**最终结果：**
+```hulo
+let y = 20
+echo $y
+```
+
+## 优化的好处
+
+1. **性能提升** - 减少运行时计算
+2. **代码精简** - 删除无用代码
+3. **内存节省** - 减少变量占用
+4. **可读性提高** - 代码更简洁
+
+## 注意事项
+
+优化器虽然强大，但也要小心：
+
+1. **副作用保护** - 不能删除有副作用的代码
+2. **语义保持** - 优化不能改变程序行为
+3. **调试友好** - 保留必要的调试信息
+
+这就是Hulo优化器的工作原理：通过多种剪枝工具，把AST中的冗余代码"修剪"掉，让程序更高效。
+
+# 转译器
+
+转译器是Hulo编译流程中的核心组件，负责将Hulo的抽象语法树(AST)转换为目标语言的AST。这个过程本质上是通过递归遍历，将一种语言的语法节点系统性地转换为另一种语言的语法节点。
+
+由于目标语言（Bash、Batch、VBS、PowerShell）的语法相对原始，转译过程可以理解为从高级语言向低级语言的**语法降级**。我们需要利用目标语言现有的基础语法结构，来模拟和实现Hulo中的高级语言特性。
+
+在Hulo中，我们支持面向对象的类概念，但目标脚本语言通常缺乏这种抽象。通过语法降级，我们可以将类转换为目标语言的基础结构。
+
+假设我们现在有这样一段Hulo代码：
+
+```hulo
+class User {
+    name: str
+    age: num
+
+    fn greet() -> str {
+        return "Hello, " + $this.name
+    }
+}
+```
+
+以Bash为例，经过转译它会被降级为：
+
+```bash
+# 生成构造函数
+create_user() {
+    local name="$1"
+    local age="$2"
+
+    declare -A user
+    user["name"]="$name"
+    user["age"]="$age"
+
+    echo "$(declare -p user)"
+}
+
+# 生成方法
+user_greet() {
+    eval "declare -A user=\${1}"
+    echo "Hello, ${user[name]}"
+}
+```
+
+Ps. 这只是简单的演示，具体降级后的代码以实际为准。
+
+通过降级，我们实现了对class的支持。下面是这个降级过程的伪代码：
+```go
+// 我们需要做的就是将 hulo的ast节点(hast) 转换成 bash 的 ast 节点(bast)
+func (t *transpiler) convertClassDecl(node *hast.ClassDecl) bast.Node {
+    clsName := t.getClassName(node.Name) // 获取类名标识符
+
+    ctorName := fmt.Sprintf("create_%s", clsName) // 构造函数的名字
+
+    // 生成构造函数体
+	var constructorBody []bast.Stmt
+
+    fieldNames := t.SymbolTable.getClass(clsName).Fields // 查询模块管理扫描出来的符号表，获取到所有的字段
+
+	// 为每个字段分配参数
+	for i, fieldName := range fieldNames {
+		constructorBody = append(constructorBody, &bast.AssignStmt{
+			Lhs:   &bast.Ident{Name: fieldName},
+			Rhs:   &bast.VarExpExpr{X: &bast.Ident{Name: fmt.Sprintf("%d", i+1)}},
+		})
+	}
+
+	// 创建关联数组声明
+	constructorBody = append(constructorBody, &bast.ExprStmt{
+		X: &bast.CmdExpr{
+			Name: &bast.Ident{Name: "declare"},
+			Recv: []bast.Expr{
+				&bast.Word{Val: "-A"},
+				&bast.Ident{Name: clsName},
+			},
+		},
+	})
+
+	// 添加字段赋值
+	for _, fieldName := range fieldNames {
+		constructorBody = append(constructorBody, &bast.AssignStmt{
+			Lhs: &bast.IndexExpr{
+				X:      &bast.Ident{Name: clsName},
+				Y:      &bast.Word{Val: fmt.Sprintf(`"%s"`, fieldName)},
+			},
+			Rhs: &bast.VarExpExpr{X: &bast.Ident{Name: fieldName}},
+		})
+	}
+
+    // 返回关联数组
+	constructorBody = append(constructorBody, &bast.ExprStmt{
+		X: &bast.CmdExpr{
+			Name: &bast.Ident{Name: "echo"},
+			Recv: []bast.Expr{
+				&bast.Word{Val: fmt.Sprintf(`"$(declare -p %s)"`, clsName)},
+			},
+		},
+	})
+
+    // 将构造函数添加到目标代码的节点上
+    t.Emit(&bast.FuncDecl{
+        Name: &bast.Ident{Name: ctorName}, // 构造函数名
+        Body: &bast.BlockStmt{List: constructorBody}, // 构造函数体
+    })
+
+    // 方法也是类似的实现方式
+    // ...
+}
+```
+
+我们可以看到转换的过程本质上是在手动构建目标语言的AST节点，这种直接操作AST结构的方式虽然直观，但在复杂项目中会显得冗长。随着项目的发展，这些底层的AST操作将被进一步抽象为更高层次的转换器对象，使代码更加模块化和易于维护。
+
+# unsafe 模板引擎
+
+模板引擎就像是一个"代码生成器"，它可以根据一些变量和逻辑，动态地生成代码。想象一下，你有一个邮件模板，里面有一些占位符（比如`{{姓名}}`、`{{公司}}`），当你填入具体的信息后，就能生成一封完整的邮件。
+
+unsafe模板引擎也是这样工作的，但它生成的不是邮件，而是代码片段。
+
+## 为什么叫"unsafe"？
+
+这里的"unsafe"不是指不安全，而是指"不受限制"。在Hulo中，`unsafe`关键字允许你直接写目标语言的原生代码，比如在Hulo代码中直接写Bash命令。模板引擎就是用来处理这些原生代码块的。
+
+模板引擎与解释器类似，它们都工作在编译期。执行的原理也大差不差，都需要经过Lexer解析出Token后，然后用Parser转换成具体的AST进行递归执行。不过，相比之下，模板引擎要简单的多，它只需要直接执行即可，不需要考虑优化、模块的问题。
+
+## 模板引擎的作用
+
+1. **动态生成代码**：根据编译时的变量和条件，生成不同的代码片段
+2. **平台特定代码**：为不同的目标平台生成不同的实现
+3. **性能优化**：在编译时计算一些值，避免运行时开销
+4. **复杂逻辑处理**：处理一些用Hulo语法难以表达的复杂逻辑
+
+## 工作原理
+
+模板引擎的工作流程和解释器很像：
+模板字符串 → 词法分析 → 语法分析 → 执行 → 生成代码
+
+1. **词法分析**：把模板字符串分解成一个个标记（Token）
+2. **语法分析**：把这些标记组织成语法树（AST）
+3. **执行**：遍历语法树，执行其中的逻辑
+4. **生成代码**：输出最终的代码片段
+
+## 语法示例
+
+unsafe模板引擎使用类似Jinja2的语法：
+
+```hulo
+unsafe {
+    // 变量插值
+    echo "Hello, {{ name }}"
+
+    // 条件判断
+    {% if platform == "windows" %}
+        echo "Running on Windows"
+    {% else %}
+        echo "Running on Unix"
+    {% endif %}
+
+    // 循环
+    {% for item in items %}
+        echo "Processing {{ item }}"
+    {% endfor %}
+
+    // 函数调用
+    echo "Sum: {{ sum 1 2 3 }}"
+}
+```
+
+## 为什么在unsafe中使用模板引擎？
+
+1. **灵活性**：unsafe块允许直接写原生代码，模板引擎让这些原生代码也能动态生成
+2. **可读性**：比手动拼接字符串更清晰易读
+3. **性能**：编译时执行，运行时无开销
+
+## 与解释器的区别
+
+虽然模板引擎和解释器都工作在编译期，但它们有重要区别：
+
+| 特性 | 解释器 | 模板引擎 |
+|------|--------|----------|
+| 目的 | 执行Hulo代码 | 生成目标语言代码 |
+| 复杂度 | 需要完整的语言支持 | 只需要简单的模板语法 |
+| 优化 | 需要复杂的优化策略 | 直接执行，无需优化 |
+| 模块 | 需要模块系统 | 独立执行，无需模块 |
+
+# 链接器
+
+链接器是Hulo编译流程的最后一步，负责将转译后的代码片段与原生代码块合并，生成最终的可执行脚本文件。虽然概念上与传统编译器的链接器相似，但Hulo的链接器更专注于脚本语言的特性，通过符号定义和标签系统实现灵活的代码片段管理。
+
